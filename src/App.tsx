@@ -68,7 +68,7 @@ export default function App() {
         return saved as CrystallThemeId;
       }
     } catch {}
-    return 'dark-v1';
+    return 'dark-solid';
   });
 
   // Apply CSS variables on theme change
@@ -78,6 +78,12 @@ export default function App() {
       localStorage.setItem('crystall_ide_active_theme', activeTheme);
     } catch {}
   }, [activeTheme]);
+
+  useEffect(() => {
+    (window as any).__setCrystallTheme = (themeId: CrystallThemeId) => {
+      setActiveTheme(themeId);
+    };
+  }, []);
 
   // Editor Settings State
   const [editorSettings, setEditorSettings] = useState<EditorSettings>(() => {
@@ -884,22 +890,22 @@ export default function App() {
   };
 
   const currentThemeResolved = resolveTheme(activeTheme);
-  const isNightBackdrop = activeTheme === 'dark-v2' || activeTheme === 'dark-v3' || activeTheme === 'midnight-oled' || activeTheme === 'slate-navy' || activeTheme === 'acrylic-glass';
-  const isDayBackdrop = activeTheme === 'light-v2' || activeTheme === 'light-v3' || activeTheme === 'warm-paper';
+  const isNightBackdrop = activeTheme === 'dark-transparent' || activeTheme === 'dark-v2' || activeTheme === 'dark-v3' || activeTheme === 'midnight-oled' || activeTheme === 'slate-navy' || activeTheme === 'acrylic-glass';
+  const isDayBackdrop = activeTheme === 'light-transparent' || activeTheme === 'light-v2' || activeTheme === 'light-v3' || activeTheme === 'warm-paper';
 
   return (
     <div 
       className="relative flex flex-col h-full w-full overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] select-none"
       style={{ backgroundColor: 'var(--bg-app)' }}
     >
-      {/* Authentic Figma Japanese Garden Backdrops for Acrylic & Glass (v2 & v3) */}
+      {/* Authentic Figma Japanese Garden Backdrops for Transparent Themes */}
       {isNightBackdrop && (
         <div 
           className="absolute inset-0 pointer-events-none z-0 bg-cover bg-center transition-all duration-300"
           style={{ 
             backgroundImage: `url(${nightGardenBg})`,
-            opacity: activeTheme === 'dark-v3' ? 0.85 : 0.72,
-            filter: activeTheme === 'dark-v2' ? 'blur(16px) brightness(0.60)' : 'blur(6px) brightness(0.72)'
+            opacity: 0.82,
+            filter: 'blur(16px) brightness(0.68)'
           }}
         />
       )}
@@ -909,8 +915,8 @@ export default function App() {
           className="absolute inset-0 pointer-events-none z-0 bg-cover bg-center transition-all duration-300"
           style={{ 
             backgroundImage: `url(${dayGardenBg})`,
-            opacity: activeTheme === 'light-v3' ? 0.85 : 0.68,
-            filter: activeTheme === 'light-v2' ? 'blur(16px) brightness(1.02)' : 'blur(6px) brightness(1.02)'
+            opacity: 0.80,
+            filter: 'blur(16px) brightness(1.02)'
           }}
         />
       )}

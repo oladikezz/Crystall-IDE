@@ -41,12 +41,10 @@ export const StatusBar: React.FC<StatusBarProps> = ({
 
   const cycleTheme = () => {
     const figmaOrder: CrystallThemeId[] = [
-      'dark-v1',
-      'dark-v2',
-      'dark-v3',
-      'light-v1',
-      'light-v2',
-      'light-v3'
+      'dark-solid',
+      'dark-transparent',
+      'light-solid',
+      'light-transparent'
     ];
     const resolvedId = currentTheme.id;
     const curIndex = figmaOrder.indexOf(resolvedId);
@@ -80,16 +78,15 @@ export const StatusBar: React.FC<StatusBarProps> = ({
           <CrystallLogo size={12} />
           <button
             onClick={cycleTheme}
-            className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono border hover:brightness-125 transition-all cursor-pointer mr-1"
+            className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-sans border hover:brightness-125 transition-all cursor-pointer mr-1"
             style={{
               backgroundColor: 'var(--status-badge-bg)',
               color: 'var(--status-badge-text)',
               borderColor: 'var(--status-badge-border)'
             }}
-            title="Figma Version Badge - Click to cycle themes"
+            title="Тема оформления Figma — нажмите для переключения (4 темы)"
           >
-            <span className="font-semibold">{currentTheme.versionBadge || 'Version 1'}</span>
-            <span className="opacity-70 text-[9px]">({currentTheme.styleVariant})</span>
+            <span className="font-medium">{currentTheme.name}</span>
           </button>
           <span className="text-zinc-500">Last Action:</span>
           <span className="font-mono text-zinc-300">{lastAction}</span>
@@ -201,13 +198,13 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         <button
           onClick={cycleTheme}
           className="flex items-center gap-1.5 px-1.5 py-0.5 rounded hover:bg-white/5 transition-colors cursor-pointer"
-          title="Click to cycle theme (6 Themes)"
+          title="Сменить тему оформления (4 темы)"
         >
           <span 
             className="w-2 h-2 rounded-full border border-black/20"
             style={{ backgroundColor: currentTheme.previewColors.accent }}
           />
-          <span className="text-zinc-500">Theme:</span>
+          <span className="text-zinc-500">Тема:</span>
           <span style={{ color: 'var(--text-primary)' }}>{currentTheme.name}</span>
         </button>
 

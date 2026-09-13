@@ -660,7 +660,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
           <button
             onClick={() => setIsPaletteOpen(!isPaletteOpen)}
             className="w-6 h-6 flex items-center justify-center rounded hover:bg-white/5 transition-colors cursor-pointer text-zinc-400 hover:text-zinc-200"
-            title="Themes (6)"
+            title="Themes (4)"
           >
             <Palette className="w-3.5 h-3.5" />
           </button>
@@ -675,7 +675,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               }}
             >
               <div className="text-[10px] uppercase font-mono tracking-wider px-2 py-1 text-zinc-500">
-                Figma Themes (6)
+                Figma Themes (4)
               </div>
               <div className="space-y-0.5 mt-1">
                 {FIGMA_THEMES.map((thm) => {
@@ -683,6 +683,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                   return (
                     <button
                       key={thm.id}
+                      data-theme-id={thm.id}
                       onClick={() => {
                         onSelectTheme(thm.id);
                         setIsPaletteOpen(false);

@@ -1,15 +1,15 @@
 import { CrystallTheme, CrystallThemeId } from '../types';
 
 export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
-  // --- ROW 1: DARK MODE ---
-  'dark-v1': {
-    id: 'dark-v1',
-    versionBadge: 'Version 1',
-    styleVariant: 'Solid',
-    name: 'Dark v1 (Solid)',
-    subtitle: 'Classic Abyss Solid',
+  // 1. ЧЕРНЫЙ ОБЫЧНЫЙ (Dark Solid)
+  'dark-solid': {
+    id: 'dark-solid',
+    versionBadge: 'Черный обычный',
+    styleVariant: 'Обычный',
+    name: 'Черный обычный',
+    subtitle: 'Classic Solid Dark',
     category: 'dark',
-    description: 'Оригинальная глубинная тёмная тема из Figma (Frame 1). Сплошной обсидиановый фон и фирменный янтарный акцент.',
+    description: 'Классическая тёмная тема из Figma. Сплошной обсидиановый фон без прозрачностей и фирменный янтарный акцент.',
     previewColors: {
       bg: '#0b0d13',
       panel: '#0e1017',
@@ -47,105 +47,61 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
     }
   },
 
-  'dark-v2': {
-    id: 'dark-v2',
-    versionBadge: 'Version 2',
-    styleVariant: 'Acrylic',
-    name: 'Dark v2 (Acrylic)',
-    subtitle: 'Frosted Mica Night',
-    category: 'dark',
-    description: 'Оригинальная матовая тёмная акриловая тема из Figma (Frame 2). Мягкое размытие 24px, свечение ночного сада на фоне.',
+  // 2. ЧЕРНЫЙ ПРОЗРАЧНЫЙ (Dark Transparent / Glass)
+  'dark-transparent': {
+    id: 'dark-transparent',
+    versionBadge: 'Черный прозрачный',
+    styleVariant: 'Прозрачный',
+    name: 'Черный прозрачный',
+    subtitle: 'Acrylic Glass Dark',
+    category: 'glass',
+    description: 'Оригинальная тёмная прозрачная тема из Figma. Стеклянный матовый интерфейс (Glass) с размытием и просвечиванием ночного сада.',
     previewColors: {
-      bg: '#0d1017',
-      panel: 'rgba(15, 19, 28, 0.85)',
+      bg: '#080c14',
+      panel: 'rgba(14, 18, 28, 0.72)',
       accent: '#f97316',
-      text: '#f8fafc',
-      border: 'rgba(255, 255, 255, 0.12)'
+      text: '#ffffff',
+      border: 'rgba(255, 255, 255, 0.18)'
     },
     monacoTheme: 'crystall-dark-v2',
     cssVars: {
-      '--bg-app': 'rgba(11, 14, 20, 0.78)',
-      '--bg-header': 'rgba(14, 17, 25, 0.84)',
-      '--bg-editor': 'rgba(11, 14, 20, 0.65)',
-      '--bg-panel': 'rgba(15, 19, 28, 0.78)',
-      '--bg-card': 'rgba(255, 255, 255, 0.06)',
-      '--bg-statusbar': 'rgba(10, 13, 19, 0.88)',
-      '--bg-modal': 'rgba(14, 18, 28, 0.94)',
-      '--border-color': 'rgba(255, 255, 255, 0.10)',
-      '--text-primary': '#f8fafc',
-      '--text-secondary': '#cbd5e1',
-      '--text-muted': '#94a3b8',
-      '--accent-primary': '#f97316',
-      '--accent-hover': '#ea580c',
-      '--accent-glow': 'rgba(249, 115, 22, 0.35)',
-      '--hover-bg': 'rgba(255, 255, 255, 0.08)',
-      '--status-badge-bg': 'rgba(249, 115, 22, 0.18)',
-      '--status-badge-text': '#fb923c',
-      '--status-badge-border': 'rgba(249, 115, 22, 0.35)',
-      '--chat-user-bg': 'rgba(255, 255, 255, 0.07)',
-      '--chat-assistant-bg': 'rgba(0, 0, 0, 0.40)',
-      '--chat-input-bg': 'rgba(0, 0, 0, 0.45)',
-      '--tab-active-bg': 'rgba(255, 255, 255, 0.08)',
-      '--tab-inactive-bg': 'rgba(0, 0, 0, 0.25)',
-      '--app-backdrop': 'night',
-      '--app-filter': 'blur(24px)'
-    }
-  },
-
-  'dark-v3': {
-    id: 'dark-v3',
-    versionBadge: 'Version 3',
-    styleVariant: 'Glass',
-    name: 'Dark v3 (Glass)',
-    subtitle: 'Liquid Crystal Glass',
-    category: 'glass',
-    description: 'Оригинальное тёмное жидкое стекло из Figma (Frame 3). Высокая прозрачность, просвечивание сада и глянцевые грани.',
-    previewColors: {
-      bg: '#080c14',
-      panel: 'rgba(12, 17, 28, 0.52)',
-      accent: '#f97316',
-      text: '#ffffff',
-      border: 'rgba(255, 255, 255, 0.22)'
-    },
-    monacoTheme: 'crystall-dark-v3',
-    cssVars: {
-      '--bg-app': 'rgba(10, 13, 20, 0.68)',
-      '--bg-header': 'rgba(12, 16, 26, 0.75)',
-      '--bg-editor': 'rgba(8, 11, 18, 0.55)',
-      '--bg-panel': 'rgba(14, 19, 30, 0.68)',
+      '--bg-app': 'rgba(10, 13, 20, 0.70)',
+      '--bg-header': 'rgba(12, 16, 26, 0.78)',
+      '--bg-editor': 'rgba(8, 11, 18, 0.58)',
+      '--bg-panel': 'rgba(14, 19, 30, 0.72)',
       '--bg-card': 'rgba(255, 255, 255, 0.08)',
-      '--bg-statusbar': 'rgba(8, 11, 18, 0.82)',
-      '--bg-modal': 'rgba(12, 17, 28, 0.88)',
-      '--border-color': 'rgba(255, 255, 255, 0.20)',
+      '--bg-statusbar': 'rgba(8, 11, 18, 0.84)',
+      '--bg-modal': 'rgba(12, 17, 28, 0.90)',
+      '--border-color': 'rgba(255, 255, 255, 0.16)',
       '--text-primary': '#ffffff',
       '--text-secondary': '#e2e8f0',
-      '--text-muted': '#a1a1aa',
+      '--text-muted': '#94a3b8',
       '--accent-primary': '#f97316',
       '--accent-hover': '#fb923c',
-      '--accent-glow': 'rgba(249, 115, 22, 0.45)',
-      '--hover-bg': 'rgba(255, 255, 255, 0.12)',
-      '--status-badge-bg': 'rgba(249, 115, 22, 0.22)',
+      '--accent-glow': 'rgba(249, 115, 22, 0.40)',
+      '--hover-bg': 'rgba(255, 255, 255, 0.10)',
+      '--status-badge-bg': 'rgba(249, 115, 22, 0.20)',
       '--status-badge-text': '#fed7aa',
-      '--status-badge-border': 'rgba(249, 115, 22, 0.45)',
-      '--chat-user-bg': 'rgba(255, 255, 255, 0.10)',
-      '--chat-assistant-bg': 'rgba(0, 0, 0, 0.35)',
-      '--chat-input-bg': 'rgba(0, 0, 0, 0.40)',
-      '--tab-active-bg': 'rgba(255, 255, 255, 0.12)',
-      '--tab-inactive-bg': 'rgba(0, 0, 0, 0.20)',
+      '--status-badge-border': 'rgba(249, 115, 22, 0.40)',
+      '--chat-user-bg': 'rgba(255, 255, 255, 0.09)',
+      '--chat-assistant-bg': 'rgba(0, 0, 0, 0.38)',
+      '--chat-input-bg': 'rgba(0, 0, 0, 0.42)',
+      '--tab-active-bg': 'rgba(255, 255, 255, 0.10)',
+      '--tab-inactive-bg': 'rgba(0, 0, 0, 0.22)',
       '--app-backdrop': 'night',
-      '--app-filter': 'blur(12px)'
+      '--app-filter': 'blur(16px)'
     }
   },
 
-  // --- ROW 2: LIGHT MODE ---
-  'light-v1': {
-    id: 'light-v1',
-    versionBadge: 'Version 1',
-    styleVariant: 'Solid',
-    name: 'Light v1 (Solid)',
+  // 3. БЕЛЫЙ ОБЫЧНЫЙ (Light Solid)
+  'light-solid': {
+    id: 'light-solid',
+    versionBadge: 'Белый обычный',
+    styleVariant: 'Обычный',
+    name: 'Белый обычный',
     subtitle: 'Studio Clean Light',
     category: 'light',
-    description: 'Оригинальная дневная тема из макета Figma (Frame 4). Чистый белый фон, светлые панели и студийный оранжевый акцент.',
+    description: 'Оригинальная дневная тема из Figma. Сплошной белый фон, светлые контрастные панели и студийный оранжевый акцент.',
     previewColors: {
       bg: '#ffffff',
       panel: '#f8fafc',
@@ -168,11 +124,11 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
       '--text-muted': '#94a3b8',
       '--accent-primary': '#ea580c',
       '--accent-hover': '#c2410c',
-      '--accent-glow': 'rgba(234, 88, 12, 0.2)',
+      '--accent-glow': 'rgba(234, 88, 12, 0.20)',
       '--hover-bg': 'rgba(0, 0, 0, 0.04)',
       '--status-badge-bg': 'rgba(234, 88, 12, 0.10)',
       '--status-badge-text': '#c2410c',
-      '--status-badge-border': 'rgba(234, 88, 12, 0.3)',
+      '--status-badge-border': 'rgba(234, 88, 12, 0.30)',
       '--chat-user-bg': '#f1f5f9',
       '--chat-assistant-bg': '#f8fafc',
       '--chat-input-bg': '#ffffff',
@@ -183,31 +139,32 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
     }
   },
 
-  'light-v2': {
-    id: 'light-v2',
-    versionBadge: 'Version 2',
-    styleVariant: 'Acrylic',
-    name: 'Light v2 (Acrylic)',
-    subtitle: 'Frosted Daylight Mica',
-    category: 'light',
-    description: 'Оригинальная светлая акриловая тема из Figma (Frame 5). Матовое размытие 24px, солнечный сад на фоне и отличная контрастность.',
+  // 4. БЕЛЫЙ ПРОЗРАЧНЫЙ (Light Transparent / Glass)
+  'light-transparent': {
+    id: 'light-transparent',
+    versionBadge: 'Белый прозрачный',
+    styleVariant: 'Прозрачный',
+    name: 'Белый прозрачный',
+    subtitle: 'Crystal Daylight Glass',
+    category: 'glass',
+    description: 'Оригинальная светлая прозрачная тема из Figma. Хрустальное стекло с просвечиванием солнечного японского сада и мягкими тенями.',
     previewColors: {
-      bg: '#ffffff',
-      panel: 'rgba(248, 250, 252, 0.85)',
+      bg: 'rgba(255, 255, 255, 0.70)',
+      panel: 'rgba(248, 250, 252, 0.82)',
       accent: '#ea580c',
       text: '#0f172a',
-      border: 'rgba(0, 0, 0, 0.10)'
+      border: 'rgba(0, 0, 0, 0.12)'
     },
     monacoTheme: 'crystall-light-v2',
     cssVars: {
-      '--bg-app': 'rgba(255, 255, 255, 0.82)',
-      '--bg-header': 'rgba(255, 255, 255, 0.88)',
-      '--bg-editor': 'rgba(255, 255, 255, 0.75)',
-      '--bg-panel': 'rgba(248, 250, 252, 0.80)',
+      '--bg-app': 'rgba(255, 255, 255, 0.75)',
+      '--bg-header': 'rgba(255, 255, 255, 0.84)',
+      '--bg-editor': 'rgba(255, 255, 255, 0.68)',
+      '--bg-panel': 'rgba(248, 250, 252, 0.78)',
       '--bg-card': 'rgba(0, 0, 0, 0.04)',
-      '--bg-statusbar': 'rgba(248, 250, 252, 0.90)',
-      '--bg-modal': 'rgba(255, 255, 255, 0.95)',
-      '--border-color': 'rgba(0, 0, 0, 0.10)',
+      '--bg-statusbar': 'rgba(248, 250, 252, 0.88)',
+      '--bg-modal': 'rgba(255, 255, 255, 0.94)',
+      '--border-color': 'rgba(0, 0, 0, 0.12)',
       '--text-primary': '#0f172a',
       '--text-secondary': '#334155',
       '--text-muted': '#64748b',
@@ -224,140 +181,170 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
       '--tab-active-bg': 'rgba(255, 247, 237, 0.85)',
       '--tab-inactive-bg': 'rgba(255, 255, 255, 0.50)',
       '--app-backdrop': 'day',
-      '--app-filter': 'blur(24px)'
+      '--app-filter': 'blur(16px)'
     }
   },
 
-  'light-v3': {
-    id: 'light-v3',
-    versionBadge: 'Version 3',
-    styleVariant: 'Glass',
-    name: 'Light v3 (Glass)',
-    subtitle: 'Crystal Daylight Glass',
-    category: 'glass',
-    description: 'Оригинальное прозрачное светлое стекло из Figma (Frame 6). Солнечный сад сквозь редактор, глянцевые фаски и глубина.',
-    previewColors: {
-      bg: 'rgba(255, 255, 255, 0.65)',
-      panel: 'rgba(255, 255, 255, 0.55)',
-      accent: '#ea580c',
-      text: '#0f172a',
-      border: 'rgba(255, 255, 255, 0.65)'
-    },
-    monacoTheme: 'crystall-light-v3',
-    cssVars: {
-      '--bg-app': 'rgba(255, 255, 255, 0.65)',
-      '--bg-header': 'rgba(255, 255, 255, 0.75)',
-      '--bg-editor': 'rgba(255, 255, 255, 0.55)',
-      '--bg-panel': 'rgba(255, 255, 255, 0.68)',
-      '--bg-card': 'rgba(255, 255, 255, 0.25)',
-      '--bg-statusbar': 'rgba(255, 255, 255, 0.82)',
-      '--bg-modal': 'rgba(255, 255, 255, 0.90)',
-      '--border-color': 'rgba(255, 255, 255, 0.55)',
-      '--text-primary': '#0f172a',
-      '--text-secondary': '#1e293b',
-      '--text-muted': '#475569',
-      '--accent-primary': '#ea580c',
-      '--accent-hover': '#c2410c',
-      '--accent-glow': 'rgba(234, 88, 12, 0.3)',
-      '--hover-bg': 'rgba(255, 255, 255, 0.2)',
-      '--status-badge-bg': 'rgba(234, 88, 12, 0.15)',
-      '--status-badge-text': '#c2410c',
-      '--status-badge-border': 'rgba(234, 88, 12, 0.45)',
-      '--chat-user-bg': 'rgba(255, 255, 255, 0.4)',
-      '--chat-assistant-bg': 'rgba(255, 255, 255, 0.35)',
-      '--chat-input-bg': 'rgba(255, 255, 255, 0.55)',
-      '--tab-active-bg': 'rgba(255, 247, 237, 0.5)',
-      '--tab-inactive-bg': 'rgba(255, 255, 255, 0.25)',
-      '--app-backdrop': 'day',
-      '--app-filter': 'blur(12px)'
-    }
-  },
-
-  // --- LEGACY FALLBACK ALIASES ---
-  'dark-charcoal': {
-    get id() { return 'dark-v1' as CrystallThemeId; },
-    get versionBadge() { return 'Version 1' as const; },
-    get styleVariant() { return 'Solid' as const; },
-    get name() { return 'Dark v1 (Solid)'; },
-    get subtitle() { return 'Classic Abyss Solid'; },
+  // Backward-compatible Aliases
+  'dark-v1': {
+    get id() { return 'dark-solid' as CrystallThemeId; },
+    get versionBadge() { return 'Черный обычный'; },
+    get styleVariant() { return 'Обычный'; },
+    get name() { return 'Черный обычный'; },
+    get subtitle() { return 'Classic Solid Dark'; },
     get category() { return 'dark' as const; },
-    get description() { return CRYSTALL_THEMES['dark-v1'].description; },
-    get previewColors() { return CRYSTALL_THEMES['dark-v1'].previewColors; },
-    get monacoTheme() { return CRYSTALL_THEMES['dark-v1'].monacoTheme; },
-    get cssVars() { return CRYSTALL_THEMES['dark-v1'].cssVars; }
+    get description() { return CRYSTALL_THEMES['dark-solid'].description; },
+    get previewColors() { return CRYSTALL_THEMES['dark-solid'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['dark-solid'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['dark-solid'].cssVars; }
   },
-  'midnight-oled': {
-    get id() { return 'dark-v2' as CrystallThemeId; },
-    get versionBadge() { return 'Version 2' as const; },
-    get styleVariant() { return 'Acrylic' as const; },
-    get name() { return 'Dark v2 (Acrylic)'; },
-    get subtitle() { return 'Frosted Mica Night'; },
-    get category() { return 'dark' as const; },
-    get description() { return CRYSTALL_THEMES['dark-v2'].description; },
-    get previewColors() { return CRYSTALL_THEMES['dark-v2'].previewColors; },
-    get monacoTheme() { return CRYSTALL_THEMES['dark-v2'].monacoTheme; },
-    get cssVars() { return CRYSTALL_THEMES['dark-v2'].cssVars; }
-  },
-  'slate-navy': {
-    get id() { return 'dark-v3' as CrystallThemeId; },
-    get versionBadge() { return 'Version 3' as const; },
-    get styleVariant() { return 'Glass' as const; },
-    get name() { return 'Dark v3 (Glass)'; },
-    get subtitle() { return 'Liquid Crystal Glass'; },
+  'dark-v2': {
+    get id() { return 'dark-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Черный прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Черный прозрачный'; },
+    get subtitle() { return 'Acrylic Glass Dark'; },
     get category() { return 'glass' as const; },
-    get description() { return CRYSTALL_THEMES['dark-v3'].description; },
-    get previewColors() { return CRYSTALL_THEMES['dark-v3'].previewColors; },
-    get monacoTheme() { return CRYSTALL_THEMES['dark-v3'].monacoTheme; },
-    get cssVars() { return CRYSTALL_THEMES['dark-v3'].cssVars; }
+    get description() { return CRYSTALL_THEMES['dark-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['dark-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['dark-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['dark-transparent'].cssVars; }
   },
-  'light-classic': {
-    get id() { return 'light-v1' as CrystallThemeId; },
-    get versionBadge() { return 'Version 1' as const; },
-    get styleVariant() { return 'Solid' as const; },
-    get name() { return 'Light v1 (Solid)'; },
+  'dark-v3': {
+    get id() { return 'dark-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Черный прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Черный прозрачный'; },
+    get subtitle() { return 'Acrylic Glass Dark'; },
+    get category() { return 'glass' as const; },
+    get description() { return CRYSTALL_THEMES['dark-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['dark-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['dark-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['dark-transparent'].cssVars; }
+  },
+  'light-v1': {
+    get id() { return 'light-solid' as CrystallThemeId; },
+    get versionBadge() { return 'Белый обычный'; },
+    get styleVariant() { return 'Обычный'; },
+    get name() { return 'Белый обычный'; },
     get subtitle() { return 'Studio Clean Light'; },
     get category() { return 'light' as const; },
-    get description() { return CRYSTALL_THEMES['light-v1'].description; },
-    get previewColors() { return CRYSTALL_THEMES['light-v1'].previewColors; },
-    get monacoTheme() { return CRYSTALL_THEMES['light-v1'].monacoTheme; },
-    get cssVars() { return CRYSTALL_THEMES['light-v1'].cssVars; }
+    get description() { return CRYSTALL_THEMES['light-solid'].description; },
+    get previewColors() { return CRYSTALL_THEMES['light-solid'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['light-solid'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['light-solid'].cssVars; }
+  },
+  'light-v2': {
+    get id() { return 'light-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Белый прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Белый прозрачный'; },
+    get subtitle() { return 'Crystal Daylight Glass'; },
+    get category() { return 'glass' as const; },
+    get description() { return CRYSTALL_THEMES['light-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['light-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['light-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['light-transparent'].cssVars; }
+  },
+  'light-v3': {
+    get id() { return 'light-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Белый прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Белый прозрачный'; },
+    get subtitle() { return 'Crystal Daylight Glass'; },
+    get category() { return 'glass' as const; },
+    get description() { return CRYSTALL_THEMES['light-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['light-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['light-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['light-transparent'].cssVars; }
+  },
+  'dark-charcoal': {
+    get id() { return 'dark-solid' as CrystallThemeId; },
+    get versionBadge() { return 'Черный обычный'; },
+    get styleVariant() { return 'Обычный'; },
+    get name() { return 'Черный обычный'; },
+    get subtitle() { return 'Classic Solid Dark'; },
+    get category() { return 'dark' as const; },
+    get description() { return CRYSTALL_THEMES['dark-solid'].description; },
+    get previewColors() { return CRYSTALL_THEMES['dark-solid'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['dark-solid'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['dark-solid'].cssVars; }
+  },
+  'midnight-oled': {
+    get id() { return 'dark-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Черный прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Черный прозрачный'; },
+    get subtitle() { return 'Acrylic Glass Dark'; },
+    get category() { return 'glass' as const; },
+    get description() { return CRYSTALL_THEMES['dark-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['dark-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['dark-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['dark-transparent'].cssVars; }
+  },
+  'slate-navy': {
+    get id() { return 'dark-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Черный прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Черный прозрачный'; },
+    get subtitle() { return 'Acrylic Glass Dark'; },
+    get category() { return 'glass' as const; },
+    get description() { return CRYSTALL_THEMES['dark-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['dark-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['dark-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['dark-transparent'].cssVars; }
+  },
+  'light-classic': {
+    get id() { return 'light-solid' as CrystallThemeId; },
+    get versionBadge() { return 'Белый обычный'; },
+    get styleVariant() { return 'Обычный'; },
+    get name() { return 'Белый обычный'; },
+    get subtitle() { return 'Studio Clean Light'; },
+    get category() { return 'light' as const; },
+    get description() { return CRYSTALL_THEMES['light-solid'].description; },
+    get previewColors() { return CRYSTALL_THEMES['light-solid'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['light-solid'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['light-solid'].cssVars; }
   },
   'warm-paper': {
-    get id() { return 'light-v2' as CrystallThemeId; },
-    get versionBadge() { return 'Version 2' as const; },
-    get styleVariant() { return 'Acrylic' as const; },
-    get name() { return 'Light v2 (Acrylic)'; },
-    get subtitle() { return 'Frosted Daylight Mica'; },
-    get category() { return 'light' as const; },
-    get description() { return CRYSTALL_THEMES['light-v2'].description; },
-    get previewColors() { return CRYSTALL_THEMES['light-v2'].previewColors; },
-    get monacoTheme() { return CRYSTALL_THEMES['light-v2'].monacoTheme; },
-    get cssVars() { return CRYSTALL_THEMES['light-v2'].cssVars; }
+    get id() { return 'light-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Белый прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Белый прозрачный'; },
+    get subtitle() { return 'Crystal Daylight Glass'; },
+    get category() { return 'glass' as const; },
+    get description() { return CRYSTALL_THEMES['light-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['light-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['light-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['light-transparent'].cssVars; }
   },
   'acrylic-glass': {
-    get id() { return 'dark-v2' as CrystallThemeId; },
-    get versionBadge() { return 'Version 2' as const; },
-    get styleVariant() { return 'Acrylic' as const; },
-    get name() { return 'Dark v2 (Acrylic)'; },
-    get subtitle() { return 'Frosted Mica Night'; },
-    get category() { return 'dark' as const; },
-    get description() { return CRYSTALL_THEMES['dark-v2'].description; },
-    get previewColors() { return CRYSTALL_THEMES['dark-v2'].previewColors; },
-    get monacoTheme() { return CRYSTALL_THEMES['dark-v2'].monacoTheme; },
-    get cssVars() { return CRYSTALL_THEMES['dark-v2'].cssVars; }
+    get id() { return 'dark-transparent' as CrystallThemeId; },
+    get versionBadge() { return 'Черный прозрачный'; },
+    get styleVariant() { return 'Прозрачный'; },
+    get name() { return 'Черный прозрачный'; },
+    get subtitle() { return 'Acrylic Glass Dark'; },
+    get category() { return 'glass' as const; },
+    get description() { return CRYSTALL_THEMES['dark-transparent'].description; },
+    get previewColors() { return CRYSTALL_THEMES['dark-transparent'].previewColors; },
+    get monacoTheme() { return CRYSTALL_THEMES['dark-transparent'].monacoTheme; },
+    get cssVars() { return CRYSTALL_THEMES['dark-transparent'].cssVars; }
   }
 };
 
+// Exactly the 4 Themes from Figma:
+// 1. Черный обычный
+// 2. Черный прозрачный
+// 3. Белый обычный
+// 4. Белый прозрачный
 export const FIGMA_THEMES: CrystallTheme[] = [
-  CRYSTALL_THEMES['dark-v1'],
-  CRYSTALL_THEMES['dark-v2'],
-  CRYSTALL_THEMES['dark-v3'],
-  CRYSTALL_THEMES['light-v1'],
-  CRYSTALL_THEMES['light-v2'],
-  CRYSTALL_THEMES['light-v3']
+  CRYSTALL_THEMES['dark-solid'],
+  CRYSTALL_THEMES['dark-transparent'],
+  CRYSTALL_THEMES['light-solid'],
+  CRYSTALL_THEMES['light-transparent']
 ];
 
-export const DEFAULT_THEME: CrystallThemeId = 'dark-v1';
+export const DEFAULT_THEME: CrystallThemeId = 'dark-solid';
 
 export function resolveTheme(themeId?: string | null): CrystallTheme {
   if (!themeId) return CRYSTALL_THEMES[DEFAULT_THEME];

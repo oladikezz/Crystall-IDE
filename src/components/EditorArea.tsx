@@ -270,13 +270,17 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
     });
 
     const themeMap: Record<string, string> = {
+      'dark-solid': 'crystall-dark-v1',
+      'dark-transparent': 'crystall-dark-v2',
+      'light-solid': 'crystall-light-v1',
+      'light-transparent': 'crystall-light-v2',
+      // Legacy compatibility
       'dark-v1': 'crystall-dark-v1',
       'dark-v2': 'crystall-dark-v2',
       'dark-v3': 'crystall-dark-v3',
       'light-v1': 'crystall-light-v1',
       'light-v2': 'crystall-light-v2',
       'light-v3': 'crystall-light-v3',
-      // Legacy compatibility
       'dark-charcoal': 'crystall-dark-v1',
       'midnight-oled': 'crystall-dark-v2',
       'slate-navy': 'crystall-dark-v3',
@@ -284,12 +288,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
       'warm-paper': 'crystall-light-v2',
       'acrylic-glass': 'crystall-dark-v2'
     };
-    monaco.editor.setTheme(themeMap[activeTheme] || 'crystall-dark');
+    monaco.editor.setTheme(themeMap[activeTheme] || 'crystall-dark-v1');
   };
 
   useEffect(() => {
     if (monacoRef.current) {
       const themeMap: Record<string, string> = {
+        'dark-solid': 'crystall-dark-v1',
+        'dark-transparent': 'crystall-dark-v2',
+        'light-solid': 'crystall-light-v1',
+        'light-transparent': 'crystall-light-v2',
         'dark-v1': 'crystall-dark-v1',
         'dark-v2': 'crystall-dark-v2',
         'dark-v3': 'crystall-dark-v3',
@@ -582,7 +590,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         <div 
           className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0"
           style={{ 
-            opacity: (activeTheme.includes('v2') || activeTheme.includes('v3') || activeTheme === 'acrylic-glass') ? 0.22 : 0.04,
+            opacity: (activeTheme.includes('transparent') || activeTheme.includes('v2') || activeTheme.includes('v3') || activeTheme === 'acrylic-glass') ? 0.22 : 0.04,
             filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.5))' 
           }}
         >

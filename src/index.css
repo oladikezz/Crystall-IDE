@@ -36,7 +36,7 @@
   color-scheme: dark;
 }
 
-[data-theme="light-v1"], [data-theme="light-v2"], [data-theme="light-v3"] {
+[data-theme="light-solid"], [data-theme="light-transparent"], [data-theme="light-v1"], [data-theme="light-v2"], [data-theme="light-v3"] {
   color-scheme: light;
 }
 
