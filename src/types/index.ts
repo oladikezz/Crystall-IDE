@@ -125,6 +125,7 @@ declare global {
       saveFileDialog: (data: { name: string; content: string }) => Promise<{ success: boolean; filePath?: string }>;
       openFolderDialog?: () => Promise<{ path: string; name: string } | null>;
       setAlwaysOnTop?: (flag: boolean) => Promise<boolean>;
+      setThemeMode?: (opts: { isTransparent: boolean; isLight: boolean }) => void;
     };
   }
 }

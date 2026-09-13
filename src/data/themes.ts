@@ -55,7 +55,7 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
     name: 'Черный прозрачный',
     subtitle: 'Acrylic Glass Dark',
     category: 'glass',
-    description: 'Оригинальная тёмная прозрачная тема из Figma. Стеклянный матовый интерфейс (Glass) с размытием и просвечиванием ночного сада.',
+    description: 'Оригинальная тёмная прозрачная тема (Acrylic Glass). Прозрачный матовый интерфейс со стильным размытием (Blur).',
     previewColors: {
       bg: '#080c14',
       panel: 'rgba(14, 18, 28, 0.72)',
@@ -88,8 +88,8 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
       '--chat-input-bg': 'rgba(0, 0, 0, 0.42)',
       '--tab-active-bg': 'rgba(255, 255, 255, 0.10)',
       '--tab-inactive-bg': 'rgba(0, 0, 0, 0.22)',
-      '--app-backdrop': 'night',
-      '--app-filter': 'blur(16px)'
+      '--app-backdrop': 'none',
+      '--app-filter': 'blur(24px)'
     }
   },
 
@@ -147,7 +147,7 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
     name: 'Белый прозрачный',
     subtitle: 'Crystal Daylight Glass',
     category: 'glass',
-    description: 'Оригинальная светлая прозрачная тема из Figma. Хрустальное стекло с просвечиванием солнечного японского сада и мягкими тенями.',
+    description: 'Оригинальная светлая прозрачная тема (Frosted Glass). Хрустальное матовое стекло с мягким эффектом размытия (Blur).',
     previewColors: {
       bg: 'rgba(255, 255, 255, 0.70)',
       panel: 'rgba(248, 250, 252, 0.82)',
@@ -180,8 +180,8 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
       '--chat-input-bg': 'rgba(255, 255, 255, 0.85)',
       '--tab-active-bg': 'rgba(255, 247, 237, 0.85)',
       '--tab-inactive-bg': 'rgba(255, 255, 255, 0.50)',
-      '--app-backdrop': 'day',
-      '--app-filter': 'blur(16px)'
+      '--app-backdrop': 'none',
+      '--app-filter': 'blur(24px)'
     }
   },
 

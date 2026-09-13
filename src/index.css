@@ -64,6 +64,7 @@ html, body, #root {
   padding: 0;
   overflow: hidden;
   box-sizing: border-box;
+  background-color: transparent !important;
 }
 
 *, *::before, *::after {
@@ -75,10 +76,29 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
-  background-color: var(--bg-app);
+  background-color: transparent;
   color: var(--text-primary);
   letter-spacing: -0.01em;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+/* Frosted Glass Acrylic Filter for Transparent Themes */
+[data-theme="dark-transparent"] .crystall-app-shell,
+[data-theme="light-transparent"] .crystall-app-shell {
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+}
+
+/* Full editor transparency for transparent themes */
+[data-theme="dark-transparent"] .monaco-editor,
+[data-theme="dark-transparent"] .monaco-editor-background,
+[data-theme="dark-transparent"] .monaco-editor .inputarea.ime-input,
+[data-theme="dark-transparent"] .monaco-editor .margin,
+[data-theme="light-transparent"] .monaco-editor,
+[data-theme="light-transparent"] .monaco-editor-background,
+[data-theme="light-transparent"] .monaco-editor .inputarea.ime-input,
+[data-theme="light-transparent"] .monaco-editor .margin {
+  background-color: transparent !important;
 }
 
 .theme-transition {

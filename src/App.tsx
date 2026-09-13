@@ -1,5 +1,3 @@
-import nightGardenBg from './assets/night_garden.png';
-import dayGardenBg from './assets/day_garden.png';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { TitleBar } from './components/TitleBar';
 import { EditorArea, EditorAreaHandle } from './components/EditorArea';
@@ -71,12 +69,18 @@ export default function App() {
     return 'dark-solid';
   });
 
-  // Apply CSS variables on theme change
+  // Apply CSS variables and native window transparency on theme change
   useEffect(() => {
     applyThemeVariables(activeTheme);
     try {
       localStorage.setItem('crystall_ide_active_theme', activeTheme);
     } catch {}
+
+    const isTransparent = activeTheme === 'dark-transparent' || activeTheme === 'light-transparent' || activeTheme.includes('v2') || activeTheme.includes('v3') || activeTheme === 'acrylic-glass';
+    const isLight = activeTheme.includes('light');
+    if (window.electronAPI?.setThemeMode) {
+      window.electronAPI.setThemeMode({ isTransparent, isLight });
+    }
   }, [activeTheme]);
 
   useEffect(() => {
@@ -890,33 +894,22 @@ export default function App() {
   };
 
   const currentThemeResolved = resolveTheme(activeTheme);
-  const isNightBackdrop = activeTheme === 'dark-transparent' || activeTheme === 'dark-v2' || activeTheme === 'dark-v3' || activeTheme === 'midnight-oled' || activeTheme === 'slate-navy' || activeTheme === 'acrylic-glass';
-  const isDayBackdrop = activeTheme === 'light-transparent' || activeTheme === 'light-v2' || activeTheme === 'light-v3' || activeTheme === 'warm-paper';
+  const isTransparentTheme = activeTheme === 'dark-transparent' || activeTheme === 'light-transparent' || activeTheme.includes('v2') || activeTheme.includes('v3') || activeTheme === 'acrylic-glass';
+  const isLightTheme = activeTheme.includes('light');
 
   return (
     <div 
-      className="relative flex flex-col h-full w-full overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] select-none"
+      className="crystall-app-shell relative flex flex-col h-full w-full overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] select-none"
       style={{ backgroundColor: 'var(--bg-app)' }}
     >
-      {/* Authentic Figma Japanese Garden Backdrops for Transparent Themes */}
-      {isNightBackdrop && (
+      {/* Pure Frosted Glass / Acrylic Layer for Transparent Themes (No static photo wallpapers) */}
+      {isTransparentTheme && (
         <div 
-          className="absolute inset-0 pointer-events-none z-0 bg-cover bg-center transition-all duration-300"
+          className="absolute inset-0 pointer-events-none z-0 transition-opacity duration-300 backdrop-blur-3xl"
           style={{ 
-            backgroundImage: `url(${nightGardenBg})`,
-            opacity: 0.82,
-            filter: 'blur(16px) brightness(0.68)'
-          }}
-        />
-      )}
-
-      {isDayBackdrop && (
-        <div 
-          className="absolute inset-0 pointer-events-none z-0 bg-cover bg-center transition-all duration-300"
-          style={{ 
-            backgroundImage: `url(${dayGardenBg})`,
-            opacity: 0.80,
-            filter: 'blur(16px) brightness(1.02)'
+            background: isLightTheme
+              ? 'radial-gradient(ellipse at 50% 0%, rgba(234, 88, 12, 0.05), transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(226, 232, 240, 0.6), transparent 70%)'
+              : 'radial-gradient(ellipse at 50% 0%, rgba(249, 115, 22, 0.07), transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(30, 41, 59, 0.45), transparent 70%)'
           }}
         />
       )}

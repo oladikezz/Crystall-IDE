@@ -15,7 +15,8 @@ function createWindow() {
     minWidth: 1040,
     minHeight: 650,
     frame: false,
-    backgroundColor: '#0c0d12',
+    transparent: true,
+    backgroundColor: '#00000000',
     icon: path.join(__dirname, '../public/icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
@@ -25,6 +26,12 @@ function createWindow() {
       allowRunningInsecureContent: true,
     },
   });
+
+  if (typeof mainWindow.setBackgroundMaterial === 'function') {
+    try {
+      mainWindow.setBackgroundMaterial('acrylic');
+    } catch {}
+  }
 
   const indexPath = path.join(__dirname, '../dist/index.html');
   mainWindow.loadFile(indexPath);
@@ -63,6 +70,14 @@ ipcMain.handle('window-set-always-on-top', (event, flag) => {
     return true;
   }
   return false;
+});
+
+ipcMain.on('window-set-theme-mode', (event, { isTransparent }) => {
+  if (mainWindow && typeof mainWindow.setBackgroundMaterial === 'function') {
+    try {
+      mainWindow.setBackgroundMaterial(isTransparent ? 'acrylic' : 'none');
+    } catch {}
+  }
 });
 
 // Native File Dialogs

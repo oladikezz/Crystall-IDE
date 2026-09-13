@@ -9,4 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openFileDialog: () => ipcRenderer.invoke('dialog-open-file'),
   saveFileDialog: (data) => ipcRenderer.invoke('dialog-save-file', data),
   setAlwaysOnTop: (flag) => ipcRenderer.invoke('window-set-always-on-top', flag),
+  setThemeMode: (opts) => ipcRenderer.send('window-set-theme-mode', opts),
 });
+
