@@ -94,10 +94,29 @@ body {
 [data-theme="dark-transparent"] .monaco-editor-background,
 [data-theme="dark-transparent"] .monaco-editor .inputarea.ime-input,
 [data-theme="dark-transparent"] .monaco-editor .margin,
+[data-theme="dark-transparent"] .monaco-editor .minimap,
+[data-theme="dark-transparent"] .monaco-editor .minimap-canvas,
+[data-theme="dark-transparent"] .monaco-editor .minimap-slider,
+[data-theme="dark-transparent"] .monaco-editor .minimap-decorations-layer,
+[data-theme="dark-transparent"] .monaco-editor .decorationsOverviewRuler,
+[data-theme="dark-transparent"] .monaco-editor .monaco-scrollable-element,
+[data-theme="dark-transparent"] .monaco-editor .lines-content,
+[data-theme="dark-transparent"] .monaco-editor .view-lines,
+[data-theme="dark-transparent"] .monaco-editor .overflow-guard,
 [data-theme="light-transparent"] .monaco-editor,
 [data-theme="light-transparent"] .monaco-editor-background,
 [data-theme="light-transparent"] .monaco-editor .inputarea.ime-input,
-[data-theme="light-transparent"] .monaco-editor .margin {
+[data-theme="light-transparent"] .monaco-editor .margin,
+[data-theme="light-transparent"] .monaco-editor .minimap,
+[data-theme="light-transparent"] .monaco-editor .minimap-canvas,
+[data-theme="light-transparent"] .monaco-editor .minimap-slider,
+[data-theme="light-transparent"] .monaco-editor .minimap-decorations-layer,
+[data-theme="light-transparent"] .monaco-editor .decorationsOverviewRuler,
+[data-theme="light-transparent"] .monaco-editor .monaco-scrollable-element,
+[data-theme="light-transparent"] .monaco-editor .lines-content,
+[data-theme="light-transparent"] .monaco-editor .view-lines,
+[data-theme="light-transparent"] .monaco-editor .overflow-guard {
+  background: transparent !important;
   background-color: transparent !important;
 }
 

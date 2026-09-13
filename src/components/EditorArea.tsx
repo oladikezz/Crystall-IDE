@@ -138,6 +138,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         'editorCursor.foreground': '#f97316',
         'editor.lineHighlightBackground': '#ffffff05',
         'editorGutter.background': '#0c0e14',
+        'minimap.background': '#0c0e14',
+        'minimapSlider.background': '#ea580c20',
+        'minimapSlider.hoverBackground': '#ea580c35',
+        'minimapSlider.activeBackground': '#ea580c50',
+        'editorOverviewRuler.background': '#0c0e14',
+        'editorOverviewRuler.border': '#00000000',
+        'scrollbar.shadow': '#00000000',
+        'scrollbarSlider.background': '#ea580c20',
+        'scrollbarSlider.hoverBackground': '#ea580c35',
+        'scrollbarSlider.activeBackground': '#ea580c50',
       }
     });
 
@@ -164,6 +174,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         'editorCursor.foreground': '#f97316',
         'editor.lineHighlightBackground': '#ffffff08',
         'editorGutter.background': '#00000000',
+        'minimap.background': '#00000000',
+        'minimapSlider.background': '#ea580c20',
+        'minimapSlider.hoverBackground': '#ea580c35',
+        'minimapSlider.activeBackground': '#ea580c50',
+        'editorOverviewRuler.background': '#00000000',
+        'editorOverviewRuler.border': '#00000000',
+        'scrollbar.shadow': '#00000000',
+        'scrollbarSlider.background': '#ea580c20',
+        'scrollbarSlider.hoverBackground': '#ea580c35',
+        'scrollbarSlider.activeBackground': '#ea580c50',
       }
     });
 
@@ -190,6 +210,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         'editorCursor.foreground': '#f97316',
         'editor.lineHighlightBackground': '#ffffff0c',
         'editorGutter.background': '#00000000',
+        'minimap.background': '#00000000',
+        'minimapSlider.background': '#ea580c20',
+        'minimapSlider.hoverBackground': '#ea580c35',
+        'minimapSlider.activeBackground': '#ea580c50',
+        'editorOverviewRuler.background': '#00000000',
+        'editorOverviewRuler.border': '#00000000',
+        'scrollbar.shadow': '#00000000',
+        'scrollbarSlider.background': '#ea580c20',
+        'scrollbarSlider.hoverBackground': '#ea580c35',
+        'scrollbarSlider.activeBackground': '#ea580c50',
       }
     });
 
@@ -216,6 +246,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         'editorCursor.foreground': '#ea580c',
         'editor.lineHighlightBackground': '#00000006',
         'editorGutter.background': '#ffffff',
+        'minimap.background': '#ffffff',
+        'minimapSlider.background': '#ea580c20',
+        'minimapSlider.hoverBackground': '#ea580c35',
+        'minimapSlider.activeBackground': '#ea580c50',
+        'editorOverviewRuler.background': '#ffffff',
+        'editorOverviewRuler.border': '#00000000',
+        'scrollbar.shadow': '#00000000',
+        'scrollbarSlider.background': '#ea580c20',
+        'scrollbarSlider.hoverBackground': '#ea580c35',
+        'scrollbarSlider.activeBackground': '#ea580c50',
       }
     });
 
@@ -241,6 +281,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         'editorCursor.foreground': '#ea580c',
         'editor.lineHighlightBackground': '#00000008',
         'editorGutter.background': '#00000000',
+        'minimap.background': '#00000000',
+        'minimapSlider.background': '#ea580c20',
+        'minimapSlider.hoverBackground': '#ea580c35',
+        'minimapSlider.activeBackground': '#ea580c50',
+        'editorOverviewRuler.background': '#00000000',
+        'editorOverviewRuler.border': '#00000000',
+        'scrollbar.shadow': '#00000000',
+        'scrollbarSlider.background': '#ea580c20',
+        'scrollbarSlider.hoverBackground': '#ea580c35',
+        'scrollbarSlider.activeBackground': '#ea580c50',
       }
     });
 
@@ -266,6 +316,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         'editorCursor.foreground': '#ea580c',
         'editor.lineHighlightBackground': '#ffffff20',
         'editorGutter.background': '#00000000',
+        'minimap.background': '#00000000',
+        'minimapSlider.background': '#ea580c20',
+        'minimapSlider.hoverBackground': '#ea580c35',
+        'minimapSlider.activeBackground': '#ea580c50',
+        'editorOverviewRuler.background': '#00000000',
+        'editorOverviewRuler.border': '#00000000',
+        'scrollbar.shadow': '#00000000',
+        'scrollbarSlider.background': '#ea580c20',
+        'scrollbarSlider.hoverBackground': '#ea580c35',
+        'scrollbarSlider.activeBackground': '#ea580c50',
       }
     });
 
@@ -610,7 +670,21 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             lineNumbers: settings.lineNumbers ? 'on' : 'off',
             lineNumbersMinChars: 3,
             wordWrap: settings.wordWrap ? 'on' : 'off',
-            minimap: { enabled: settings.minimap },
+            minimap: { 
+              enabled: !!settings.minimap,
+              renderCharacters: false,
+              maxColumn: 80
+            },
+            overviewRulerBorder: false,
+            overviewRulerLanes: 0,
+            hideCursorInOverviewRuler: true,
+            scrollbar: {
+              vertical: 'visible',
+              horizontal: 'auto',
+              verticalScrollbarSize: 8,
+              horizontalScrollbarSize: 8,
+              useShadows: false
+            },
             scrollBeyondLastLine: false,
             automaticLayout: true,
             tabSize: settings.tabSize || 4,
