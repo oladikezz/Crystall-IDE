@@ -122,6 +122,31 @@ export default function App() {
   const [isConsoleOpen, setIsConsoleOpen] = useState<boolean>(true);
   const [activeModal, setActiveModal] = useState<ModalType | null>(null);
 
+  // Dynamic Sizing & Draggable Splitters State
+  const [consoleHeight, setConsoleHeight] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('crystall_console_height');
+      if (saved) return Math.max(90, parseInt(saved, 10));
+    } catch {}
+    return 180;
+  });
+  const [isDraggingConsole, setIsDraggingConsole] = useState(false);
+
+  const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
+    try {
+      const saved = localStorage.getItem('crystall_sidebar_width');
+      if (saved) return Math.max(200, parseInt(saved, 10));
+    } catch {}
+    return 280;
+  });
+  const [isDraggingSidebar, setIsDraggingSidebar] = useState(false);
+
+  const [explorerSplitPct, setExplorerSplitPct] = useState<number>(50);
+  const [isDraggingExplorerSplit, setIsDraggingExplorerSplit] = useState(false);
+
+  const [vibecoderWidth, setVibecoderWidth] = useState<number>(380);
+  const [isDraggingVibecoder, setIsDraggingVibecoder] = useState(false);
+
   const [lastAction, setLastAction] = useState<string>('Ready');
   const [execTime, setExecTime] = useState<number>(8);
 
@@ -199,6 +224,126 @@ export default function App() {
     setTabs(prev => prev.map(t => t.id === activeTab.id ? { ...t, language: newLang, name: updatedName } : t));
     addLog('info', `Switched language mode to "${meta ? meta.name : newLang}" for "${updatedName}".`);
     if (editorSettings.soundEffects) playClickSound();
+  };
+
+  // Reorder tabs by dragging
+  const handleReorderTabs = (draggedId: string, targetId: string) => {
+    setTabs(prev => {
+      const fromIdx = prev.findIndex(t => t.id === draggedId);
+      const toIdx = prev.findIndex(t => t.id === targetId);
+      if (fromIdx === -1 || toIdx === -1 || fromIdx === toIdx) return prev;
+      const next = [...prev];
+      const [moved] = next.splice(fromIdx, 1);
+      next.splice(toIdx, 0, moved);
+      return next;
+    });
+  };
+
+  // Drag Console Resizer
+  const handleConsoleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDraggingConsole(true);
+    const startY = e.clientY;
+    const startH = consoleHeight;
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const delta = startY - moveEvent.clientY;
+      const minH = 80;
+      const maxH = Math.max(minH, window.innerHeight - 200);
+      const newH = Math.min(Math.max(startH + delta, minH), maxH);
+      setConsoleHeight(newH);
+    };
+
+    const onMouseUp = () => {
+      setIsDraggingConsole(false);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      setConsoleHeight(latest => {
+        try { localStorage.setItem('crystall_console_height', String(latest)); } catch {}
+        return latest;
+      });
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
+
+  // Drag Sidebar Resizer
+  const handleSidebarMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDraggingSidebar(true);
+    const startX = e.clientX;
+    const startW = sidebarWidth;
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const delta = startX - moveEvent.clientX; // expanding to the left
+      const minW = 180;
+      const maxW = Math.min(600, window.innerWidth - 350);
+      const newW = Math.min(Math.max(startW + delta, minW), maxW);
+      setSidebarWidth(newW);
+    };
+
+    const onMouseUp = () => {
+      setIsDraggingSidebar(false);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      setSidebarWidth(latest => {
+        try { localStorage.setItem('crystall_sidebar_width', String(latest)); } catch {}
+        return latest;
+      });
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
+
+  // Drag Explorer / QuickScripts Splitter
+  const handleExplorerSplitMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDraggingExplorerSplit(true);
+    const container = (e.currentTarget as HTMLElement).parentElement;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const relativeY = moveEvent.clientY - rect.top;
+      const pct = Math.min(Math.max((relativeY / rect.height) * 100, 15), 85);
+      setExplorerSplitPct(pct);
+    };
+
+    const onMouseUp = () => {
+      setIsDraggingExplorerSplit(false);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
+
+  // Drag Vibecoder AI Panel Resizer
+  const handleVibecoderMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDraggingVibecoder(true);
+    const startX = e.clientX;
+    const startW = vibecoderWidth;
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const delta = startX - moveEvent.clientX;
+      const minW = 280;
+      const maxW = Math.min(700, window.innerWidth - 350);
+      const newW = Math.min(Math.max(startW + delta, minW), maxW);
+      setVibecoderWidth(newW);
+    };
+
+    const onMouseUp = () => {
+      setIsDraggingVibecoder(false);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
   };
 
   // Native File Operations
@@ -744,7 +889,7 @@ export default function App() {
 
   return (
     <div 
-      className="relative flex flex-col h-screen w-screen overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] rounded-xl select-none"
+      className="relative flex flex-col h-full w-full overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] select-none"
       style={{ backgroundColor: 'var(--bg-app)' }}
     >
       {/* Authentic Figma Japanese Garden Backdrops for Acrylic & Glass (v2 & v3) */}
@@ -821,8 +966,8 @@ export default function App() {
         onSelectTheme={setActiveTheme}
       />
 
-      {/* 2. Main Content Layout matching Figma Proportions */}
-      <div className="flex-1 flex min-h-0 overflow-hidden">
+      {/* 2. Main Content Layout with Interactive Resizers */}
+      <div className="flex-1 flex min-h-0 overflow-hidden relative">
         {/* Left Side: Editor Area & Output Console */}
         <div className="flex-1 flex flex-col min-w-0 h-full">
           {/* Top: Editor Area */}
@@ -836,6 +981,7 @@ export default function App() {
               onNewTab={handleNewTab}
               onRenameTab={handleRenameTab}
               onDuplicateTab={handleDuplicateTab}
+              onReorderTabs={handleReorderTabs}
               onContentChange={handleContentChange}
               onExecute={handleExecute}
               onAttach={handleAttach}
@@ -849,26 +995,85 @@ export default function App() {
             />
           </div>
 
-          {/* Bottom: Console / Output Tabs matching Figma */}
+          {/* Bottom: Console / Output Tabs with Interactive Draggable Resizer */}
           {isConsoleOpen && (
-            <div className="h-40 shrink-0 min-h-[120px]">
-              <OutputRunner
-                logs={logs}
-                onClearLogs={() => setLogs([])}
-                onExecuteCommand={handleConsoleCommand}
-              />
-            </div>
+            <>
+              {/* Draggable Console Resizer Splitter */}
+              <div
+                onMouseDown={handleConsoleMouseDown}
+                className={`h-2 -my-1 relative z-30 cursor-row-resize flex items-center justify-center group select-none transition-all ${
+                  isDraggingConsole ? 'bg-orange-500/20' : 'hover:bg-orange-500/10'
+                }`}
+                title="Drag to resize console (Double-click to reset)"
+                onDoubleClick={() => setConsoleHeight(180)}
+              >
+                <div 
+                  className={`w-full h-[1px] transition-colors ${
+                    isDraggingConsole ? 'bg-orange-500 h-[2px]' : 'bg-[var(--border-color)] group-hover:bg-orange-500 group-hover:h-[2px]'
+                  }`} 
+                />
+                <div 
+                  className={`absolute w-12 h-1 rounded-full transition-all ${
+                    isDraggingConsole 
+                      ? 'bg-orange-500 opacity-100 scale-105' 
+                      : 'bg-zinc-500/40 opacity-0 group-hover:opacity-100 group-hover:bg-orange-500'
+                  }`} 
+                />
+              </div>
+
+              <div 
+                className="shrink-0 overflow-hidden"
+                style={{ height: `${consoleHeight}px` }}
+              >
+                <OutputRunner
+                  logs={logs}
+                  onClearLogs={() => setLogs([])}
+                  onExecuteCommand={handleConsoleCommand}
+                />
+              </div>
+            </>
           )}
         </div>
+
+        {/* Vertical Splitter for Explorer Sidebar */}
+        {isExplorerOpen && (
+          <div
+            onMouseDown={handleSidebarMouseDown}
+            className={`w-2 -mx-1 relative z-30 cursor-col-resize flex items-center justify-center group select-none transition-all ${
+              isDraggingSidebar ? 'bg-orange-500/20' : 'hover:bg-orange-500/10'
+            }`}
+            title="Drag to resize sidebar (Double-click to reset)"
+            onDoubleClick={() => setSidebarWidth(280)}
+          >
+            <div 
+              className={`h-full w-[1px] transition-colors ${
+                isDraggingSidebar ? 'bg-orange-500 w-[2px]' : 'bg-[var(--border-color)] group-hover:bg-orange-500 group-hover:w-[2px]'
+              }`} 
+            />
+            <div 
+              className={`absolute h-10 w-1 rounded-full transition-all ${
+                isDraggingSidebar 
+                  ? 'bg-orange-500 opacity-100' 
+                  : 'bg-zinc-500/40 opacity-0 group-hover:opacity-100 group-hover:bg-orange-500'
+              }`} 
+            />
+          </div>
+        )}
 
         {/* Right Side: Project Explorer & Snippets / Templates */}
         {isExplorerOpen && (
           <div 
-            className="w-[280px] h-full border-l flex flex-col shrink-0"
-            style={{ borderColor: 'var(--border-color)' }}
+            className="h-full border-l flex flex-col shrink-0"
+            style={{ 
+              width: `${sidebarWidth}px`,
+              borderColor: 'var(--border-color)' 
+            }}
           >
             {/* Top Half: Project Workspace Explorer */}
-            <div className="h-1/2 min-h-0 overflow-hidden">
+            <div 
+              className="min-h-0 overflow-hidden"
+              style={{ height: `${explorerSplitPct}%` }}
+            >
               <RobloxExplorer
                 onSelectNode={handleSelectExplorerNode}
                 onOpenFolder={handleOpenFolder}
@@ -876,13 +1081,50 @@ export default function App() {
               />
             </div>
 
+            {/* Draggable Splitter between Explorer and QuickScripts */}
+            <div
+              onMouseDown={handleExplorerSplitMouseDown}
+              className={`h-1.5 -my-0.5 relative z-20 cursor-row-resize flex items-center justify-center group select-none transition-all ${
+                isDraggingExplorerSplit ? 'bg-orange-500/20' : 'hover:bg-orange-500/10'
+              }`}
+              title="Drag to adjust explorer/scripts split"
+              onDoubleClick={() => setExplorerSplitPct(50)}
+            >
+              <div 
+                className={`w-full h-[1px] transition-colors ${
+                  isDraggingExplorerSplit ? 'bg-orange-500 h-[1.5px]' : 'bg-[var(--border-color)] group-hover:bg-orange-500'
+                }`} 
+              />
+            </div>
+
             {/* Bottom Half: Snippets & Templates List */}
-            <div className="h-1/2 min-h-0 overflow-hidden">
+            <div 
+              className="min-h-0 overflow-hidden"
+              style={{ height: `${100 - explorerSplitPct}%` }}
+            >
               <QuickScriptsList
                 onLoadScript={handleLoadQuickScript}
                 onExecuteScript={handleExecuteQuickScript}
               />
             </div>
+          </div>
+        )}
+
+        {/* Floating / Sliding AI Assistant Drawer Splitter */}
+        {isVibecoderOpen && (
+          <div
+            onMouseDown={handleVibecoderMouseDown}
+            className={`w-2 -mx-1 relative z-30 cursor-col-resize flex items-center justify-center group select-none transition-all ${
+              isDraggingVibecoder ? 'bg-orange-500/20' : 'hover:bg-orange-500/10'
+            }`}
+            title="Drag to resize AI assistant drawer (Double-click to reset)"
+            onDoubleClick={() => setVibecoderWidth(380)}
+          >
+            <div 
+              className={`h-full w-[1px] transition-colors ${
+                isDraggingVibecoder ? 'bg-orange-500 w-[2px]' : 'bg-[var(--border-color)] group-hover:bg-orange-500 group-hover:w-[2px]'
+              }`} 
+            />
           </div>
         )}
 
@@ -904,9 +1146,18 @@ export default function App() {
             streamingThinking={streamingThinking}
             onStopStreaming={() => abortControllerRef.current?.abort()}
             onClearChat={() => setMessages([])}
+            width={vibecoderWidth}
           />
         )}
       </div>
+
+      {/* Active Drag Overlays to prevent Monaco or iframe focus stealing */}
+      {(isDraggingConsole || isDraggingExplorerSplit) && (
+        <div className="fixed inset-0 z-50 cursor-row-resize select-none pointer-events-auto" />
+      )}
+      {(isDraggingSidebar || isDraggingVibecoder) && (
+        <div className="fixed inset-0 z-50 cursor-col-resize select-none pointer-events-auto" />
+      )}
 
       {/* 3. Bottom Status Bar with Interactive Language Picker */}
       <StatusBar

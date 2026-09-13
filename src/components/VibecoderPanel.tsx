@@ -30,6 +30,7 @@ interface VibecoderPanelProps {
   streamingThinking: string;
   onStopStreaming: () => void;
   onClearChat: () => void;
+  width?: number;
 }
 
 export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
@@ -47,7 +48,8 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
   streamingContent,
   streamingThinking,
   onStopStreaming,
-  onClearChat
+  onClearChat,
+  width = 380
 }) => {
   const [input, setInput] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -190,7 +192,10 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
   };
 
   return (
-    <div className="w-[380px] h-full bg-[#0a0c11] border-l border-[#1b1e28] flex flex-col z-30 select-none shadow-2xl font-sans">
+    <div 
+      className="h-full bg-[#0a0c11] border-l border-[#1b1e28] flex flex-col z-30 select-none shadow-2xl font-sans shrink-0"
+      style={{ width: `${width}px` }}
+    >
       
       {/* Clean Desktop Header */}
       <div className="h-10 border-b border-[#1b1e28] px-3 flex items-center justify-between bg-[#0d0f15] shrink-0">

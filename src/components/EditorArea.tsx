@@ -51,6 +51,7 @@ interface EditorAreaProps {
   isVibecoderOpen: boolean;
   activeTheme: CrystallThemeId;
   settings: EditorSettings;
+  onReorderTabs?: (draggedId: string, targetId: string) => void;
 }
 
 export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
@@ -70,7 +71,8 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
   onToggleVibecoder,
   isVibecoderOpen,
   activeTheme,
-  settings
+  settings,
+  onReorderTabs
 }, ref) => {
   const editorRef = useRef<any>(null);
   const monacoRef = useRef<any>(null);
@@ -360,6 +362,22 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             return (
               <div
                 key={tab.id}
+                draggable={!isEditing}
+                onDragStart={(e) => {
+                  e.dataTransfer.setData('text/plain', tab.id);
+                  e.dataTransfer.effectAllowed = 'move';
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.dataTransfer.dropEffect = 'move';
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const draggedId = e.dataTransfer.getData('text/plain');
+                  if (draggedId && draggedId !== tab.id && onReorderTabs) {
+                    onReorderTabs(draggedId, tab.id);
+                  }
+                }}
                 onClick={() => onSelectTab(tab.id)}
                 onDoubleClick={(e) => handleStartRename(tab, e)}
                 onContextMenu={(e) => {

@@ -121,7 +121,8 @@ export const TitleBar: React.FC<TitleBarProps> = ({
 
   return (
     <div 
-      className="h-[38px] border-b flex items-center justify-between px-3 select-none app-draggable z-40 transition-colors font-sans"
+      className="h-[38px] border-b flex items-center justify-between px-3 select-none app-draggable z-40 transition-colors font-sans cursor-default"
+      onDoubleClick={handleMaximize}
       style={{
         backgroundColor: 'var(--bg-header)',
         borderColor: 'var(--border-color)',
@@ -631,6 +632,24 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Center: Draggable Workspace Handle */}
+      <div 
+        className="flex-1 h-full flex items-center justify-center app-draggable select-none cursor-default px-4"
+        onDoubleClick={handleMaximize}
+      >
+        <div className="flex items-center gap-1.5 opacity-50 hover:opacity-90 transition-opacity pointer-events-none">
+          <span className="text-[11px] font-sans font-medium text-zinc-400">
+            Crystall IDE
+          </span>
+          <span className="text-[10px] text-zinc-600 font-mono">
+            —
+          </span>
+          <span className="text-[10px] text-zinc-500 font-mono">
+            Professional Multi-Language Studio
+          </span>
         </div>
       </div>
 
