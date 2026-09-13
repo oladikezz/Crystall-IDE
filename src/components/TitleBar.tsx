@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { CrystallLogo } from './CrystallLogo';
 import { CrystallThemeId, ModalType } from '../types';
-import { CRYSTALL_THEMES } from '../data/themes';
+import { CRYSTALL_THEMES, FIGMA_THEMES, resolveTheme } from '../data/themes';
 
 interface TitleBarProps {
   onOpenModal: (modal: ModalType) => void;
@@ -419,7 +419,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                 <div className="px-3 py-1 text-[10px] uppercase tracking-wider font-semibold font-mono text-zinc-500">
                   Figma Themes (6)
                 </div>
-                {Object.values(CRYSTALL_THEMES).map((thm) => (
+                {FIGMA_THEMES.map((thm) => (
                   <button
                     key={thm.id}
                     onClick={() => {
@@ -659,7 +659,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                 Figma Themes (6)
               </div>
               <div className="space-y-0.5 mt-1">
-                {Object.values(CRYSTALL_THEMES).map((thm) => {
+                {FIGMA_THEMES.map((thm) => {
                   const isSelected = activeTheme === thm.id;
                   return (
                     <button

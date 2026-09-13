@@ -132,6 +132,13 @@ declare global {
 export type ActiveView = 'editor' | 'vibecoder' | 'scripthub' | 'runner' | 'settings';
 
 export type CrystallThemeId = 
+  | 'dark-v1'
+  | 'dark-v2'
+  | 'dark-v3'
+  | 'light-v1'
+  | 'light-v2'
+  | 'light-v3'
+  // Legacy aliases for backward compatibility
   | 'dark-charcoal'
   | 'midnight-oled'
   | 'slate-navy'
@@ -141,6 +148,8 @@ export type CrystallThemeId =
 
 export interface CrystallTheme {
   id: CrystallThemeId;
+  versionBadge: 'Version 1' | 'Version 2' | 'Version 3';
+  styleVariant: 'Solid' | 'Acrylic' | 'Glass';
   name: string;
   subtitle: string;
   category: 'dark' | 'light' | 'glass';

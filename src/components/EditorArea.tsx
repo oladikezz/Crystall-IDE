@@ -111,8 +111,9 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
     editorRef.current = editor;
     monacoRef.current = monaco;
 
-    // 1. Dark Charcoal (Figma exact default)
-    monaco.editor.defineTheme('crystall-dark', {
+    // --- 6 EXACT FIGMA THEMES ---
+    // 1. Dark v1 (Solid Abyss)
+    monaco.editor.defineTheme('crystall-dark-v1', {
       base: 'vs-dark',
       inherit: true,
       rules: [
@@ -126,7 +127,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         { token: 'function', foreground: '60a5fa' },
       ],
       colors: {
-        'editor.background': '#0c0d12',
+        'editor.background': '#0c0e14',
         'editor.foreground': '#f8fafc',
         'editorLineNumber.foreground': '#3f3f46',
         'editorLineNumber.activeForeground': '#f97316',
@@ -134,69 +135,75 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         'editor.inactiveSelectionBackground': '#f973161a',
         'editorCursor.foreground': '#f97316',
         'editor.lineHighlightBackground': '#ffffff05',
-        'editorGutter.background': '#0c0d12',
+        'editorGutter.background': '#0c0e14',
       }
     });
 
-    // 2. Midnight OLED (Pitch Black)
-    monaco.editor.defineTheme('crystall-midnight', {
+    // 2. Dark v2 (Acrylic / Frosted Night)
+    monaco.editor.defineTheme('crystall-dark-v2', {
       base: 'vs-dark',
       inherit: true,
       rules: [
-        { token: 'keyword', foreground: 'ff9800', fontStyle: 'bold' },
-        { token: 'identifier', foreground: 'ffffff' },
-        { token: 'string', foreground: '4fc3f7' },
-        { token: 'number', foreground: 'ffd54f' },
-        { token: 'comment', foreground: '424242', fontStyle: 'italic' },
-        { token: 'type', foreground: 'ce93d8' },
+        { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
+        { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
+        { token: 'identifier', foreground: 'f8fafc' },
+        { token: 'string', foreground: '38bdf8' },
+        { token: 'number', foreground: 'fbbf24' },
+        { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
+        { token: 'type', foreground: 'c084fc' },
+        { token: 'function', foreground: '60a5fa' },
       ],
       colors: {
-        'editor.background': '#000000',
-        'editor.foreground': '#ffffff',
-        'editorLineNumber.foreground': '#333333',
-        'editorLineNumber.activeForeground': '#ff9800',
-        'editor.selectionBackground': '#ff980040',
-        'editorCursor.foreground': '#ff9800',
-        'editor.lineHighlightBackground': '#ffffff05',
-        'editorGutter.background': '#000000',
-      }
-    });
-
-    // 3. Slate Navy
-    monaco.editor.defineTheme('crystall-slate', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: '38bdf8', fontStyle: 'bold' },
-        { token: 'identifier', foreground: '7dd3fc' },
-        { token: 'string', foreground: '6ee7b7' },
-        { token: 'number', foreground: 'c4b5fd' },
-        { token: 'comment', foreground: '475569', fontStyle: 'italic' },
-        { token: 'type', foreground: 'fde047' },
-      ],
-      colors: {
-        'editor.background': '#0b1120',
-        'editor.foreground': '#f1f5f9',
-        'editorLineNumber.foreground': '#334155',
-        'editorLineNumber.activeForeground': '#0284c7',
-        'editor.selectionBackground': '#0284c733',
-        'editorCursor.foreground': '#38bdf8',
+        'editor.background': '#00000000',
+        'editor.foreground': '#f8fafc',
+        'editorLineNumber.foreground': '#52525b',
+        'editorLineNumber.activeForeground': '#f97316',
+        'editor.selectionBackground': '#f9731640',
+        'editorCursor.foreground': '#f97316',
         'editor.lineHighlightBackground': '#ffffff08',
-        'editorGutter.background': '#0b1120',
+        'editorGutter.background': '#00000000',
       }
     });
 
-    // 4. Light Classic
-    monaco.editor.defineTheme('crystall-light', {
+    // 3. Dark v3 (Liquid Glass)
+    monaco.editor.defineTheme('crystall-dark-v3', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
+        { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
+        { token: 'identifier', foreground: 'ffffff' },
+        { token: 'string', foreground: '38bdf8' },
+        { token: 'number', foreground: 'facc15' },
+        { token: 'comment', foreground: '71717a', fontStyle: 'italic' },
+        { token: 'type', foreground: 'e879f9' },
+        { token: 'function', foreground: '38bdf8' },
+      ],
+      colors: {
+        'editor.background': '#00000000',
+        'editor.foreground': '#ffffff',
+        'editorLineNumber.foreground': '#71717a',
+        'editorLineNumber.activeForeground': '#f97316',
+        'editor.selectionBackground': '#f973164d',
+        'editorCursor.foreground': '#f97316',
+        'editor.lineHighlightBackground': '#ffffff0c',
+        'editorGutter.background': '#00000000',
+      }
+    });
+
+    // 4. Light v1 (Solid Studio Light)
+    monaco.editor.defineTheme('crystall-light-v1', {
       base: 'vs',
       inherit: true,
       rules: [
         { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
+        { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
         { token: 'identifier', foreground: '0284c7' },
         { token: 'string', foreground: '16a34a' },
         { token: 'number', foreground: '7c3aed' },
         { token: 'comment', foreground: '94a3b8', fontStyle: 'italic' },
         { token: 'type', foreground: 'd97706' },
+        { token: 'function', foreground: '2563eb' },
       ],
       colors: {
         'editor.background': '#ffffff',
@@ -210,75 +217,91 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
       }
     });
 
-    // 5. Warm Paper
-    monaco.editor.defineTheme('crystall-warm', {
+    // 5. Light v2 (Acrylic Frosted Light)
+    monaco.editor.defineTheme('crystall-light-v2', {
       base: 'vs',
       inherit: true,
       rules: [
-        { token: 'keyword', foreground: 'c2410c', fontStyle: 'bold' },
-        { token: 'identifier', foreground: '0369a1' },
+        { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
+        { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
+        { token: 'identifier', foreground: '0284c7' },
         { token: 'string', foreground: '15803d' },
         { token: 'number', foreground: '6d28d9' },
-        { token: 'comment', foreground: 'a8a29e', fontStyle: 'italic' },
+        { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
         { token: 'type', foreground: 'b45309' },
       ],
       colors: {
-        'editor.background': '#fbf9f4',
-        'editor.foreground': '#292524',
-        'editorLineNumber.foreground': '#d6d3d1',
-        'editorLineNumber.activeForeground': '#ea580c',
-        'editor.selectionBackground': '#ea580c20',
-        'editorCursor.foreground': '#ea580c',
-        'editor.lineHighlightBackground': '#00000004',
-        'editorGutter.background': '#fbf9f4',
-      }
-    });
-
-    // 6. Acrylic Glass
-    monaco.editor.defineTheme('crystall-acrylic', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
-        { token: 'identifier', foreground: '38bdf8' },
-        { token: 'string', foreground: '4ade80' },
-        { token: 'number', foreground: 'c084fc' },
-        { token: 'comment', foreground: '94a3b8', fontStyle: 'italic' },
-      ],
-      colors: {
         'editor.background': '#00000000',
-        'editor.foreground': '#f8fafc',
-        'editorLineNumber.foreground': '#64748b',
-        'editorLineNumber.activeForeground': '#f97316',
-        'editor.selectionBackground': '#f9731633',
-        'editorCursor.foreground': '#f97316',
-        'editor.lineHighlightBackground': '#ffffff08',
+        'editor.foreground': '#0f172a',
+        'editorLineNumber.foreground': '#94a3b8',
+        'editorLineNumber.activeForeground': '#ea580c',
+        'editor.selectionBackground': '#ea580c30',
+        'editorCursor.foreground': '#ea580c',
+        'editor.lineHighlightBackground': '#00000008',
         'editorGutter.background': '#00000000',
       }
     });
 
-    const themeMap: Record<CrystallThemeId, string> = {
-      'dark-charcoal': 'crystall-dark',
-      'midnight-oled': 'crystall-midnight',
-      'slate-navy': 'crystall-slate',
-      'light-classic': 'crystall-light',
-      'warm-paper': 'crystall-warm',
-      'acrylic-glass': 'crystall-acrylic'
+    // 6. Light v3 (Crystal Glass Light)
+    monaco.editor.defineTheme('crystall-light-v3', {
+      base: 'vs',
+      inherit: true,
+      rules: [
+        { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
+        { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
+        { token: 'identifier', foreground: '0369a1' },
+        { token: 'string', foreground: '15803d' },
+        { token: 'number', foreground: '581c87' },
+        { token: 'comment', foreground: '475569', fontStyle: 'italic' },
+        { token: 'type', foreground: '9a3412' },
+      ],
+      colors: {
+        'editor.background': '#00000000',
+        'editor.foreground': '#0f172a',
+        'editorLineNumber.foreground': '#64748b',
+        'editorLineNumber.activeForeground': '#ea580c',
+        'editor.selectionBackground': '#ea580c38',
+        'editorCursor.foreground': '#ea580c',
+        'editor.lineHighlightBackground': '#ffffff20',
+        'editorGutter.background': '#00000000',
+      }
+    });
+
+    const themeMap: Record<string, string> = {
+      'dark-v1': 'crystall-dark-v1',
+      'dark-v2': 'crystall-dark-v2',
+      'dark-v3': 'crystall-dark-v3',
+      'light-v1': 'crystall-light-v1',
+      'light-v2': 'crystall-light-v2',
+      'light-v3': 'crystall-light-v3',
+      // Legacy compatibility
+      'dark-charcoal': 'crystall-dark-v1',
+      'midnight-oled': 'crystall-dark-v2',
+      'slate-navy': 'crystall-dark-v3',
+      'light-classic': 'crystall-light-v1',
+      'warm-paper': 'crystall-light-v2',
+      'acrylic-glass': 'crystall-dark-v2'
     };
     monaco.editor.setTheme(themeMap[activeTheme] || 'crystall-dark');
   };
 
   useEffect(() => {
     if (monacoRef.current) {
-      const themeMap: Record<CrystallThemeId, string> = {
-        'dark-charcoal': 'crystall-dark',
-        'midnight-oled': 'crystall-midnight',
-        'slate-navy': 'crystall-slate',
-        'light-classic': 'crystall-light',
-        'warm-paper': 'crystall-warm',
-        'acrylic-glass': 'crystall-acrylic'
+      const themeMap: Record<string, string> = {
+        'dark-v1': 'crystall-dark-v1',
+        'dark-v2': 'crystall-dark-v2',
+        'dark-v3': 'crystall-dark-v3',
+        'light-v1': 'crystall-light-v1',
+        'light-v2': 'crystall-light-v2',
+        'light-v3': 'crystall-light-v3',
+        'dark-charcoal': 'crystall-dark-v1',
+        'midnight-oled': 'crystall-dark-v2',
+        'slate-navy': 'crystall-dark-v3',
+        'light-classic': 'crystall-light-v1',
+        'warm-paper': 'crystall-light-v2',
+        'acrylic-glass': 'crystall-dark-v2'
       };
-      monacoRef.current.editor.setTheme(themeMap[activeTheme] || 'crystall-dark');
+      monacoRef.current.editor.setTheme(themeMap[activeTheme] || 'crystall-dark-v1');
     }
   }, [activeTheme]);
 
@@ -541,7 +564,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         <div 
           className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0"
           style={{ 
-            opacity: activeTheme === 'acrylic-glass' ? 0.35 : 0.04,
+            opacity: (activeTheme.includes('v2') || activeTheme.includes('v3') || activeTheme === 'acrylic-glass') ? 0.22 : 0.04,
             filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.5))' 
           }}
         >

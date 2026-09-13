@@ -1,3 +1,5 @@
+import nightGardenBg from './assets/night_garden.png';
+import dayGardenBg from './assets/day_garden.png';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { TitleBar } from './components/TitleBar';
 import { EditorArea, EditorAreaHandle } from './components/EditorArea';
@@ -37,7 +39,7 @@ import {
   saveActiveProvider, 
   sendStreamingPrompt 
 } from './services/aiService';
-import { applyThemeVariables, CRYSTALL_THEMES } from './data/themes';
+import { applyThemeVariables, CRYSTALL_THEMES, resolveTheme } from './data/themes';
 import { 
   playInjectSound, 
   playExecuteSound, 
@@ -66,7 +68,7 @@ export default function App() {
         return saved as CrystallThemeId;
       }
     } catch {}
-    return 'dark-charcoal';
+    return 'dark-v1';
   });
 
   // Apply CSS variables on theme change
@@ -736,11 +738,38 @@ export default function App() {
     addLog('success', `Minified "${activeTab.name}" (reduced to 1 line)`);
   };
 
+  const currentThemeResolved = resolveTheme(activeTheme);
+  const isNightBackdrop = activeTheme === 'dark-v2' || activeTheme === 'dark-v3' || activeTheme === 'midnight-oled' || activeTheme === 'slate-navy' || activeTheme === 'acrylic-glass';
+  const isDayBackdrop = activeTheme === 'light-v2' || activeTheme === 'light-v3' || activeTheme === 'warm-paper';
+
   return (
     <div 
-      className="flex flex-col h-screen w-screen overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] rounded-xl"
+      className="relative flex flex-col h-screen w-screen overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] rounded-xl select-none"
       style={{ backgroundColor: 'var(--bg-app)' }}
     >
+      {/* Authentic Figma Japanese Garden Backdrops for Acrylic & Glass (v2 & v3) */}
+      {isNightBackdrop && (
+        <div 
+          className="absolute inset-0 pointer-events-none z-0 bg-cover bg-center transition-all duration-300"
+          style={{ 
+            backgroundImage: `url(${nightGardenBg})`,
+            opacity: activeTheme === 'dark-v3' ? 0.85 : 0.72,
+            filter: activeTheme === 'dark-v2' ? 'blur(16px) brightness(0.60)' : 'blur(6px) brightness(0.72)'
+          }}
+        />
+      )}
+
+      {isDayBackdrop && (
+        <div 
+          className="absolute inset-0 pointer-events-none z-0 bg-cover bg-center transition-all duration-300"
+          style={{ 
+            backgroundImage: `url(${dayGardenBg})`,
+            opacity: activeTheme === 'light-v3' ? 0.85 : 0.68,
+            filter: activeTheme === 'light-v2' ? 'blur(16px) brightness(1.02)' : 'blur(6px) brightness(1.02)'
+          }}
+        />
+      )}
+
       {/* 1. Top Titlebar & Dropdown Menus matching Figma */}
       <TitleBar
         onOpenModal={(m) => setActiveModal(m)}

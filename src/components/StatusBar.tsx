@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { CrystallLogo } from "./CrystallLogo";
 import { CrystallThemeId, InjectorStatus, SupportedLanguage } from '../types';
-import { CRYSTALL_THEMES } from '../data/themes';
+import { CRYSTALL_THEMES, resolveTheme, FIGMA_THEMES } from '../data/themes';
 import { SUPPORTED_LANGUAGES } from '../data/constants';
 import { Check, ChevronUp } from 'lucide-react';
 
@@ -27,7 +27,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [langSearch, setLangSearch] = useState('');
   const langRef = useRef<HTMLDivElement>(null);
-  const currentTheme = CRYSTALL_THEMES[activeTheme] || CRYSTALL_THEMES['dark-charcoal'];
+  const currentTheme = resolveTheme(activeTheme);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -40,9 +40,18 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   }, []);
 
   const cycleTheme = () => {
-    const keys = Object.keys(CRYSTALL_THEMES) as CrystallThemeId[];
-    const nextIdx = (keys.indexOf(activeTheme) + 1) % keys.length;
-    onSelectTheme(keys[nextIdx]);
+    const figmaOrder: CrystallThemeId[] = [
+      'dark-v1',
+      'dark-v2',
+      'dark-v3',
+      'light-v1',
+      'light-v2',
+      'light-v3'
+    ];
+    const resolvedId = currentTheme.id;
+    const curIndex = figmaOrder.indexOf(resolvedId);
+    const nextIdx = (curIndex + 1) % figmaOrder.length;
+    onSelectTheme(figmaOrder[nextIdx]);
   };
 
   const currentLangMeta = SUPPORTED_LANGUAGES.find(l => l.id === activeLanguage) || {
@@ -69,6 +78,19 @@ export const StatusBar: React.FC<StatusBarProps> = ({
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
           <CrystallLogo size={12} />
+          <button
+            onClick={cycleTheme}
+            className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono border hover:brightness-125 transition-all cursor-pointer mr-1"
+            style={{
+              backgroundColor: 'var(--status-badge-bg)',
+              color: 'var(--status-badge-text)',
+              borderColor: 'var(--status-badge-border)'
+            }}
+            title="Figma Version Badge - Click to cycle themes"
+          >
+            <span className="font-semibold">{currentTheme.versionBadge || 'Version 1'}</span>
+            <span className="opacity-70 text-[9px]">({currentTheme.styleVariant})</span>
+          </button>
           <span className="text-zinc-500">Last Action:</span>
           <span className="font-mono text-zinc-300">{lastAction}</span>
         </div>

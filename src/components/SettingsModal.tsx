@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { AIProvider, AllConfigs, ProviderConfig, CrystallThemeId, EditorSettings } from '../types';
 import { PROVIDER_LABELS } from '../data/constants';
-import { CRYSTALL_THEMES } from '../data/themes';
+import { CRYSTALL_THEMES, FIGMA_THEMES, resolveTheme } from '../data/themes';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -401,7 +401,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 pt-2">
-                  {Object.values(CRYSTALL_THEMES).map((thm) => {
+                  {FIGMA_THEMES.map((thm) => {
                     const isSelected = activeTheme === thm.id;
                     return (
                       <div

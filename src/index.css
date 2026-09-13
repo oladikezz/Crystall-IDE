@@ -28,7 +28,15 @@
   --tab-inactive-bg: #0e1017;
 }
 
-[data-theme="light-classic"], [data-theme="warm-paper"] {
+[data-theme-category="light"] {
+  color-scheme: light;
+}
+
+[data-theme-category="dark"] {
+  color-scheme: dark;
+}
+
+[data-theme="light-v1"], [data-theme="light-v2"], [data-theme="light-v3"] {
   color-scheme: light;
 }
 
@@ -44,12 +52,8 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-[data-theme="acrylic-glass"] {
-  background: radial-gradient(circle at 50% 40%, #1e293b 0%, #090d16 100%);
-}
-
 .theme-transition {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 * {
