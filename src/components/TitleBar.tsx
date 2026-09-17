@@ -132,22 +132,22 @@ export const TitleBar: React.FC<TitleBarProps> = ({
     >
       {/* Left: Branding & Native Menus */}
       <div className="flex items-center gap-3 no-drag">
-        {/* Brand: Orange square badge + J8Dsgn + <1.0.0> tag matching Figma 1:1 */}
-        <div className="flex items-center gap-2 mr-1">
+        {/* Brand: Orange square badge + Crystall IDE + <1.0.0> tag matching Figma 1:1 */}
+        <div className="flex items-center gap-2 mr-1 shrink-0">
           <div 
             className="flex items-center justify-center w-[22px] h-[22px] rounded-[5px] shadow-sm text-white font-bold text-xs"
             style={{ backgroundColor: 'var(--accent-primary)' }}
           >
-            <CrystallLogo size={14} />
+            <CrystallLogo size={15} />
           </div>
           <span 
-            className="text-[13px] font-semibold tracking-tight"
+            className="text-[13px] font-semibold tracking-tight whitespace-nowrap"
             style={{ color: 'var(--text-primary)' }}
           >
-            J8Dsgn
+            Crystall IDE
           </span>
           <span 
-            className="text-[10px] font-mono px-1.5 py-0.5 rounded border"
+            className="text-[10px] font-mono px-1.5 py-0.5 rounded border whitespace-nowrap"
             style={{ 
               backgroundColor: 'var(--hover-bg)',
               borderColor: 'var(--border-color)',

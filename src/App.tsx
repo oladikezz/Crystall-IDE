@@ -111,16 +111,16 @@ export default function App() {
     });
   };
 
-  // Tabs & Editor State - Exact Figma 1:1 tabs
+  // Tabs & Editor State - Universal Multi-Language Starter Tabs
   const [tabs, setTabs] = useState<FileTab[]>(() => {
     try {
-      const saved = localStorage.getItem('crystall_ide_tabs_v8_figma');
+      const saved = localStorage.getItem('crystall_ide_tabs_v11_universal');
       if (saved) return JSON.parse(saved);
     } catch {}
     return INITIAL_TABS;
   });
 
-  const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0]?.id || 'tab-main');
+  const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0]?.id || 'tab-main-py');
   const editorAreaRef = useRef<EditorAreaHandle>(null);
 
   // Runtime / Injector State
@@ -167,7 +167,7 @@ export default function App() {
     {
       id: 'msg-welcome',
       role: 'assistant',
-      content: `J8Dsgn AI Assistant ready.\n\nDeepSeek R1 reasoning, Claude 3.5 Sonnet, GPT-4o, and Gemini 2.0 Flash enabled.\nPress Ctrl+L to chat or Ctrl+Enter to execute.`,
+      content: `Crystall IDE AI Assistant ready.\n\nDeepSeek R1 reasoning, Claude 3.5 Sonnet, GPT-4o, and Gemini 2.0 Flash enabled.\nPress Ctrl+L to chat or Ctrl+Enter to execute.`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       modelUsed: configs[activeProvider]?.model || 'DeepSeek-R1'
     }

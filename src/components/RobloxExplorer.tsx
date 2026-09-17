@@ -4,18 +4,24 @@ import {
   ChevronDown, 
   Folder, 
   FileCode, 
+  Code2,
+  FileText,
+  Terminal,
+  Cpu,
+  Layers,
+  Globe,
+  FileJson,
   Search, 
   X,
   Box,
   Users,
   SunMedium,
   Shapes,
-  Layers,
   Package,
-  Cpu
+  Plus
 } from 'lucide-react';
 import { ExplorerNode } from '../types';
-import { ROBLOX_EXPLORER_TREE } from '../data/constants';
+import { ROBLOX_EXPLORER_TREE, PROJECT_WORKSPACE_TREE } from '../data/constants';
 
 interface RobloxExplorerProps {
   onSelectNode: (node: ExplorerNode) => void;
@@ -24,12 +30,17 @@ interface RobloxExplorerProps {
 }
 
 export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({ 
-  onSelectNode
+  onSelectNode,
+  onNewFile
 }) => {
+  const [mode, setMode] = useState<'project' | 'game'>('project');
   const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({
+    'proj-src': true,
+    'proj-api': true,
+    'proj-scripts': true,
     'exp-serverscriptservice': true
   });
-  const [selectedId, setSelectedId] = useState<string>('exp-serverscriptservice');
+  const [selectedId, setSelectedId] = useState<string>('file-main-py');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -43,6 +54,24 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
     if (node.type !== 'folder' && node.type !== 'service') {
       onSelectNode(node);
     }
+  };
+
+  const getFileIcon = (node: ExplorerNode) => {
+    if (node.type === 'folder') {
+      const isExpanded = !!expandedIds[node.id];
+      return <Folder className={`w-3.5 h-3.5 shrink-0 ${isExpanded ? 'text-amber-300' : 'text-amber-400'}`} />;
+    }
+    const name = node.name.toLowerCase();
+    if (name.endsWith('.py')) return <Code2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />;
+    if (name.endsWith('.ts') || name.endsWith('.tsx')) return <FileCode className="w-3.5 h-3.5 text-sky-400 shrink-0" />;
+    if (name.endsWith('.js') || name.endsWith('.jsx')) return <FileCode className="w-3.5 h-3.5 text-yellow-400 shrink-0" />;
+    if (name.endsWith('.lua') || name.endsWith('.luau')) return <Terminal className="w-3.5 h-3.5 text-cyan-400 shrink-0" />;
+    if (name.endsWith('.cpp') || name.endsWith('.c') || name.endsWith('.h')) return <Cpu className="w-3.5 h-3.5 text-purple-400 shrink-0" />;
+    if (name.endsWith('.html')) return <Globe className="w-3.5 h-3.5 text-orange-400 shrink-0" />;
+    if (name.endsWith('.css')) return <Layers className="w-3.5 h-3.5 text-blue-400 shrink-0" />;
+    if (name.endsWith('.json')) return <FileJson className="w-3.5 h-3.5 text-lime-400 shrink-0" />;
+    if (name.endsWith('.md')) return <FileText className="w-3.5 h-3.5 text-zinc-400 shrink-0" />;
+    return <FileCode className="w-3.5 h-3.5 text-zinc-400 shrink-0" />;
   };
 
   const getServiceIcon = (node: ExplorerNode) => {
@@ -69,6 +98,8 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
     }
   };
 
+  const currentTree = mode === 'project' ? PROJECT_WORKSPACE_TREE : ROBLOX_EXPLORER_TREE;
+
   const renderNodes = (nodes: ExplorerNode[], depth = 0) => {
     return nodes
       .filter(n => !searchQuery || n.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -76,14 +107,14 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
         const hasChildren = node.children && node.children.length > 0;
         const isExpanded = !!expandedIds[node.id];
         const isSelected = selectedId === node.id;
-        const isServerScriptService = node.id === 'exp-serverscriptservice';
+        const isSpecial = mode === 'game' && node.id === 'exp-serverscriptservice';
 
         return (
           <div key={node.id} className="select-none font-sans">
             <div
               onClick={() => handleNodeClick(node)}
               className={`flex items-center gap-1.5 py-1 px-2 text-xs transition-colors cursor-pointer rounded mx-1 ${
-                isServerScriptService && isSelected
+                isSpecial && isSelected
                   ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-medium'
                   : isSelected 
                     ? 'hover:bg-white/5 font-medium' 
@@ -91,10 +122,10 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
               }`}
               style={{
                 paddingLeft: `${depth * 14 + 6}px`,
-                backgroundColor: isServerScriptService && isSelected
+                backgroundColor: isSpecial && isSelected
                   ? undefined
                   : isSelected ? 'var(--hover-bg)' : 'transparent',
-                color: isServerScriptService && isSelected
+                color: isSpecial && isSelected
                   ? undefined
                   : isSelected ? 'var(--text-primary)' : 'var(--text-secondary)'
               }}
@@ -111,7 +142,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
                 <span className="w-3.5 shrink-0" />
               )}
 
-              {getServiceIcon(node)}
+              {mode === 'project' ? getFileIcon(node) : getServiceIcon(node)}
               <span className="truncate text-[11.5px] font-normal">{node.name}</span>
             </div>
 
@@ -131,27 +162,72 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
         borderColor: 'var(--border-color)'
       }}
     >
-      {/* Exact Figma Header: Explorer | Instances: 4,960 | Search */}
+      {/* Universal Header: Explorer Title | Mode Switcher (Project / Game) | Search */}
       <div 
-        className="h-8 px-3 border-b flex items-center justify-between shrink-0"
+        className="h-8 px-2.5 border-b flex items-center justify-between shrink-0"
         style={{
           backgroundColor: 'var(--bg-header)',
           borderColor: 'var(--border-color)'
         }}
       >
-        <div className="flex items-center gap-1.5">
-          <Folder className="w-3.5 h-3.5 text-zinc-400" />
-          <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>
+        <div className="flex items-center gap-1.5 min-w-0">
+          <Folder className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+          <span className="text-xs font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
             Explorer
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-zinc-500">Instances: 4,960</span>
+        <div className="flex items-center gap-1 shrink-0">
+          {/* Mode Switcher: Project vs Game Hierarchy */}
+          <div 
+            className="flex items-center p-0.5 rounded border text-[10px] font-sans mr-0.5"
+            style={{ 
+              backgroundColor: 'var(--hover-bg)', 
+              borderColor: 'var(--border-color)' 
+            }}
+          >
+            <button
+              onClick={() => setMode('project')}
+              className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
+                mode === 'project' 
+                  ? 'bg-orange-500 text-white font-medium shadow-xs' 
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+              title="Project Files (Python, TS, C++, Web)"
+            >
+              Project
+            </button>
+            <button
+              onClick={() => setMode('game')}
+              className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
+                mode === 'game' 
+                  ? 'bg-orange-500 text-white font-medium shadow-xs' 
+                  : 'text-zinc-400 hover:text-white'
+              }`}
+              title="Game / Roblox Hierarchy"
+            >
+              Game
+            </button>
+          </div>
+
+          {/* Quick Action: New File */}
+          {onNewFile && mode === 'project' && (
+            <button
+              onClick={onNewFile}
+              className="p-1 rounded hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-white"
+              title="New File (Ctrl+N)"
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          )}
+
+          {/* Search Toggle */}
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="p-1 rounded hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-white"
-            title="Search Instances"
+            className={`p-1 rounded transition-colors cursor-pointer ${
+              isSearchOpen ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/10'
+            }`}
+            title={mode === 'project' ? 'Search Files' : 'Search Instances'}
           >
             <Search className="w-3 h-3" />
           </button>
@@ -164,7 +240,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
           <Search className="w-3 h-3 text-zinc-500" />
           <input
             type="text"
-            placeholder="Search instances..."
+            placeholder={mode === 'project' ? "Search files..." : "Search instances..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-1 bg-transparent text-[11px] outline-none text-zinc-200 placeholder-zinc-600 font-sans"
@@ -180,7 +256,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
 
       {/* Tree Content */}
       <div className="flex-1 overflow-y-auto py-1.5 scrollbar-thin">
-        {renderNodes(ROBLOX_EXPLORER_TREE)}
+        {renderNodes(currentTree)}
       </div>
     </div>
   );

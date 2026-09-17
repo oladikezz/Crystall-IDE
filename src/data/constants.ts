@@ -150,144 +150,147 @@ export const SUPPORTED_LANGUAGES: LanguageMeta[] = [
   }
 ];
 
-// Exact 6 Tabs from Figma Design
+// Universal Multi-Language Developer Starter Files
 export const INITIAL_TABS: FileTab[] = [
   {
-    id: 'tab-main',
-    name: 'Main.lua',
-    language: 'lua',
-    content: `local Players = game:GetService('Players')
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character
-if Character then
-  local Humanoid = Character:FindFirstChildOfClass('Humanoid')
-  if Humanoid then
-    Humanoid.WalkSpeed = 100
-    Humanoid.JumpPower = 200
-    print('Speed enabled.')
-  end
-  local Backpack = LocalPlayer:FindFirstChildOfClass('Backpack')
-  if Backpack then
-    print('Backpack is accessible.')
-  end
-end
+    id: 'tab-main-py',
+    name: 'main.py',
+    language: 'python',
+    content: `# Crystall IDE - High-Performance Universal Environment
+import asyncio
+import time
+from typing import Dict, List, Any
 
-task.wait(0.5)
-print('Script finalized.')
--- Ending block
-return true
+class ExecutionEngine:
+    def __init__(self, name: str = "Crystall Core"):
+        self.name = name
+        self.start_time = time.time()
+        self.stages: List[str] = []
+
+    async def run_pipeline(self) -> Dict[str, Any]:
+        print(f"[{self.name}] Initializing async runtime...")
+        await asyncio.sleep(0.05)
+        self.stages.extend(["Lexer", "Parser", "TypeChecker", "Optimizer", "NativeRuntime"])
+        return {
+            "engine": self.name,
+            "status": "ready",
+            "uptime": round(time.time() - self.start_time, 4),
+            "stages": self.stages
+        }
+
+async def main():
+    core = ExecutionEngine()
+    result = await core.run_pipeline()
+    print(f"[{core.name}] Execution pipeline successful: {result}")
+
+if __name__ == "__main__":
+    asyncio.run(main())
 `
   },
   {
-    id: 'tab-aimbot',
-    name: 'AimBot.lua',
-    language: 'lua',
-    content: `-- AimBot Silent Target Module
-local Camera = workspace.CurrentCamera
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+    id: 'tab-app-ts',
+    name: 'app.ts',
+    language: 'typescript',
+    content: `// TypeScript Universal Application Architecture
+export interface ProjectConfig {
+  id: string;
+  name: string;
+  version: string;
+  features: string[];
+  openSource: boolean;
+}
 
-local function GetClosestTarget()
-    local target = nil
-    local maxDist = math.huge
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
-            local head = player.Character.Head
-            local screenPos, onScreen = Camera:WorldToViewportPoint(head.Position)
-            if onScreen then
-                local dist = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)).Magnitude
-                if dist < maxDist then
-                    maxDist = dist
-                    target = player
-                end
-            end
-        end
+export class CrystallRuntime {
+  private config: ProjectConfig;
+
+  constructor(config: ProjectConfig) {
+    this.config = config;
+  }
+
+  public boot(): void {
+    console.log(\`[Crystall IDE] Launching \${this.config.name} v\${this.config.version} (Open Source: \${this.config.openSource})\`);
+    console.log("[Crystall IDE] Active features:", this.config.features.join(", "));
+  }
+}
+
+const ide = new CrystallRuntime({
+  id: "crystall-ide-universal",
+  name: "Crystall IDE",
+  version: "1.0.0",
+  features: ["Multi-Language", "AI Reasoning", "Monaco Engine", "Open Source"],
+  openSource: true
+});
+
+ide.boot();
+`
+  },
+  {
+    id: 'tab-game-lua',
+    name: 'game_logic.lua',
+    language: 'lua',
+    content: `-- Lua / Luau Universal Game Logic & Vector Math
+local Vector3 = {}
+Vector3.__index = Vector3
+
+function Vector3.new(x, y, z)
+    return setmetatable({ x = x or 0, y = y or 0, z = z or 0 }, Vector3)
+end
+
+function Vector3:magnitude()
+    return math.sqrt(self.x^2 + self.y^2 + self.z^2)
+end
+
+function Vector3:normalize()
+    local m = self:magnitude()
+    if m > 0 then
+        return Vector3.new(self.x / m, self.y / m, self.z / m)
     end
-    return target
+    return Vector3.new(0, 0, 0)
 end
 
-print("[AimBot] Silent targeting online.")
+local velocity = Vector3.new(10, 25, 50)
+print("[Lua Engine] Initial velocity magnitude: " .. velocity:magnitude())
+print("[Lua Engine] Normalized direction: (" .. velocity:normalize().x .. ", " .. velocity:normalize().y .. ", " .. velocity:normalize().z .. ")")
 `
   },
   {
-    id: 'tab-esp',
-    name: 'ESP.lua',
-    language: 'lua',
-    content: `-- Universal ESP Visuals
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
+    id: 'tab-native-cpp',
+    name: 'engine.cpp',
+    language: 'cpp',
+    content: `// C++ High Performance Native Toolchain
+#include <iostream>
+#include <vector>
+#include <chrono>
 
-local function AttachESP(player)
-    if player.Character and not player.Character:FindFirstChild("ESPHighlight") then
-        local hl = Instance.new("Highlight")
-        hl.Name = "ESPHighlight"
-        hl.FillColor = Color3.fromRGB(255, 115, 22)
-        hl.OutlineColor = Color3.fromRGB(255, 255, 255)
-        hl.FillTransparency = 0.5
-        hl.Parent = player.Character
-    end
-end
-
-for _, p in pairs(Players:GetPlayers()) do
-    if p ~= LocalPlayer then AttachESP(p) end
-end
-print("[ESP] Visual box indicators active.")
+int main() {
+    std::cout << "[C++] Crystall IDE High-Speed Engine Online" << std::endl;
+    std::vector<int> numbers(1000, 42);
+    long long total = 0;
+    
+    auto start = std::chrono::high_resolution_clock::now();
+    for (int n : numbers) total += n;
+    auto end = std::chrono::high_resolution_clock::now();
+    
+    std::cout << "[C++] Computed sum: " << total << " in native cycle." << std::endl;
+    return 0;
+}
 `
   },
   {
-    id: 'tab-fly',
-    name: 'Fly.lua',
-    language: 'lua',
-    content: `-- Flight and Noclip Engine
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local Root = Character:WaitForChild("HumanoidRootPart")
+    id: 'tab-readme-md',
+    name: 'README.md',
+    language: 'markdown',
+    content: `# Crystall IDE
 
-local BV = Instance.new("BodyVelocity")
-BV.Velocity = Vector3.new(0, 50, 0)
-BV.MaxForce = Vector3.new(9e4, 9e4, 9e4)
-BV.Parent = Root
+**Open Source Universal Developer IDE**
 
-print("[Fly] Velocity controller anchored.")
-`
-  },
-  {
-    id: 'tab-bypass',
-    name: 'Bypass.lua',
-    language: 'lua',
-    content: `-- Anticheat Hook & Memory Bypass
-local HookMeta = {}
-local OriginalIndex = nil
+Crystall IDE is an ultra-fast, modern developer workspace designed for seamless coding in Python, TypeScript, JavaScript, Lua / Luau, C++, Rust, and Web technologies.
 
-OriginalIndex = hookmetamethod(game, "__index", function(self, key)
-    if not checkcaller() and key == "WalkSpeed" then
-        return 16
-    end
-    return OriginalIndex(self, key)
-end)
-
-print("[Bypass] Memory protection overrides active.")
-`
-  },
-  {
-    id: 'tab-hitbox',
-    name: 'Hitbox.lua',
-    language: 'lua',
-    content: `-- Expand Player Hitboxes
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-for _, player in pairs(Players:GetPlayers()) do
-    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local hrp = player.Character.HumanoidRootPart
-        hrp.Size = Vector3.new(8, 8, 8)
-        hrp.Transparency = 0.6
-        hrp.CanCollide = false
-    end
-end
-
-print("[Hitbox] Colliders extended.")
+## ✨ Key Capabilities
+- **Multi-Language Architecture**: Native syntax support, IntelliSense, and compilation.
+- **Deep AI Integration**: DeepSeek R1 reasoning, Claude 3.7, GPT-4o, and Gemini 2.0.
+- **Project & Game Engine Support**: Dual file explorer for general project workspaces and game runtime trees.
+- **Modern Liquid Glass UI**: Custom GPU-accelerated blur themes and native window performance.
 `
   }
 ];
@@ -486,12 +489,11 @@ export const FIGMA_QUICK_SCRIPTS: FigmaQuickScript[] = [
 ];
 
 export const FIGMA_CONSOLE_LOGS = [
-  { id: 'log-1', type: 'info' as const, message: 'Checking for updates...', timestamp: '12:15:02' },
-  { id: 'log-2', type: 'success' as const, message: 'Client is up to date!', timestamp: '12:15:03' },
-  { id: 'log-3', type: 'info' as const, message: 'Scanning active memory offsets...', timestamp: '12:15:04' },
-  { id: 'log-4', type: 'warn' as const, message: 'High latency detected: 145ms', timestamp: '12:15:05' },
-  { id: 'log-5', type: 'error' as const, message: 'Failed to inject into process (ErrorCode: 0x5)', timestamp: '12:15:06' },
-  { id: 'log-6', type: 'error' as const, message: 'Falling back to secure bypass reload...', timestamp: '12:15:07' }
+  { id: 'log-1', type: 'info' as const, message: 'Crystall IDE v1.0.0 initializing...', timestamp: '12:15:01' },
+  { id: 'log-2', type: 'success' as const, message: 'Universal Language Server ready: Python, TS/JS, Lua, C++, Rust, Web', timestamp: '12:15:02' },
+  { id: 'log-3', type: 'info' as const, message: 'AI Engine loaded: DeepSeek R1, Claude 3.7, GPT-4o ready', timestamp: '12:15:03' },
+  { id: 'log-4', type: 'info' as const, message: 'Workspace indexed: 14 project files, Git branch: main', timestamp: '12:15:04' },
+  { id: 'log-5', type: 'success' as const, message: 'Build and runtime environments active.', timestamp: '12:15:05' }
 ];
 
 // Multi-Language Code Snippets & Templates

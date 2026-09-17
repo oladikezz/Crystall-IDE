@@ -44,28 +44,36 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         color: 'var(--text-secondary)'
       }}
     >
-      {/* Left: 1.me/j8dsgn + Premium > matching Figma 1:1 */}
-      <div className="flex items-center gap-2.5">
-        <div className="flex items-center gap-1.5">
-          <div 
-            className="w-4 h-4 rounded-[4px] flex items-center justify-center bg-black/60 border border-white/10 text-white"
-          >
-            <CrystallLogo size={10} />
-          </div>
-          <span className="font-mono text-[11px] text-zinc-400 hover:text-white cursor-pointer transition-colors">
-            1.me/j8dsgn
-          </span>
-        </div>
-
-        {/* Orange Premium > Pill Badge */}
-        <button
-          onClick={() => alert('J8Dsgn Premium Active')}
-          className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold text-white transition-transform hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
-          style={{ backgroundColor: 'var(--accent-primary)' }}
+      {/* Left: Crystall IDE + Open Source badge (No Premium - 100% Open Source) */}
+      <div className="flex items-center gap-2">
+        <a
+          href="https://github.com/oladikezz/Crystall-IDE"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-1.5 cursor-pointer group text-inherit no-underline"
+          title="GitHub: oladikezz/Crystall-IDE"
         >
-          <span>Premium</span>
-          <span className="text-[9px] font-bold">&gt;</span>
-        </button>
+          <div 
+            className="w-[18px] h-[18px] rounded-[4px] flex items-center justify-center bg-black/60 border border-white/10 text-white group-hover:border-orange-500/50 transition-colors"
+          >
+            <CrystallLogo size={13} />
+          </div>
+          <span className="font-mono text-[11px] text-zinc-300 group-hover:text-white transition-colors">
+            Crystall IDE
+          </span>
+        </a>
+
+        {/* Open Source Pill Badge */}
+        <span 
+          className="font-mono text-[10px] px-1.5 py-0.5 rounded border select-none"
+          style={{ 
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            borderColor: 'var(--border-color)',
+            color: 'var(--text-muted)'
+          }}
+        >
+          &lt;open-source&gt;
+        </span>
       </div>
 
       {/* Right: Total lines | Execution Time | FPS | Theme Switcher */}
