@@ -89,6 +89,16 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.lineHighlightBackground': '#00000000',
       'editor.lineHighlightBorder': '#00000000',
       'editor.rangeHighlightBackground': '#00000000',
+      'editorBracketMatch.border': '#00000000',
+      'editorBracketMatch.background': '#00000000',
+      'editorBracketHighlight.foreground1': '#94a3b8',
+      'editorBracketHighlight.foreground2': '#94a3b8',
+      'editorBracketHighlight.foreground3': '#94a3b8',
+      'editor.findMatchHighlightBorder': '#00000000',
+      'editor.wordHighlightBorder': '#00000000',
+      'editor.wordHighlightStrongBorder': '#00000000',
+      'editor.wordHighlightBackground': '#00000000',
+      'editor.wordHighlightStrongBackground': '#00000000',
       'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#0c0e14',
       'minimap.background': '#0c0e14',
@@ -134,6 +144,16 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.lineHighlightBackground': '#00000000',
       'editor.lineHighlightBorder': '#00000000',
       'editor.rangeHighlightBackground': '#00000000',
+      'editorBracketMatch.border': '#00000000',
+      'editorBracketMatch.background': '#00000000',
+      'editorBracketHighlight.foreground1': '#94a3b8',
+      'editorBracketHighlight.foreground2': '#94a3b8',
+      'editorBracketHighlight.foreground3': '#94a3b8',
+      'editor.findMatchHighlightBorder': '#00000000',
+      'editor.wordHighlightBorder': '#00000000',
+      'editor.wordHighlightStrongBorder': '#00000000',
+      'editor.wordHighlightBackground': '#00000000',
+      'editor.wordHighlightStrongBackground': '#00000000',
       'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
@@ -179,6 +199,16 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.lineHighlightBackground': '#00000000',
       'editor.lineHighlightBorder': '#00000000',
       'editor.rangeHighlightBackground': '#00000000',
+      'editorBracketMatch.border': '#00000000',
+      'editorBracketMatch.background': '#00000000',
+      'editorBracketHighlight.foreground1': '#94a3b8',
+      'editorBracketHighlight.foreground2': '#94a3b8',
+      'editorBracketHighlight.foreground3': '#94a3b8',
+      'editor.findMatchHighlightBorder': '#00000000',
+      'editor.wordHighlightBorder': '#00000000',
+      'editor.wordHighlightStrongBorder': '#00000000',
+      'editor.wordHighlightBackground': '#00000000',
+      'editor.wordHighlightStrongBackground': '#00000000',
       'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
@@ -224,6 +254,16 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.lineHighlightBackground': '#00000000',
       'editor.lineHighlightBorder': '#00000000',
       'editor.rangeHighlightBackground': '#00000000',
+      'editorBracketMatch.border': '#00000000',
+      'editorBracketMatch.background': '#00000000',
+      'editorBracketHighlight.foreground1': '#64748b',
+      'editorBracketHighlight.foreground2': '#64748b',
+      'editorBracketHighlight.foreground3': '#64748b',
+      'editor.findMatchHighlightBorder': '#00000000',
+      'editor.wordHighlightBorder': '#00000000',
+      'editor.wordHighlightStrongBorder': '#00000000',
+      'editor.wordHighlightBackground': '#00000000',
+      'editor.wordHighlightStrongBackground': '#00000000',
       'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#ffffff',
       'minimap.background': '#ffffff',
@@ -269,6 +309,16 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.lineHighlightBackground': '#00000000',
       'editor.lineHighlightBorder': '#00000000',
       'editor.rangeHighlightBackground': '#00000000',
+      'editorBracketMatch.border': '#00000000',
+      'editorBracketMatch.background': '#00000000',
+      'editorBracketHighlight.foreground1': '#64748b',
+      'editorBracketHighlight.foreground2': '#64748b',
+      'editorBracketHighlight.foreground3': '#64748b',
+      'editor.findMatchHighlightBorder': '#00000000',
+      'editor.wordHighlightBorder': '#00000000',
+      'editor.wordHighlightStrongBorder': '#00000000',
+      'editor.wordHighlightBackground': '#00000000',
+      'editor.wordHighlightStrongBackground': '#00000000',
       'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
@@ -314,6 +364,16 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.lineHighlightBackground': '#00000000',
       'editor.lineHighlightBorder': '#00000000',
       'editor.rangeHighlightBackground': '#00000000',
+      'editorBracketMatch.border': '#00000000',
+      'editorBracketMatch.background': '#00000000',
+      'editorBracketHighlight.foreground1': '#64748b',
+      'editorBracketHighlight.foreground2': '#64748b',
+      'editorBracketHighlight.foreground3': '#64748b',
+      'editor.findMatchHighlightBorder': '#00000000',
+      'editor.wordHighlightBorder': '#00000000',
+      'editor.wordHighlightStrongBorder': '#00000000',
+      'editor.wordHighlightBackground': '#00000000',
+      'editor.wordHighlightStrongBackground': '#00000000',
       'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
@@ -408,6 +468,13 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
 
   const handleBeforeMount = (monaco: any) => {
     defineMonacoThemes(monaco);
+    if (typeof document !== 'undefined' && (document as any).fonts) {
+      (document as any).fonts.ready.then(() => {
+        try {
+          monaco.editor.remeasureFonts();
+        } catch {}
+      });
+    }
   };
 
   const handleEditorMount: OnMount = (editor, monaco) => {
@@ -415,6 +482,27 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
     monacoRef.current = monaco;
     defineMonacoThemes(monaco);
     monaco.editor.setTheme(getMonacoTheme(activeTheme));
+
+    if (typeof document !== 'undefined' && (document as any).fonts) {
+      (document as any).fonts.ready.then(() => {
+        try {
+          monaco.editor.remeasureFonts();
+          editor.layout();
+        } catch {}
+      });
+    }
+    setTimeout(() => {
+      try {
+        monaco.editor.remeasureFonts();
+        editor.layout();
+      } catch {}
+    }, 60);
+    setTimeout(() => {
+      try {
+        monaco.editor.remeasureFonts();
+        editor.layout();
+      } catch {}
+    }, 300);
   };
 
   useEffect(() => {
@@ -689,6 +777,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
             fontSize: settings.fontSize || 12.5,
             lineHeight: Math.round((settings.fontSize || 12.5) * 1.55),
+            letterSpacing: 0,
             lineNumbers: settings.lineNumbers ? 'on' : 'off',
             lineNumbersMinChars: 3,
             lineDecorationsWidth: 6,
@@ -697,7 +786,16 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             wordWrap: settings.wordWrap ? 'on' : 'off',
             renderWhitespace: 'none',
             renderLineHighlight: 'none',
-            matchBrackets: 'always',
+            renderLineHighlightOnlyWhenFocus: false,
+            matchBrackets: 'never',
+            bracketPairColorization: {
+              enabled: false
+            },
+            guides: {
+              bracketPairs: false,
+              indentation: true
+            },
+            occurrencesHighlight: 'off',
             selectionHighlight: false,
             tabSize: 2,
             minimap: { 

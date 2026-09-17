@@ -135,6 +135,23 @@ body {
 }
 
 /* Clean Monaco selection styles matching Figma */
+.monaco-editor,
+.monaco-editor .view-lines,
+.monaco-editor .view-line,
+.monaco-editor * {
+  letter-spacing: 0px !important;
+}
+
+.monaco-editor .bracket-match {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.monaco-editor .current-line,
+.monaco-editor .current-line-exact {
+  border: none !important;
+}
+
 .monaco-editor .selected-text {
   background-color: rgba(249, 115, 22, 0.28) !important;
   border-radius: 2px;
