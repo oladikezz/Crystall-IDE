@@ -289,13 +289,19 @@ export const ScriptHubModal: React.FC<ScriptHubModalProps> = ({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans select-none">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 font-sans select-none"
+      style={{ backgroundColor: 'var(--modal-overlay, rgba(0, 0, 0, 0.45))' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <div 
         className="w-full max-w-3xl max-h-[85vh] rounded-xl border shadow-2xl flex flex-col overflow-hidden"
         style={{
           backgroundColor: 'var(--bg-modal)',
           borderColor: 'var(--border-color)',
-          color: 'var(--text-primary)'
+          color: 'var(--text-primary)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)'
         }}
       >
         {/* Header */}
@@ -306,24 +312,32 @@ export const ScriptHubModal: React.FC<ScriptHubModalProps> = ({
             </div>
             <div>
               <h2 className="text-sm font-semibold tracking-tight">Code Snippets & Templates Hub</h2>
-              <p className="text-[10px] text-zinc-500 font-mono">Curated multi-language starter blueprints</p>
+              <p className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>Curated multi-language starter blueprints</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded hover:bg-white/10 text-zinc-400 hover:text-white cursor-pointer">
+          <button 
+            onClick={onClose} 
+            className="p-1.5 rounded hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+            style={{ color: 'var(--text-muted)' }}
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Filters and Search */}
         <div className="px-4 py-2.5 border-b flex flex-wrap items-center justify-between gap-2 shrink-0" style={{ borderColor: 'var(--border-color)' }}>
-          <div className="flex items-center gap-1.5 bg-black/30 border px-2.5 py-1 rounded-md w-72" style={{ borderColor: 'var(--border-color)' }}>
-            <Search className="w-3.5 h-3.5 text-zinc-500" />
+          <div 
+            className="flex items-center gap-1.5 border px-2.5 py-1 rounded-md w-72" 
+            style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--border-color)' }}
+          >
+            <Search className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
             <input
               type="text"
               placeholder="Search template name, category..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent text-xs outline-none text-zinc-100 placeholder-zinc-500 w-full"
+              className="bg-transparent text-xs outline-none w-full"
+              style={{ color: 'var(--text-primary)' }}
             />
           </div>
 
@@ -335,8 +349,11 @@ export const ScriptHubModal: React.FC<ScriptHubModalProps> = ({
                 className={`px-2.5 py-1 rounded text-xs transition-colors cursor-pointer ${
                   activeCat === cat
                     ? 'bg-orange-500 text-white font-medium shadow-sm'
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                    : 'hover:bg-[var(--hover-bg)]'
                 }`}
+                style={{
+                  color: activeCat === cat ? undefined : 'var(--text-secondary)'
+                }}
               >
                 {cat}
               </button>
@@ -357,17 +374,27 @@ export const ScriptHubModal: React.FC<ScriptHubModalProps> = ({
             >
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-semibold text-zinc-100 group-hover:text-orange-400 transition-colors">
+                  <span 
+                    className="text-xs font-semibold group-hover:text-orange-400 transition-colors"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
                     {item.name}
                   </span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 text-zinc-400">
+                  <span 
+                    className="text-[10px] font-mono px-1.5 py-0.5 rounded border"
+                    style={{ 
+                      backgroundColor: 'var(--hover-bg)', 
+                      borderColor: 'var(--border-color)',
+                      color: 'var(--text-muted)' 
+                    }}
+                  >
                     {item.stats}
                   </span>
                 </div>
-                <div className="text-[10px] text-zinc-500 mb-2 font-mono">
+                <div className="text-[10px] mb-2 font-mono" style={{ color: 'var(--text-muted)' }}>
                   by {item.author} • <span className="text-orange-400">{item.category}</span>
                 </div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed line-clamp-2">
+                <p className="text-[11px] leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
                   {item.description}
                 </p>
               </div>
@@ -378,7 +405,12 @@ export const ScriptHubModal: React.FC<ScriptHubModalProps> = ({
                     onLoadScript(item.name, item.code);
                     onClose();
                   }}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded text-xs bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded text-xs border transition-colors cursor-pointer hover:opacity-80"
+                  style={{
+                    backgroundColor: 'var(--hover-bg)',
+                    borderColor: 'var(--border-color)',
+                    color: 'var(--text-primary)'
+                  }}
                 >
                   <ArrowDownToLine className="w-3 h-3" />
                   <span>Load</span>
@@ -473,13 +505,19 @@ export const BytecodeModal: React.FC<BytecodeModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 font-sans"
+      style={{ backgroundColor: 'var(--modal-overlay, rgba(0, 0, 0, 0.45))' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <div 
         className="w-full max-w-2xl max-h-[85vh] rounded-xl border shadow-2xl flex flex-col overflow-hidden"
         style={{
           backgroundColor: 'var(--bg-modal)',
           borderColor: 'var(--border-color)',
-          color: 'var(--text-primary)'
+          color: 'var(--text-primary)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)'
         }}
       >
         <div className="h-12 px-4 border-b flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border-color)' }}>
@@ -489,24 +527,40 @@ export const BytecodeModal: React.FC<BytecodeModalProps> = ({
             </div>
             <div>
               <h2 className="text-sm font-semibold tracking-tight">Bytecode & AST Inspector</h2>
-              <p className="text-[10px] text-zinc-500 font-mono">Disassembly for {scriptName}</p>
+              <p className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>Disassembly for {scriptName}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs border border-white/10 hover:bg-white/10 text-zinc-300 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs border transition-colors cursor-pointer hover:opacity-80"
+              style={{
+                backgroundColor: 'var(--hover-bg)',
+                borderColor: 'var(--border-color)',
+                color: 'var(--text-primary)'
+              }}
             >
               {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
               <span>{copied ? 'Copied!' : 'Copy Disassembly'}</span>
             </button>
-            <button onClick={onClose} className="p-1.5 rounded hover:bg-white/10 text-zinc-400 hover:text-white cursor-pointer">
+            <button 
+              onClick={onClose} 
+              className="p-1.5 rounded hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+              style={{ color: 'var(--text-muted)' }}
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 font-mono text-[11px] leading-relaxed text-emerald-300/90 bg-black/40 scrollbar-thin select-text">
+        <div 
+          className="flex-1 overflow-y-auto p-4 font-mono text-[11px] leading-relaxed scrollbar-thin select-text border-t"
+          style={{
+            backgroundColor: 'var(--bg-card)',
+            borderColor: 'var(--border-color)',
+            color: 'var(--text-primary)'
+          }}
+        >
           <pre>{fullText}</pre>
         </div>
       </div>
@@ -533,13 +587,19 @@ export const ProcessInspectorModal: React.FC<ProcessInspectorModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 font-sans"
+      style={{ backgroundColor: 'var(--modal-overlay, rgba(0, 0, 0, 0.45))' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <div 
         className="w-full max-w-xl rounded-xl border shadow-2xl flex flex-col overflow-hidden"
         style={{
           backgroundColor: 'var(--bg-modal)',
           borderColor: 'var(--border-color)',
-          color: 'var(--text-primary)'
+          color: 'var(--text-primary)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)'
         }}
       >
         <div className="h-12 px-4 border-b flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border-color)' }}>
@@ -549,36 +609,40 @@ export const ProcessInspectorModal: React.FC<ProcessInspectorModalProps> = ({
             </div>
             <div>
               <h2 className="text-sm font-semibold tracking-tight">System & Runtime Process Monitor</h2>
-              <p className="text-[10px] text-zinc-500 font-mono">Execution Environments & Memory</p>
+              <p className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>Execution Environments & Memory</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded hover:bg-white/10 text-zinc-400 hover:text-white cursor-pointer">
+          <button 
+            onClick={onClose} 
+            className="p-1.5 rounded hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+            style={{ color: 'var(--text-muted)' }}
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="p-4 space-y-4 text-xs">
           <div className="grid grid-cols-3 gap-3">
-            <div className="p-3 rounded-lg border bg-black/20" style={{ borderColor: 'var(--border-color)' }}>
-              <span className="text-[10px] text-zinc-500 block uppercase">Node.js Engine</span>
+            <div className="p-3 rounded-lg border" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
+              <span className="text-[10px] block uppercase" style={{ color: 'var(--text-muted)' }}>Node.js Engine</span>
               <span className="text-sm font-semibold text-emerald-400">v20.12.0 (Active)</span>
             </div>
-            <div className="p-3 rounded-lg border bg-black/20" style={{ borderColor: 'var(--border-color)' }}>
-              <span className="text-[10px] text-zinc-500 block uppercase">Python Virtualenv</span>
+            <div className="p-3 rounded-lg border" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
+              <span className="text-[10px] block uppercase" style={{ color: 'var(--text-muted)' }}>Python Virtualenv</span>
               <span className="text-sm font-semibold text-sky-400">3.12.2 (Detected)</span>
             </div>
-            <div className="p-3 rounded-lg border bg-black/20" style={{ borderColor: 'var(--border-color)' }}>
-              <span className="text-[10px] text-zinc-500 block uppercase">Luau / Lua VM</span>
+            <div className="p-3 rounded-lg border" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
+              <span className="text-[10px] block uppercase" style={{ color: 'var(--text-muted)' }}>Luau / Lua VM</span>
               <span className="text-sm font-semibold text-orange-400">5.1 Sandbox (Ready)</span>
             </div>
           </div>
 
-          <div className="p-3 rounded-lg border space-y-2 bg-black/20" style={{ borderColor: 'var(--border-color)' }}>
-            <span className="text-xs font-semibold text-zinc-200">Active Memory Heap</span>
-            <div className="w-full bg-zinc-800 h-2 rounded-full overflow-hidden">
+          <div className="p-3 rounded-lg border space-y-2" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}>
+            <span className="text-xs font-semibold" style={{ color: 'var(--text-primary)' }}>Active Memory Heap</span>
+            <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--hover-bg)' }}>
               <div className="bg-orange-500 h-full w-[24%]" />
             </div>
-            <div className="flex justify-between text-[11px] font-mono text-zinc-400">
+            <div className="flex justify-between text-[11px] font-mono" style={{ color: 'var(--text-secondary)' }}>
               <span>Used: 142 MB</span>
               <span>Available: 16.0 GB</span>
             </div>
@@ -626,13 +690,19 @@ export const ApiReferenceModal: React.FC<ApiReferenceModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans select-none">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 font-sans select-none"
+      style={{ backgroundColor: 'var(--modal-overlay, rgba(0, 0, 0, 0.45))' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <div 
         className="w-full max-w-2xl max-h-[85vh] rounded-xl border shadow-2xl flex flex-col overflow-hidden"
         style={{
           backgroundColor: 'var(--bg-modal)',
           borderColor: 'var(--border-color)',
-          color: 'var(--text-primary)'
+          color: 'var(--text-primary)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)'
         }}
       >
         <div className="h-12 px-4 border-b flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border-color)' }}>
@@ -640,7 +710,11 @@ export const ApiReferenceModal: React.FC<ApiReferenceModalProps> = ({
             <BookOpen className="w-4 h-4 text-purple-400" />
             <h2 className="text-sm font-semibold">Standard Library Reference</h2>
           </div>
-          <button onClick={onClose} className="p-1 rounded hover:bg-white/10 text-zinc-400 hover:text-white cursor-pointer">
+          <button 
+            onClick={onClose} 
+            className="p-1 rounded hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+            style={{ color: 'var(--text-muted)' }}
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -651,8 +725,11 @@ export const ApiReferenceModal: React.FC<ApiReferenceModalProps> = ({
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-3 py-1.5 text-xs font-medium border-b-2 transition-colors cursor-pointer capitalize ${
-                activeTab === tab ? 'border-orange-500 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                activeTab === tab ? 'border-orange-500 font-semibold' : 'border-transparent hover:opacity-80'
               }`}
+              style={{
+                color: activeTab === tab ? 'var(--accent-primary)' : 'var(--text-secondary)'
+              }}
             >
               {tab}
             </button>
@@ -661,18 +738,27 @@ export const ApiReferenceModal: React.FC<ApiReferenceModalProps> = ({
 
         <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
           {references[activeTab].map(item => (
-            <div key={item.name} className="p-3 rounded-lg border bg-black/20 flex items-start justify-between" style={{ borderColor: 'var(--border-color)' }}>
+            <div 
+              key={item.name} 
+              className="p-3 rounded-lg border flex items-start justify-between" 
+              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-color)' }}
+            >
               <div>
                 <span className="font-mono text-xs font-semibold text-orange-400">{item.name}</span>
-                <span className="font-mono text-[11px] text-zinc-500 block mt-0.5">{item.signature}</span>
-                <p className="text-xs text-zinc-400 mt-1">{item.desc}</p>
+                <span className="font-mono text-[11px] block mt-0.5" style={{ color: 'var(--text-muted)' }}>{item.signature}</span>
+                <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{item.desc}</p>
               </div>
               <button
                 onClick={() => {
                   onInsertSnippet(item.snippet);
                   onClose();
                 }}
-                className="px-2 py-1 rounded text-[11px] bg-white/10 hover:bg-white/20 text-zinc-200 cursor-pointer shrink-0"
+                className="px-2.5 py-1 rounded text-[11px] border cursor-pointer shrink-0 transition-colors hover:opacity-80"
+                style={{
+                  backgroundColor: 'var(--hover-bg)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
               >
                 Insert
               </button>
@@ -706,13 +792,19 @@ export const ShortcutsModal: React.FC<{ isOpen: boolean; onClose: () => void }> 
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans select-none">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 font-sans select-none"
+      style={{ backgroundColor: 'var(--modal-overlay, rgba(0, 0, 0, 0.45))' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <div 
         className="w-full max-w-md rounded-xl border shadow-2xl flex flex-col overflow-hidden"
         style={{
           backgroundColor: 'var(--bg-modal)',
           borderColor: 'var(--border-color)',
-          color: 'var(--text-primary)'
+          color: 'var(--text-primary)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)'
         }}
       >
         <div className="h-12 px-4 border-b flex items-center justify-between shrink-0" style={{ borderColor: 'var(--border-color)' }}>
@@ -720,16 +812,27 @@ export const ShortcutsModal: React.FC<{ isOpen: boolean; onClose: () => void }> 
             <Keyboard className="w-4 h-4 text-amber-400" />
             <h2 className="text-sm font-semibold">Keyboard Shortcuts</h2>
           </div>
-          <button onClick={onClose} className="p-1 rounded hover:bg-white/10 text-zinc-400 hover:text-white cursor-pointer">
+          <button 
+            onClick={onClose} 
+            className="p-1.5 rounded hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+            style={{ color: 'var(--text-muted)' }}
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div className="p-4 space-y-2 overflow-y-auto max-h-[60vh] scrollbar-thin">
           {hotkeys.map(h => (
-            <div key={h.key} className="flex items-center justify-between py-1 border-b" style={{ borderColor: 'var(--border-color)' }}>
-              <span className="text-xs text-zinc-400">{h.desc}</span>
-              <kbd className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/10 text-zinc-200 border border-white/10">
+            <div key={h.key} className="flex items-center justify-between py-1.5 border-b" style={{ borderColor: 'var(--border-color)' }}>
+              <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{h.desc}</span>
+              <kbd 
+                className="px-2 py-0.5 rounded text-[10px] font-mono border"
+                style={{
+                  backgroundColor: 'var(--hover-bg)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+              >
                 {h.key}
               </kbd>
             </div>
@@ -747,26 +850,32 @@ export const AboutModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans select-none">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 font-sans select-none"
+      style={{ backgroundColor: 'var(--modal-overlay, rgba(0, 0, 0, 0.45))' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <div 
         className="w-full max-w-sm rounded-xl border shadow-2xl flex flex-col overflow-hidden p-6 text-center"
         style={{
           backgroundColor: 'var(--bg-modal)',
           borderColor: 'var(--border-color)',
-          color: 'var(--text-primary)'
+          color: 'var(--text-primary)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)'
         }}
       >
         <div className="w-12 h-12 rounded-xl bg-orange-500 mx-auto flex items-center justify-center shadow-lg text-white mb-3">
           <CrystallLogo size={28} />
         </div>
         <h2 className="text-base font-bold">Crystall IDE</h2>
-        <span className="text-xs font-mono text-zinc-500">v1.0.0 Pro • Universal Code Editor</span>
-        <p className="text-xs text-zinc-400 mt-3 leading-relaxed">
+        <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>v1.0.0 Pro • Universal Code Editor</span>
+        <p className="text-xs mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           High-performance modern desktop IDE built for fast coding in Python, TypeScript, JavaScript, Lua, C++, and Web technologies with AI intelligence.
         </p>
         <button
           onClick={onClose}
-          className="mt-5 w-full py-1.5 rounded text-xs font-medium text-white shadow cursor-pointer"
+          className="mt-5 w-full py-1.5 rounded text-xs font-medium text-white shadow cursor-pointer transition-transform active:scale-98 hover:opacity-90"
           style={{ backgroundColor: 'var(--accent-primary)' }}
         >
           Close
@@ -813,14 +922,20 @@ export const AddScriptModal: React.FC<AddScriptModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 font-sans select-none">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm p-4 font-sans select-none"
+      style={{ backgroundColor: 'var(--modal-overlay, rgba(0, 0, 0, 0.45))' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <form 
         onSubmit={handleSubmit}
         className="w-full max-w-md rounded-xl border shadow-2xl flex flex-col overflow-hidden p-4 space-y-3"
         style={{
           backgroundColor: 'var(--bg-modal)',
           borderColor: 'var(--border-color)',
-          color: 'var(--text-primary)'
+          color: 'var(--text-primary)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)'
         }}
       >
         <div className="flex items-center justify-between pb-2 border-b" style={{ borderColor: 'var(--border-color)' }}>
@@ -828,32 +943,45 @@ export const AddScriptModal: React.FC<AddScriptModalProps> = ({
             <Plus className="w-4 h-4 text-orange-400" />
             <span>Add Custom Snippet</span>
           </div>
-          <button type="button" onClick={onClose} className="text-zinc-400 hover:text-white cursor-pointer">
+          <button 
+            type="button" 
+            onClick={onClose} 
+            className="p-1 rounded hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+            style={{ color: 'var(--text-muted)' }}
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <div>
-          <label className="block text-[11px] text-zinc-400 mb-1">Snippet Name</label>
+          <label className="block text-[11px] mb-1" style={{ color: 'var(--text-secondary)' }}>Snippet Name</label>
           <input
             type="text"
             placeholder="e.g. DataCleaner.py, ApiRouter.ts"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-2.5 py-1.5 rounded text-xs border outline-none text-zinc-100 bg-black/30"
-            style={{ borderColor: 'var(--border-color)' }}
+            className="w-full px-2.5 py-1.5 rounded text-xs border outline-none font-sans"
+            style={{
+              backgroundColor: 'var(--input-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-primary)'
+            }}
             required
             autoFocus
           />
         </div>
 
         <div>
-          <label className="block text-[11px] text-zinc-400 mb-1">Language / Category</label>
+          <label className="block text-[11px] mb-1" style={{ color: 'var(--text-secondary)' }}>Language / Category</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-2.5 py-1.5 rounded text-xs border outline-none text-zinc-100 bg-black/30"
-            style={{ borderColor: 'var(--border-color)' }}
+            className="w-full px-2.5 py-1.5 rounded text-xs border outline-none font-sans cursor-pointer"
+            style={{
+              backgroundColor: 'var(--input-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-primary)'
+            }}
           >
             <option value="Python">Python</option>
             <option value="TypeScript">TypeScript</option>
@@ -865,14 +993,18 @@ export const AddScriptModal: React.FC<AddScriptModalProps> = ({
         </div>
 
         <div>
-          <label className="block text-[11px] text-zinc-400 mb-1">Code Content</label>
+          <label className="block text-[11px] mb-1" style={{ color: 'var(--text-secondary)' }}>Code Content</label>
           <textarea
             rows={4}
             placeholder="Enter template code..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full px-2.5 py-1.5 rounded text-xs font-mono border outline-none text-zinc-100 bg-black/30 scrollbar-thin"
-            style={{ borderColor: 'var(--border-color)' }}
+            className="w-full px-2.5 py-1.5 rounded text-xs font-mono border outline-none scrollbar-thin"
+            style={{
+              backgroundColor: 'var(--input-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-primary)'
+            }}
           />
         </div>
 
@@ -880,13 +1012,14 @@ export const AddScriptModal: React.FC<AddScriptModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-1.5 rounded text-xs text-zinc-400 hover:text-white cursor-pointer"
+            className="px-3 py-1.5 rounded text-xs hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+            style={{ color: 'var(--text-secondary)' }}
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-1.5 rounded text-xs font-medium text-white shadow-sm cursor-pointer"
+            className="px-4 py-1.5 rounded text-xs font-medium text-white shadow-sm cursor-pointer transition-transform active:scale-98 hover:opacity-90"
             style={{ backgroundColor: 'var(--accent-primary)' }}
           >
             Save Snippet

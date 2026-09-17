@@ -152,21 +152,39 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
         {parts.map((p, i) => {
           if (p.type === 'text') {
             return (
-              <div key={i} className="text-zinc-200 text-xs leading-relaxed">
+              <div 
+                key={i} 
+                className="text-xs leading-relaxed"
+                style={{ color: 'var(--text-primary)' }}
+              >
                 {renderFormattedText(p.val)}
               </div>
             );
           }
 
           return (
-            <div key={i} className="rounded-md bg-[#08090d] border border-[#1e222d] overflow-hidden my-2 font-mono">
+            <div 
+              key={i} 
+              className="rounded-md overflow-hidden my-2 font-mono border"
+              style={{
+                backgroundColor: 'var(--bg-card)',
+                borderColor: 'var(--border-color)'
+              }}
+            >
               {/* Clean Code Header */}
-              <div className="flex items-center justify-between px-2.5 py-1 bg-[#0f1118] border-b border-[#1b1e28] text-[11px]">
-                <span className="text-zinc-400 lowercase">{p.language}</span>
+              <div 
+                className="flex items-center justify-between px-2.5 py-1 border-b text-[11px]"
+                style={{
+                  backgroundColor: 'var(--hover-bg)',
+                  borderColor: 'var(--border-color)'
+                }}
+              >
+                <span className="lowercase" style={{ color: 'var(--text-muted)' }}>{p.language}</span>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleCopy(p.code, p.id)}
-                    className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-white/5 text-zinc-400 hover:text-zinc-200 transition-colors"
+                    className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer"
+                    style={{ color: 'var(--text-secondary)' }}
                     title="Copy code"
                   >
                     {copiedId === p.id ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
@@ -174,14 +192,20 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
                   </button>
                   <button
                     onClick={() => onApplyCodeToEditor(p.code)}
-                    className="px-2 py-0.5 rounded bg-orange-500/15 text-orange-300 hover:bg-orange-500/25 border border-orange-500/30 transition-colors text-[11px] font-sans"
+                    className="px-2 py-0.5 rounded bg-orange-500/15 text-orange-400 hover:bg-orange-500/25 border border-orange-500/30 transition-colors text-[11px] font-sans cursor-pointer"
                     title="Apply to active tab"
                   >
                     Apply
                   </button>
                 </div>
               </div>
-              <pre className="p-2.5 overflow-x-auto text-xs font-mono text-zinc-200 bg-[#08090d] leading-relaxed">
+              <pre 
+                className="p-2.5 overflow-x-auto text-xs font-mono leading-relaxed"
+                style={{
+                  backgroundColor: 'var(--bg-editor)',
+                  color: 'var(--text-primary)'
+                }}
+              >
                 <code>{p.code}</code>
               </pre>
             </div>
@@ -193,15 +217,26 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
 
   return (
     <div 
-      className="h-full bg-[#0a0c11] border-l border-[#1b1e28] flex flex-col z-30 select-none shadow-2xl font-sans shrink-0"
-      style={{ width: `${width}px` }}
+      className="h-full border-l flex flex-col z-30 select-none shadow-2xl font-sans shrink-0 transition-colors"
+      style={{ 
+        width: `${width}px`,
+        backgroundColor: 'var(--bg-panel)',
+        borderColor: 'var(--border-color)',
+        color: 'var(--text-primary)'
+      }}
     >
       
       {/* Clean Desktop Header */}
-      <div className="h-10 border-b border-[#1b1e28] px-3 flex items-center justify-between bg-[#0d0f15] shrink-0">
+      <div 
+        className="h-10 border-b px-3 flex items-center justify-between shrink-0"
+        style={{
+          backgroundColor: 'var(--bg-header)',
+          borderColor: 'var(--border-color)'
+        }}
+      >
         <div className="flex items-center gap-2">
           <Bot className="w-4 h-4 text-orange-400" />
-          <span className="text-xs font-medium text-zinc-200">Crystall AI</span>
+          <span className="text-xs font-medium" style={{ color: 'var(--text-primary)' }}>Crystall AI</span>
         </div>
 
         {/* Model Selector & Actions */}
@@ -209,7 +244,12 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
           <select
             value={activeProvider}
             onChange={(e) => onChangeProvider(e.target.value as AIProvider)}
-            className="bg-[#08090d] border border-[#1e222e] rounded px-2 py-0.5 text-zinc-300 text-[11px] font-mono focus:outline-none cursor-pointer"
+            className="rounded px-2 py-0.5 text-[11px] font-mono focus:outline-none cursor-pointer border"
+            style={{
+              backgroundColor: 'var(--input-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-primary)'
+            }}
           >
             {Object.entries(PROVIDER_LABELS).map(([k, v]) => (
               <option key={k} value={k}>
@@ -220,7 +260,8 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
 
           <button
             onClick={onClearChat}
-            className="p-1 text-zinc-500 hover:text-zinc-300 rounded hover:bg-white/5 transition-colors"
+            className="p-1 rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer"
+            style={{ color: 'var(--text-muted)' }}
             title="Clear Chat"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -228,7 +269,8 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1 text-zinc-500 hover:text-zinc-300 rounded hover:bg-white/5 transition-colors"
+            className="p-1 rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer"
+            style={{ color: 'var(--text-muted)' }}
             title="Close Panel"
           >
             <X className="w-4 h-4" />
@@ -237,7 +279,7 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
       </div>
 
       {/* Messages Stream */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3 text-xs scrollbar-thin scrollbar-thumb-zinc-800">
+      <div className="flex-1 overflow-y-auto p-3 space-y-3 text-xs scrollbar-thin">
         {messages.map((msg) => {
           const isUser = msg.role === 'user';
           return (
@@ -246,24 +288,33 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
               className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
             >
               <div
-                className={`max-w-[90%] rounded-lg px-3 py-2 text-xs ${
-                  isUser
-                    ? 'bg-[#181a24] text-zinc-100 border border-[#232736]'
-                    : 'bg-[#0e1017] text-zinc-200 border border-[#1b1e28]'
-                }`}
+                className="max-w-[90%] rounded-lg px-3 py-2 text-xs border transition-colors shadow-xs"
+                style={{
+                  backgroundColor: isUser ? 'var(--chat-user-bg)' : 'var(--chat-assistant-bg)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
               >
                 {/* Reasoning Block for DeepSeek R1 */}
                 {!isUser && msg.thinking && (
-                  <div className="mb-2 border-b border-[#1b1e28] pb-1.5">
+                  <div className="mb-2 border-b pb-1.5" style={{ borderColor: 'var(--border-color)' }}>
                     <button
                       onClick={() => setIsThinkingExpanded(!isThinkingExpanded)}
-                      className="flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors font-mono cursor-pointer"
+                      className="flex items-center gap-1 text-[11px] transition-colors font-mono cursor-pointer"
+                      style={{ color: 'var(--text-muted)' }}
                     >
                       {isThinkingExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
                       <span>Reasoning process</span>
                     </button>
                     {isThinkingExpanded && (
-                      <div className="mt-1.5 p-2 rounded bg-black/40 text-[11px] font-mono text-zinc-400 whitespace-pre-wrap leading-relaxed max-h-40 overflow-y-auto">
+                      <div 
+                        className="mt-1.5 p-2 rounded text-[11px] font-mono whitespace-pre-wrap leading-relaxed max-h-40 overflow-y-auto border"
+                        style={{
+                          backgroundColor: 'var(--hover-bg)',
+                          borderColor: 'var(--border-color)',
+                          color: 'var(--text-secondary)'
+                        }}
+                      >
                         {msg.thinking}
                       </div>
                     )}
@@ -279,11 +330,21 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
         {/* Live Streaming State */}
         {isStreaming && (
           <div className="flex flex-col items-start space-y-2">
-            <div className="max-w-[90%] rounded-lg p-3 bg-[#0e1017] border border-[#1b1e28] text-zinc-200">
+            <div 
+              className="max-w-[90%] rounded-lg p-3 border shadow-xs"
+              style={{
+                backgroundColor: 'var(--chat-assistant-bg)',
+                borderColor: 'var(--border-color)',
+                color: 'var(--text-primary)'
+              }}
+            >
               {streamingThinking && (
-                <div className="mb-2 text-[11px] font-mono text-zinc-500 border-b border-[#1b1e28] pb-1.5">
+                <div className="mb-2 text-[11px] font-mono border-b pb-1.5" style={{ borderColor: 'var(--border-color)', color: 'var(--text-muted)' }}>
                   <span className="animate-pulse">Thinking...</span>
-                  <div className="mt-1 text-zinc-400 text-[10px] whitespace-pre-wrap max-h-28 overflow-y-auto">
+                  <div 
+                    className="mt-1 text-[10px] whitespace-pre-wrap max-h-28 overflow-y-auto"
+                    style={{ color: 'var(--text-secondary)' }}
+                  >
                     {streamingThinking}
                   </div>
                 </div>
@@ -292,7 +353,7 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
               {streamingContent ? (
                 renderMessageContent(streamingContent, 'streaming-msg')
               ) : (
-                <div className="text-zinc-500 text-xs font-mono animate-pulse">
+                <div className="text-xs font-mono animate-pulse" style={{ color: 'var(--text-muted)' }}>
                   Generating response...
                 </div>
               )}
@@ -304,49 +365,91 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
       </div>
 
       {/* Action Chips */}
-      <div className="px-3 py-1.5 border-t border-[#181a24] flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-[#0a0c10] text-[11px]">
+      <div 
+        className="px-3 py-1.5 border-t flex items-center gap-1.5 overflow-x-auto no-scrollbar text-[11px] shrink-0"
+        style={{
+          backgroundColor: 'var(--bg-header)',
+          borderColor: 'var(--border-color)'
+        }}
+      >
         <button
           onClick={() => onSendMessage('Find any bugs and fix them:', activeTab.content)}
-          className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-zinc-200 border border-white/5 transition-colors whitespace-nowrap cursor-pointer"
+          className="px-2 py-0.5 rounded border transition-colors whitespace-nowrap cursor-pointer hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]"
+          style={{
+            backgroundColor: 'var(--hover-bg)',
+            borderColor: 'var(--border-color)',
+            color: 'var(--text-secondary)'
+          }}
         >
           Fix Bugs
         </button>
         <button
           onClick={() => onSendMessage('Optimize the performance of this script:', activeTab.content)}
-          className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-zinc-200 border border-white/5 transition-colors whitespace-nowrap cursor-pointer"
+          className="px-2 py-0.5 rounded border transition-colors whitespace-nowrap cursor-pointer hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]"
+          style={{
+            backgroundColor: 'var(--hover-bg)',
+            borderColor: 'var(--border-color)',
+            color: 'var(--text-secondary)'
+          }}
         >
           Optimize
         </button>
         <button
           onClick={() => onSendMessage('Explain how this script works:', activeTab.content)}
-          className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-zinc-200 border border-white/5 transition-colors whitespace-nowrap cursor-pointer"
+          className="px-2 py-0.5 rounded border transition-colors whitespace-nowrap cursor-pointer hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]"
+          style={{
+            backgroundColor: 'var(--hover-bg)',
+            borderColor: 'var(--border-color)',
+            color: 'var(--text-secondary)'
+          }}
         >
           Explain
         </button>
         <button
           onClick={() => onSendMessage('Write test cases for this code:', activeTab.content)}
-          className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-zinc-200 border border-white/5 transition-colors whitespace-nowrap cursor-pointer"
+          className="px-2 py-0.5 rounded border transition-colors whitespace-nowrap cursor-pointer hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]"
+          style={{
+            backgroundColor: 'var(--hover-bg)',
+            borderColor: 'var(--border-color)',
+            color: 'var(--text-secondary)'
+          }}
         >
           Add Tests
         </button>
       </div>
 
       {/* Input Box */}
-      <div className="p-2.5 border-t border-[#1b1e28] bg-[#0c0e14]">
-        <div className="flex items-center justify-between mb-1.5 text-[11px] text-zinc-500 font-sans">
-          <label className="flex items-center gap-1.5 cursor-pointer hover:text-zinc-300">
+      <div 
+        className="p-2.5 border-t shrink-0"
+        style={{
+          backgroundColor: 'var(--bg-panel)',
+          borderColor: 'var(--border-color)'
+        }}
+      >
+        <div className="flex items-center justify-between mb-1.5 text-[11px] font-sans">
+          <label 
+            className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity"
+            style={{ color: 'var(--text-secondary)' }}
+          >
             <input
               type="checkbox"
               checked={includeActiveCode}
               onChange={(e) => setIncludeActiveCode(e.target.checked)}
-              className="rounded bg-[#08090d] border-[#1e222e] text-orange-500 focus:ring-0 cursor-pointer"
+              className="rounded cursor-pointer"
+              style={{ accentColor: 'var(--accent-primary)' }}
             />
             <span>Include {activeTab.name}</span>
           </label>
-          <span className="font-mono text-[10px] text-zinc-600">Enter to send</span>
+          <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Enter to send</span>
         </div>
 
-        <div className="relative flex items-end rounded-lg bg-[#08090d] border border-[#1e222e] focus-within:border-zinc-500 transition-colors p-1.5">
+        <div 
+          className="relative flex items-end rounded-lg border focus-within:border-[var(--accent-primary)]/50 transition-colors p-1.5"
+          style={{
+            backgroundColor: 'var(--chat-input-bg)',
+            borderColor: 'var(--border-color)'
+          }}
+        >
           <textarea
             ref={textareaRef}
             rows={2}
@@ -358,13 +461,14 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
                 ? `Ask about ${activeTab.name}...` 
                 : 'Ask a question or request code...'
             }
-            className="flex-1 bg-transparent text-zinc-200 placeholder-zinc-600 text-xs resize-none focus:outline-none px-1.5 py-1 font-sans"
+            className="flex-1 bg-transparent text-xs resize-none focus:outline-none px-1.5 py-1 font-sans"
+            style={{ color: 'var(--text-primary)' }}
           />
 
           {isStreaming ? (
             <button
               onClick={onStopStreaming}
-              className="p-1.5 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-colors"
+              className="p-1.5 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-colors cursor-pointer"
               title="Stop"
             >
               <Square className="w-3.5 h-3.5 fill-current" />
@@ -373,7 +477,8 @@ export const VibecoderPanel: React.FC<VibecoderPanelProps> = ({
             <button
               onClick={handleSend}
               disabled={!input.trim() && !includeActiveCode}
-              className="p-1.5 rounded bg-[#f97316] hover:bg-[#ea580c] text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              className="p-1.5 rounded text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer shadow-sm hover:opacity-90"
+              style={{ backgroundColor: 'var(--accent-primary)' }}
               title="Send"
             >
               <ArrowUp className="w-3.5 h-3.5" />

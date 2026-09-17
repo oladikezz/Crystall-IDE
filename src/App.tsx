@@ -87,6 +87,12 @@ export default function App() {
     (window as any).__setCrystallTheme = (themeId: CrystallThemeId) => {
       setActiveTheme(themeId);
     };
+    (window as any).__setActiveModal = (modal: ModalType | null) => {
+      setActiveModal(modal);
+    };
+    (window as any).__setIsVibecoderOpen = (open: boolean) => {
+      setIsVibecoderOpen(open);
+    };
   }, []);
 
   // Editor Settings State
@@ -880,8 +886,8 @@ export default function App() {
 
   return (
     <div 
-      className="crystall-app-shell relative flex flex-col h-full w-full overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] select-none"
-      style={{ backgroundColor: 'var(--bg-app)' }}
+      className="crystall-app-shell relative flex flex-col h-full w-full overflow-hidden font-sans theme-transition border border-[var(--border-color)] select-none"
+      style={{ backgroundColor: 'var(--bg-app)', color: 'var(--text-primary)' }}
     >
       {/* iOS Liquid Glass Specular Reflection Layer */}
       {isTransparentTheme && (

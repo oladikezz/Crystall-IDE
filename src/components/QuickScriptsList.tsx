@@ -129,11 +129,11 @@ export const QuickScriptsList: React.FC<QuickScriptsListProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-zinc-500">{filtered.length} items</span>
+          <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{filtered.length} items</span>
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             className={`p-1 rounded transition-colors cursor-pointer ${
-              isSearchOpen ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/10'
+              isSearchOpen ? 'bg-[var(--accent-primary)] text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]'
             }`}
             title="Search Snippets"
           >
@@ -154,7 +154,7 @@ export const QuickScriptsList: React.FC<QuickScriptsListProps> = ({
             className={`px-2 py-0.5 rounded-full text-[10px] whitespace-nowrap transition-colors cursor-pointer border ${
               selectedCategory === cat
                 ? 'bg-orange-500 text-white border-orange-400 font-medium'
-                : 'border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                : 'border-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]'
             }`}
           >
             {cat}
@@ -164,18 +164,19 @@ export const QuickScriptsList: React.FC<QuickScriptsListProps> = ({
 
       {/* Optional Search Bar */}
       {isSearchOpen && (
-        <div className="px-2 py-1.5 border-b flex items-center gap-1.5 shrink-0" style={{ borderColor: 'var(--border-color)' }}>
-          <Search className="w-3 h-3 text-zinc-500" />
+        <div className="px-2 py-1.5 border-b flex items-center gap-1.5 shrink-0" style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--hover-bg)' }}>
+          <Search className="w-3 h-3" style={{ color: 'var(--text-muted)' }} />
           <input
             type="text"
             placeholder="Search templates..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 bg-transparent text-[11px] outline-none text-zinc-200 placeholder-zinc-600 font-sans"
+            className="flex-1 bg-transparent text-[11px] outline-none font-sans"
+            style={{ color: 'var(--text-primary)' }}
             autoFocus
           />
           {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="text-zinc-500 hover:text-white cursor-pointer">
+            <button onClick={() => setSearchQuery('')} className="cursor-pointer" style={{ color: 'var(--text-muted)' }}>
               <X className="w-3 h-3" />
             </button>
           )}
@@ -189,7 +190,7 @@ export const QuickScriptsList: React.FC<QuickScriptsListProps> = ({
             <div
               key={script.id}
               onClick={() => handleScriptClick(script)}
-              className="flex items-center justify-between px-2.5 py-1.5 rounded transition-all cursor-pointer group hover:bg-white/5 border border-transparent hover:border-[var(--border-color)]"
+              className="flex items-center justify-between px-2.5 py-1.5 rounded transition-all cursor-pointer group hover:bg-[var(--hover-bg)] border border-transparent hover:border-[var(--border-color)]"
               style={{
                 backgroundColor: 'var(--hover-bg)'
               }}
@@ -218,9 +219,10 @@ export const QuickScriptsList: React.FC<QuickScriptsListProps> = ({
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={(e) => handleExecute(e, script)}
-                  className="w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer text-white shadow-sm hover:scale-110 active:scale-95"
+                  className="w-5 h-5 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-110 active:scale-95"
                   style={{
-                    backgroundColor: script.isStarred ? 'var(--accent-primary)' : 'rgba(255, 255, 255, 0.12)'
+                    backgroundColor: script.isStarred ? 'var(--accent-primary)' : 'var(--border-color)',
+                    color: script.isStarred ? '#ffffff' : 'var(--text-primary)'
                   }}
                   title={`Insert & Run ${script.name}`}
                 >

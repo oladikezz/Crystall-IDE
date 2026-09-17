@@ -54,11 +54,16 @@ export const StatusBar: React.FC<StatusBarProps> = ({
           title="GitHub: oladikezz/Crystall-IDE"
         >
           <div 
-            className="w-[18px] h-[18px] rounded-[4px] flex items-center justify-center bg-black/60 border border-white/10 text-white group-hover:border-orange-500/50 transition-colors"
+            className="w-[18px] h-[18px] rounded-[4px] flex items-center justify-center border group-hover:border-orange-500/50 transition-colors"
+            style={{
+              backgroundColor: 'var(--hover-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-primary)'
+            }}
           >
             <CrystallLogo size={13} />
           </div>
-          <span className="font-mono text-[11px] text-zinc-300 group-hover:text-white transition-colors">
+          <span className="font-mono text-[11px] group-hover:text-orange-500 transition-colors" style={{ color: 'var(--text-primary)' }}>
             Crystall IDE
           </span>
         </a>
@@ -67,7 +72,7 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         <span 
           className="font-mono text-[10px] px-1.5 py-0.5 rounded border select-none"
           style={{ 
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            backgroundColor: 'var(--hover-bg)',
             borderColor: 'var(--border-color)',
             color: 'var(--text-muted)'
           }}
@@ -77,20 +82,20 @@ export const StatusBar: React.FC<StatusBarProps> = ({
       </div>
 
       {/* Right: Total lines | Execution Time | FPS | Theme Switcher */}
-      <div className="flex items-center gap-4 text-[11px] font-mono text-zinc-400">
+      <div className="flex items-center gap-4 text-[11px] font-mono" style={{ color: 'var(--text-secondary)' }}>
         <div className="flex items-center gap-1">
-          <span className="text-zinc-500">Total Lines:</span>
-          <span className="text-zinc-300 font-medium">{lineCount}</span>
+          <span style={{ color: 'var(--text-muted)' }}>Total Lines:</span>
+          <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{lineCount}</span>
         </div>
 
         <div className="flex items-center gap-1">
-          <span className="text-zinc-500">Execution Time:</span>
-          <span className="text-zinc-300 font-medium">{execTime}s</span>
+          <span style={{ color: 'var(--text-muted)' }}>Execution Time:</span>
+          <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{execTime}s</span>
         </div>
 
         <div className="flex items-center gap-1">
-          <span className="text-zinc-500">FPS:</span>
-          <span className="text-zinc-300 font-medium">60</span>
+          <span style={{ color: 'var(--text-muted)' }}>FPS:</span>
+          <span className="font-medium" style={{ color: 'var(--text-primary)' }}>60</span>
         </div>
 
         {/* Theme badge toggle */}

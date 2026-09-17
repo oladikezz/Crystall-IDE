@@ -185,61 +185,62 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               >
                 <button 
                   onClick={() => { onNewFile(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <FileCode className="w-3.5 h-3.5 text-zinc-400" />
+                    <FileCode className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>New File</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+N</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+N</span>
                 </button>
                 <button 
                   onClick={() => { onOpenFile(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <FolderOpen className="w-3.5 h-3.5 text-zinc-400" />
+                    <FolderOpen className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Open File...</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+O</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+O</span>
                 </button>
                 {onOpenFolder && (
                   <button 
                     onClick={() => { onOpenFolder(); setActiveMenu(null); }}
-                    className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                    className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <FolderOpen className="w-3.5 h-3.5 text-amber-400" />
                       <span>Open Folder / Project...</span>
                     </div>
-                    <span className="text-zinc-500 font-mono text-[10px]">Ctrl+K Ctrl+O</span>
+                    <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+K Ctrl+O</span>
                   </button>
                 )}
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { onSaveFile(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Save className="w-3.5 h-3.5 text-zinc-400" />
+                    <Save className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Save File</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+S</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+S</span>
                 </button>
                 <button 
                   onClick={() => { onSaveAsFile(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Save className="w-3.5 h-3.5 text-zinc-400" />
+                    <Save className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Save As...</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+Shift+S</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+Shift+S</span>
                 </button>
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { onClear(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer text-zinc-400 hover:text-white"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Clear Active Buffer</span>
@@ -247,7 +248,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { handleClose(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between text-red-400 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between text-red-400 cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <LogOut className="w-3.5 h-3.5" />
@@ -282,95 +283,95 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               >
                 <button 
                   onClick={() => { onUndo(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Undo2 className="w-3.5 h-3.5 text-zinc-400" />
+                    <Undo2 className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Undo</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+Z</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+Z</span>
                 </button>
                 <button 
                   onClick={() => { onRedo(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Redo2 className="w-3.5 h-3.5 text-zinc-400" />
+                    <Redo2 className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Redo</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+Y</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+Y</span>
                 </button>
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { onCut(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Scissors className="w-3.5 h-3.5 text-zinc-400" />
+                    <Scissors className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Cut</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+X</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+X</span>
                 </button>
                 <button 
                   onClick={() => { onCopy(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Copy className="w-3.5 h-3.5 text-zinc-400" />
+                    <Copy className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Copy</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+C</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+C</span>
                 </button>
                 <button 
                   onClick={() => { onPaste(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <ClipboardPaste className="w-3.5 h-3.5 text-zinc-400" />
+                    <ClipboardPaste className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Paste</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+V</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+V</span>
                 </button>
                 <button 
                   onClick={() => { onSelectAll(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <FileText className="w-3.5 h-3.5 text-zinc-400" />
+                    <FileText className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Select All</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+A</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+A</span>
                 </button>
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { onFind(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Search className="w-3.5 h-3.5 text-zinc-400" />
+                    <Search className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Find in File</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+F</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+F</span>
                 </button>
                 <button 
                   onClick={() => { onReplace(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Replace className="w-3.5 h-3.5 text-zinc-400" />
+                    <Replace className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Replace</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+H</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+H</span>
                 </button>
                 <button 
                   onClick={() => { onFormatCode(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-orange-400" />
                     <span>Format Code</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Shift+Alt+F</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Shift+Alt+F</span>
                 </button>
               </div>
             )}
@@ -399,37 +400,40 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               >
                 <button 
                   onClick={() => { onToggleVibecoder(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <Bot className="w-3.5 h-3.5 text-orange-400" />
                     <span>AI Assistant Panel</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+I</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+I</span>
                 </button>
                 <button 
                   onClick={() => { onToggleExplorer(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Layers className="w-3.5 h-3.5 text-zinc-400" />
+                    <Layers className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Project Explorer</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+B</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+B</span>
                 </button>
                 <button 
                   onClick={() => { onToggleConsole(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Terminal className="w-3.5 h-3.5 text-zinc-400" />
+                    <Terminal className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Terminal & Output</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+`</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+`</span>
                 </button>
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
-                <div className="px-3 py-1 text-[10px] uppercase tracking-wider font-semibold font-mono text-zinc-500">
-                  Figma Themes (6)
+                <div 
+                  className="px-3 py-1 text-[10px] uppercase tracking-wider font-semibold font-mono"
+                  style={{ color: 'var(--text-muted)' }}
+                >
+                  Figma Themes (4)
                 </div>
                 {FIGMA_THEMES.map((thm) => (
                   <button
@@ -438,7 +442,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                       onSelectTheme(thm.id);
                       setActiveMenu(null);
                     }}
-                    className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                    className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                   >
                     <div className="flex items-center gap-2">
                       <span 
@@ -479,44 +483,46 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               >
                 <button 
                   onClick={() => { onExecute(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <Play className="w-3.5 h-3.5 text-orange-400 fill-current" />
                     <span>Run Program / Script</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">F5</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>F5</span>
                 </button>
                 <button 
                   onClick={() => { onExecuteSelection(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
-                    <Play className="w-3.5 h-3.5 text-zinc-400" />
+                    <Play className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                     <span>Run Selection</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">Ctrl+Enter</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>Ctrl+Enter</span>
                 </button>
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { onAttach(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center justify-between cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex items-center gap-2">
                     <Zap className="w-3.5 h-3.5 text-amber-400 fill-current" />
                     <span>{isInjected ? 'Connected Runtime' : 'Connect / Attach Runtime'}</span>
                   </div>
-                  <span className="text-zinc-500 font-mono text-[10px]">F6</span>
+                  <span className="font-mono text-[10px]" style={{ color: 'var(--text-muted)' }}>F6</span>
                 </button>
                 <button 
                   onClick={() => { onClearAndExecute(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 cursor-pointer text-zinc-300"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+                  style={{ color: 'var(--text-primary)' }}
                 >
                   Clear Output & Run
                 </button>
                 <button 
                   onClick={() => { onCopy(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 cursor-pointer text-zinc-300"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
+                  style={{ color: 'var(--text-primary)' }}
                 >
                   Copy Code to Clipboard
                 </button>
@@ -547,21 +553,21 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               >
                 <button 
                   onClick={() => { onOpenModal('scripthub'); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <Layers className="w-3.5 h-3.5 text-orange-400" />
                   <span>Code Snippets & Templates Hub</span>
                 </button>
                 <button 
                   onClick={() => { onOpenModal('bytecode'); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <Cpu className="w-3.5 h-3.5 text-emerald-400" />
                   <span>AST & Bytecode Inspector</span>
                 </button>
                 <button 
                   onClick={() => { onOpenModal('process'); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <Activity className="w-3.5 h-3.5 text-sky-400" />
                   <span>System & Process Monitor</span>
@@ -569,16 +575,18 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { onFormatCode(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer text-zinc-300"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
+                  style={{ color: 'var(--text-primary)' }}
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   <span>Format Code</span>
                 </button>
                 <button 
                   onClick={() => { onMinifyCode(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer text-zinc-300"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
+                  style={{ color: 'var(--text-primary)' }}
                 >
-                  <Scissors className="w-3.5 h-3.5 text-zinc-400" />
+                  <Scissors className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                   <span>Minify Code</span>
                 </button>
               </div>
@@ -619,21 +627,21 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               >
                 <button 
                   onClick={() => { onOpenModal('apiref'); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <BookOpen className="w-3.5 h-3.5 text-purple-400" />
                   <span>Standard Library Reference (Py/JS/Lua)</span>
                 </button>
                 <button 
                   onClick={() => { onOpenModal('shortcuts'); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <Keyboard className="w-3.5 h-3.5 text-amber-400" />
                   <span>Keyboard Shortcuts</span>
                 </button>
                 <button 
                   onClick={() => { onCheckUpdates(); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
                 >
                   <RefreshCw className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Check for Updates</span>
@@ -641,9 +649,9 @@ export const TitleBar: React.FC<TitleBarProps> = ({
                 <div className="h-px my-1" style={{ backgroundColor: 'var(--border-color)' }} />
                 <button 
                   onClick={() => { onOpenModal('about'); setActiveMenu(null); }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-white/5 flex items-center gap-2 cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] flex items-center gap-2 cursor-pointer transition-colors"
                 >
-                  <Info className="w-3.5 h-3.5 text-zinc-400" />
+                  <Info className="w-3.5 h-3.5" style={{ color: 'var(--text-secondary)' }} />
                   <span>About Crystall IDE</span>
                 </button>
               </div>
@@ -664,7 +672,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
         {/* Window controls */}
         <button
           onClick={handleMinimize}
-          className="w-8 h-7 flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
+          className="w-8 h-7 flex items-center justify-center hover:bg-[var(--hover-bg)] transition-colors cursor-pointer"
           style={{ color: 'var(--text-secondary)' }}
           title="Minimize"
         >
@@ -672,7 +680,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
         </button>
         <button
           onClick={handleMaximize}
-          className="w-8 h-7 flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer"
+          className="w-8 h-7 flex items-center justify-center hover:bg-[var(--hover-bg)] transition-colors cursor-pointer"
           style={{ color: 'var(--text-secondary)' }}
           title="Maximize"
         >

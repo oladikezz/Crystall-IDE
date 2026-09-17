@@ -503,11 +503,11 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
                 className={`group relative flex items-center gap-1.5 h-7 px-2.5 rounded text-xs transition-all cursor-pointer select-none border ${
                   isActive 
                     ? 'border-t-2 font-medium shadow-sm' 
-                    : 'border-transparent text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                    : 'border-transparent hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]'
                 }`}
                 style={{
                   backgroundColor: isActive ? 'var(--bg-editor)' : 'transparent',
-                  color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
+                  color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
                   borderTopColor: isActive ? 'var(--accent-primary)' : 'transparent',
                   borderColor: isActive ? 'var(--border-color)' : 'transparent'
                 }}
@@ -523,7 +523,8 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
                       if (e.key === 'Enter') handleFinishRename(tab.id);
                       if (e.key === 'Escape') setEditingTabId(null);
                     }}
-                    className="bg-transparent text-xs font-sans outline-none w-20 text-zinc-100 border-b border-orange-500"
+                    className="bg-transparent text-xs font-sans outline-none w-20 border-b border-orange-500"
+                    style={{ color: 'var(--text-primary)' }}
                     onClick={(e) => e.stopPropagation()}
                   />
                 ) : (
@@ -536,7 +537,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
                       e.stopPropagation();
                       onCloseTab(tab.id);
                     }}
-                    className={`p-0.5 rounded hover:bg-white/10 hover:text-red-400 transition-opacity ml-1 ${
+                    className={`p-0.5 rounded hover:bg-[var(--hover-bg)] hover:text-red-400 transition-opacity ml-1 ${
                       isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                     }`}
                     title="Close Tab"
@@ -550,7 +551,8 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
 
           <button
             onClick={onNewTab}
-            className="w-6 h-6 flex items-center justify-center rounded hover:bg-white/5 transition-colors cursor-pointer text-zinc-400 hover:text-zinc-200 ml-0.5 shrink-0"
+            className="w-6 h-6 flex items-center justify-center rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer ml-0.5 shrink-0 hover:text-[var(--text-primary)]"
+            style={{ color: 'var(--text-secondary)' }}
             title="New File (Ctrl+N)"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -572,7 +574,12 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
           {/* 2. Circular Clear Button */}
           <button
             onClick={onClear}
-            className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all cursor-pointer text-zinc-400 hover:text-white"
+            className="flex items-center justify-center w-[26px] h-[26px] rounded-full border transition-all cursor-pointer hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]"
+            style={{
+              backgroundColor: 'var(--hover-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-secondary)'
+            }}
             title="Clear Editor"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -581,7 +588,12 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
           {/* 3. Circular Save Button */}
           <button
             onClick={onSave}
-            className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all cursor-pointer text-zinc-400 hover:text-white"
+            className="flex items-center justify-center w-[26px] h-[26px] rounded-full border transition-all cursor-pointer hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]"
+            style={{
+              backgroundColor: 'var(--hover-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-secondary)'
+            }}
             title="Save File (Ctrl+S)"
           >
             <Save className="w-3.5 h-3.5" />
@@ -590,7 +602,12 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
           {/* 4. Circular Copy Button */}
           <button
             onClick={handleCopy}
-            className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all cursor-pointer text-zinc-400 hover:text-white"
+            className="flex items-center justify-center w-[26px] h-[26px] rounded-full border transition-all cursor-pointer hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]"
+            style={{
+              backgroundColor: 'var(--hover-bg)',
+              borderColor: 'var(--border-color)',
+              color: 'var(--text-secondary)'
+            }}
             title="Copy Code"
           >
             <Copy className="w-3.5 h-3.5" />
@@ -619,7 +636,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
               }
               setContextMenu(null);
             }}
-            className="w-full text-left px-3 py-1.5 hover:bg-white/5 cursor-pointer"
+            className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
           >
             Rename Tab
           </button>
@@ -628,7 +645,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
               onDuplicateTab(contextMenu.tabId);
               setContextMenu(null);
             }}
-            className="w-full text-left px-3 py-1.5 hover:bg-white/5 cursor-pointer"
+            className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] cursor-pointer transition-colors"
           >
             Duplicate Tab
           </button>
@@ -638,7 +655,7 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
               onCloseTab(contextMenu.tabId);
               setContextMenu(null);
             }}
-            className="w-full text-left px-3 py-1.5 hover:bg-white/5 text-red-400 cursor-pointer"
+            className="w-full text-left px-3 py-1.5 hover:bg-[var(--hover-bg)] text-red-400 cursor-pointer transition-colors"
           >
             Close Tab
           </button>

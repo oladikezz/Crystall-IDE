@@ -180,19 +180,21 @@ export const OutputRunner: React.FC<OutputRunnerProps> = ({
         {/* Right side: Search, Copy, Clear */}
         <div className="flex items-center gap-1">
           {isSearchOpen ? (
-            <div className="flex items-center gap-1 bg-black/20 px-2 py-0.5 rounded border border-[var(--border-color)]">
-              <Search className="w-3 h-3 text-zinc-500" />
+            <div className="flex items-center gap-1 bg-[var(--input-bg)] px-2 py-0.5 rounded border border-[var(--border-color)]">
+              <Search className="w-3 h-3" style={{ color: 'var(--text-muted)' }} />
               <input
                 type="text"
                 autoFocus
                 value={searchFilter}
                 onChange={(e) => setSearchFilter(e.target.value)}
                 placeholder="Filter logs..."
-                className="bg-transparent text-[11px] font-mono outline-none text-zinc-200 w-24"
+                className="bg-transparent text-[11px] font-mono outline-none w-24"
+                style={{ color: 'var(--text-primary)' }}
               />
               <button 
                 onClick={() => { setIsSearchOpen(false); setSearchFilter(''); }}
-                className="text-zinc-500 hover:text-white text-[10px]"
+                className="text-[10px] cursor-pointer"
+                style={{ color: 'var(--text-muted)' }}
               >
                 ✕
               </button>
@@ -200,7 +202,7 @@ export const OutputRunner: React.FC<OutputRunnerProps> = ({
           ) : (
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-1 rounded hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-white"
+              className="p-1 rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               title="Search logs"
             >
               <Search className="w-3.5 h-3.5" />
@@ -209,7 +211,7 @@ export const OutputRunner: React.FC<OutputRunnerProps> = ({
 
           <button
             onClick={handleCopyLogs}
-            className="p-1 rounded hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-white"
+            className="p-1 rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             title="Copy Output"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -217,7 +219,7 @@ export const OutputRunner: React.FC<OutputRunnerProps> = ({
 
           <button
             onClick={onClearLogs}
-            className="p-1 rounded hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-white"
+            className="p-1 rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             title="Clear Output"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -231,11 +233,11 @@ export const OutputRunner: React.FC<OutputRunnerProps> = ({
         className="flex-1 overflow-y-auto p-2.5 font-mono text-[11px] leading-relaxed space-y-1 scrollbar-thin"
       >
         {filteredLogs.length === 0 ? (
-          <div className="text-zinc-500 text-[11px] italic py-2">No output logs recorded.</div>
+          <div className="text-[11px] italic py-2" style={{ color: 'var(--text-muted)' }}>No output logs recorded.</div>
         ) : (
           filteredLogs.map(log => (
-            <div key={log.id} className="flex items-start gap-2 hover:bg-white/5 px-1.5 py-0.5 rounded transition-colors">
-              <span className="text-zinc-500">[{log.timestamp}]</span>
+            <div key={log.id} className="flex items-start gap-2 hover:bg-[var(--hover-bg)] px-1.5 py-0.5 rounded transition-colors">
+              <span style={{ color: 'var(--text-muted)' }}>[{log.timestamp}]</span>
               {getLogBadge(log.type)}
               <span style={{ color: 'var(--text-primary)' }}>{log.message}</span>
             </div>

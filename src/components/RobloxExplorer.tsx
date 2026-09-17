@@ -117,8 +117,8 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
                 isSpecial && isSelected
                   ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-medium'
                   : isSelected 
-                    ? 'hover:bg-white/5 font-medium' 
-                    : 'hover:bg-white/5'
+                    ? 'hover:bg-[var(--hover-bg)] font-medium' 
+                    : 'hover:bg-[var(--hover-bg)]'
               }`}
               style={{
                 paddingLeft: `${depth * 14 + 6}px`,
@@ -133,7 +133,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
               {hasChildren ? (
                 <button
                   onClick={(e) => toggleExpand(node.id, e)}
-                  className="p-0.5 rounded hover:bg-white/10"
+                  className="p-0.5 rounded hover:bg-[var(--hover-bg)]"
                   style={{ color: 'var(--text-muted)' }}
                 >
                   {isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
@@ -191,7 +191,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
               className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
                 mode === 'project' 
                   ? 'bg-orange-500 text-white font-medium shadow-xs' 
-                  : 'text-zinc-400 hover:text-white'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
               title="Project Files (Python, TS, C++, Web)"
             >
@@ -202,7 +202,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
               className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer ${
                 mode === 'game' 
                   ? 'bg-orange-500 text-white font-medium shadow-xs' 
-                  : 'text-zinc-400 hover:text-white'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
               }`}
               title="Game / Roblox Hierarchy"
             >
@@ -214,7 +214,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
           {onNewFile && mode === 'project' && (
             <button
               onClick={onNewFile}
-              className="p-1 rounded hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-white"
+              className="p-1 rounded hover:bg-[var(--hover-bg)] transition-colors cursor-pointer text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               title="New File (Ctrl+N)"
             >
               <Plus className="w-3 h-3" />
@@ -225,7 +225,7 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
           <button 
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             className={`p-1 rounded transition-colors cursor-pointer ${
-              isSearchOpen ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/10'
+              isSearchOpen ? 'bg-[var(--accent-primary)] text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--hover-bg)]'
             }`}
             title={mode === 'project' ? 'Search Files' : 'Search Instances'}
           >
@@ -236,18 +236,19 @@ export const RobloxExplorer: React.FC<RobloxExplorerProps> = ({
 
       {/* Optional Search Bar */}
       {isSearchOpen && (
-        <div className="px-2 py-1.5 border-b flex items-center gap-1.5 shrink-0" style={{ borderColor: 'var(--border-color)' }}>
-          <Search className="w-3 h-3 text-zinc-500" />
+        <div className="px-2 py-1.5 border-b flex items-center gap-1.5 shrink-0" style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--hover-bg)' }}>
+          <Search className="w-3 h-3" style={{ color: 'var(--text-muted)' }} />
           <input
             type="text"
             placeholder={mode === 'project' ? "Search files..." : "Search instances..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 bg-transparent text-[11px] outline-none text-zinc-200 placeholder-zinc-600 font-sans"
+            className="flex-1 bg-transparent text-[11px] outline-none font-sans"
+            style={{ color: 'var(--text-primary)' }}
             autoFocus
           />
           {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="text-zinc-500 hover:text-white cursor-pointer">
+            <button onClick={() => setSearchQuery('')} className="cursor-pointer" style={{ color: 'var(--text-muted)' }}>
               <X className="w-3 h-3" />
             </button>
           )}

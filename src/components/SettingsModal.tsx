@@ -242,7 +242,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center p-4 select-none font-sans transition-colors duration-200"
       style={{
-        backgroundColor: isLight ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.45)',
+        backgroundColor: 'var(--modal-overlay)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)'
       }}
@@ -692,7 +692,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         onChange={(e) => onUpdateEditorSettings({ wordWrap: e.target.checked })}
                         className="sr-only peer"
                       />
-                      <div className="w-9 h-5 bg-zinc-700/60 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)]"></div>
+                      <div className={`w-9 h-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)] ${isLight ? 'bg-zinc-300' : 'bg-zinc-700/60'}`}></div>
                     </label>
                   </div>
 
@@ -715,7 +715,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         onChange={(e) => onUpdateEditorSettings({ minimap: e.target.checked })}
                         className="sr-only peer"
                       />
-                      <div className="w-9 h-5 bg-zinc-700/60 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)]"></div>
+                      <div className={`w-9 h-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)] ${isLight ? 'bg-zinc-300' : 'bg-zinc-700/60'}`}></div>
                     </label>
                   </div>
 
@@ -738,7 +738,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         onChange={(e) => onUpdateEditorSettings({ lineNumbers: e.target.checked })}
                         className="sr-only peer"
                       />
-                      <div className="w-9 h-5 bg-zinc-700/60 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)]"></div>
+                      <div className={`w-9 h-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)] ${isLight ? 'bg-zinc-300' : 'bg-zinc-700/60'}`}></div>
                     </label>
                   </div>
 
@@ -764,7 +764,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         onChange={(e) => onUpdateEditorSettings({ soundEffects: e.target.checked })}
                         className="sr-only peer"
                       />
-                      <div className="w-9 h-5 bg-zinc-700/60 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)]"></div>
+                      <div className={`w-9 h-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)] ${isLight ? 'bg-zinc-300' : 'bg-zinc-700/60'}`}></div>
                     </label>
                   </div>
 
@@ -787,7 +787,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         onChange={(e) => onUpdateEditorSettings({ alwaysOnTop: e.target.checked })}
                         className="sr-only peer"
                       />
-                      <div className="w-9 h-5 bg-zinc-700/60 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)]"></div>
+                      <div className={`w-9 h-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[var(--accent-primary)] ${isLight ? 'bg-zinc-300' : 'bg-zinc-700/60'}`}></div>
                     </label>
                   </div>
                 </div>
