@@ -883,14 +883,14 @@ export default function App() {
       className="crystall-app-shell relative flex flex-col h-full w-full overflow-hidden text-zinc-100 font-sans theme-transition border border-[var(--border-color)] select-none"
       style={{ backgroundColor: 'var(--bg-app)' }}
     >
-      {/* Pure Frosted Glass / Acrylic Layer for Transparent Themes (No static photo wallpapers) */}
+      {/* iOS Liquid Glass Specular Reflection Layer */}
       {isTransparentTheme && (
         <div 
-          className="absolute inset-0 pointer-events-none z-0 transition-opacity duration-300 backdrop-blur-3xl"
+          className="absolute inset-0 pointer-events-none z-0 transition-opacity duration-300"
           style={{ 
             background: isLightTheme
-              ? 'radial-gradient(ellipse at 50% 0%, rgba(234, 88, 12, 0.05), transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(226, 232, 240, 0.6), transparent 70%)'
-              : 'radial-gradient(ellipse at 50% 0%, rgba(249, 115, 22, 0.07), transparent 60%), radial-gradient(ellipse at 80% 100%, rgba(30, 41, 59, 0.45), transparent 70%)'
+              ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.12) 40%, rgba(240, 245, 255, 0.22) 100%)'
+              : 'linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0.12) 100%)'
           }}
         />
       )}

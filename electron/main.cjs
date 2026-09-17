@@ -32,6 +32,11 @@ function createWindow() {
       mainWindow.setBackgroundMaterial('acrylic');
     } catch {}
   }
+  if (typeof mainWindow.setVibrancy === 'function') {
+    try {
+      mainWindow.setVibrancy('under-window');
+    } catch {}
+  }
 
   const indexPath = path.join(__dirname, '../dist/index.html');
   mainWindow.loadFile(indexPath);
@@ -73,10 +78,17 @@ ipcMain.handle('window-set-always-on-top', (event, flag) => {
 });
 
 ipcMain.on('window-set-theme-mode', (event, { isTransparent }) => {
-  if (mainWindow && typeof mainWindow.setBackgroundMaterial === 'function') {
-    try {
-      mainWindow.setBackgroundMaterial(isTransparent ? 'acrylic' : 'none');
-    } catch {}
+  if (mainWindow) {
+    if (typeof mainWindow.setBackgroundMaterial === 'function') {
+      try {
+        mainWindow.setBackgroundMaterial(isTransparent ? 'acrylic' : 'none');
+      } catch {}
+    }
+    if (typeof mainWindow.setVibrancy === 'function') {
+      try {
+        mainWindow.setVibrancy(isTransparent ? 'under-window' : null);
+      } catch {}
+    }
   }
 });
 

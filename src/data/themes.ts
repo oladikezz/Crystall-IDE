@@ -47,49 +47,49 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
     }
   },
 
-  // 2. ЧЕРНЫЙ ПРОЗРАЧНЫЙ (Dark Transparent / Glass)
+  // 2. ЧЕРНЫЙ ПРОЗРАЧНЫЙ (Dark Liquid Glass / iOS Glass)
   'dark-transparent': {
     id: 'dark-transparent',
     versionBadge: 'Черный прозрачный',
     styleVariant: 'Прозрачный',
     name: 'Черный прозрачный',
-    subtitle: 'Acrylic Glass Dark',
+    subtitle: 'iOS Liquid Glass Dark',
     category: 'glass',
-    description: 'Оригинальная тёмная прозрачная тема (Acrylic Glass). Прозрачный матовый интерфейс со стильным размытием (Blur).',
+    description: 'Ультра-прозрачное жидкое стекло в стиле iOS (Apple Liquid Glass). Настоящая прозрачность с глубоким размытием фона (Apple Blur), зеркальными бликами и отражениями.',
     previewColors: {
-      bg: '#080c14',
-      panel: 'rgba(14, 18, 28, 0.72)',
+      bg: 'rgba(10, 14, 23, 0.22)',
+      panel: 'rgba(255, 255, 255, 0.05)',
       accent: '#f97316',
       text: '#ffffff',
-      border: 'rgba(255, 255, 255, 0.18)'
+      border: 'rgba(255, 255, 255, 0.16)'
     },
     monacoTheme: 'crystall-dark-v2',
     cssVars: {
-      '--bg-app': 'rgba(10, 13, 20, 0.70)',
-      '--bg-header': 'rgba(12, 16, 26, 0.78)',
-      '--bg-editor': 'rgba(8, 11, 18, 0.58)',
-      '--bg-panel': 'rgba(14, 19, 30, 0.72)',
-      '--bg-card': 'rgba(255, 255, 255, 0.08)',
-      '--bg-statusbar': 'rgba(8, 11, 18, 0.84)',
-      '--bg-modal': 'rgba(12, 17, 28, 0.90)',
-      '--border-color': 'rgba(255, 255, 255, 0.16)',
+      '--bg-app': 'rgba(10, 14, 23, 0.22)',
+      '--bg-header': 'rgba(255, 255, 255, 0.03)',
+      '--bg-editor': 'transparent',
+      '--bg-panel': 'rgba(0, 0, 0, 0.10)',
+      '--bg-card': 'rgba(255, 255, 255, 0.06)',
+      '--bg-statusbar': 'rgba(0, 0, 0, 0.16)',
+      '--bg-modal': 'rgba(12, 17, 28, 0.82)',
+      '--border-color': 'rgba(255, 255, 255, 0.12)',
       '--text-primary': '#ffffff',
-      '--text-secondary': '#e2e8f0',
+      '--text-secondary': '#cbd5e1',
       '--text-muted': '#94a3b8',
       '--accent-primary': '#f97316',
       '--accent-hover': '#fb923c',
-      '--accent-glow': 'rgba(249, 115, 22, 0.40)',
-      '--hover-bg': 'rgba(255, 255, 255, 0.10)',
+      '--accent-glow': 'rgba(249, 115, 22, 0.45)',
+      '--hover-bg': 'rgba(255, 255, 255, 0.08)',
       '--status-badge-bg': 'rgba(249, 115, 22, 0.20)',
       '--status-badge-text': '#fed7aa',
-      '--status-badge-border': 'rgba(249, 115, 22, 0.40)',
-      '--chat-user-bg': 'rgba(255, 255, 255, 0.09)',
-      '--chat-assistant-bg': 'rgba(0, 0, 0, 0.38)',
-      '--chat-input-bg': 'rgba(0, 0, 0, 0.42)',
+      '--status-badge-border': 'rgba(249, 115, 22, 0.45)',
+      '--chat-user-bg': 'rgba(255, 255, 255, 0.10)',
+      '--chat-assistant-bg': 'rgba(0, 0, 0, 0.22)',
+      '--chat-input-bg': 'rgba(0, 0, 0, 0.25)',
       '--tab-active-bg': 'rgba(255, 255, 255, 0.10)',
-      '--tab-inactive-bg': 'rgba(0, 0, 0, 0.22)',
+      '--tab-inactive-bg': 'transparent',
       '--app-backdrop': 'none',
-      '--app-filter': 'blur(24px)'
+      '--app-filter': 'blur(40px) saturate(190%) contrast(108%)'
     }
   },
 
@@ -139,49 +139,49 @@ export const CRYSTALL_THEMES: Record<CrystallThemeId, CrystallTheme> = {
     }
   },
 
-  // 4. БЕЛЫЙ ПРОЗРАЧНЫЙ (Light Transparent / Glass)
+  // 4. БЕЛЫЙ ПРОЗРАЧНЫЙ (Light Liquid Glass / iOS Frosted)
   'light-transparent': {
     id: 'light-transparent',
     versionBadge: 'Белый прозрачный',
     styleVariant: 'Прозрачный',
     name: 'Белый прозрачный',
-    subtitle: 'Crystal Daylight Glass',
+    subtitle: 'iOS Liquid Glass Light',
     category: 'glass',
-    description: 'Оригинальная светлая прозрачная тема (Frosted Glass). Хрустальное матовое стекло с мягким эффектом размытия (Blur).',
+    description: 'Светлое ультра-прозрачное жидкое стекло в стиле iOS. Хрустальная прозрачность с мягким оптическим размытием, шелковистыми бликами и четким контрастным текстом.',
     previewColors: {
-      bg: 'rgba(255, 255, 255, 0.70)',
-      panel: 'rgba(248, 250, 252, 0.82)',
+      bg: 'rgba(255, 255, 255, 0.28)',
+      panel: 'rgba(255, 255, 255, 0.15)',
       accent: '#ea580c',
       text: '#0f172a',
-      border: 'rgba(0, 0, 0, 0.12)'
+      border: 'rgba(255, 255, 255, 0.40)'
     },
     monacoTheme: 'crystall-light-v2',
     cssVars: {
-      '--bg-app': 'rgba(255, 255, 255, 0.75)',
-      '--bg-header': 'rgba(255, 255, 255, 0.84)',
-      '--bg-editor': 'rgba(255, 255, 255, 0.68)',
-      '--bg-panel': 'rgba(248, 250, 252, 0.78)',
-      '--bg-card': 'rgba(0, 0, 0, 0.04)',
-      '--bg-statusbar': 'rgba(248, 250, 252, 0.88)',
-      '--bg-modal': 'rgba(255, 255, 255, 0.94)',
-      '--border-color': 'rgba(0, 0, 0, 0.12)',
+      '--bg-app': 'rgba(255, 255, 255, 0.25)',
+      '--bg-header': 'rgba(255, 255, 255, 0.15)',
+      '--bg-editor': 'transparent',
+      '--bg-panel': 'rgba(255, 255, 255, 0.12)',
+      '--bg-card': 'rgba(255, 255, 255, 0.35)',
+      '--bg-statusbar': 'rgba(255, 255, 255, 0.20)',
+      '--bg-modal': 'rgba(255, 255, 255, 0.88)',
+      '--border-color': 'rgba(255, 255, 255, 0.40)',
       '--text-primary': '#0f172a',
       '--text-secondary': '#334155',
       '--text-muted': '#64748b',
       '--accent-primary': '#ea580c',
       '--accent-hover': '#c2410c',
-      '--accent-glow': 'rgba(234, 88, 12, 0.25)',
+      '--accent-glow': 'rgba(234, 88, 12, 0.30)',
       '--hover-bg': 'rgba(0, 0, 0, 0.05)',
       '--status-badge-bg': 'rgba(234, 88, 12, 0.12)',
       '--status-badge-text': '#c2410c',
       '--status-badge-border': 'rgba(234, 88, 12, 0.35)',
-      '--chat-user-bg': 'rgba(241, 245, 249, 0.75)',
-      '--chat-assistant-bg': 'rgba(248, 250, 252, 0.75)',
-      '--chat-input-bg': 'rgba(255, 255, 255, 0.85)',
-      '--tab-active-bg': 'rgba(255, 247, 237, 0.85)',
-      '--tab-inactive-bg': 'rgba(255, 255, 255, 0.50)',
+      '--chat-user-bg': 'rgba(255, 255, 255, 0.45)',
+      '--chat-assistant-bg': 'rgba(255, 255, 255, 0.22)',
+      '--chat-input-bg': 'rgba(255, 255, 255, 0.35)',
+      '--tab-active-bg': 'rgba(255, 255, 255, 0.45)',
+      '--tab-inactive-bg': 'transparent',
       '--app-backdrop': 'none',
-      '--app-filter': 'blur(24px)'
+      '--app-filter': 'blur(40px) saturate(190%) contrast(108%)'
     }
   },
 
