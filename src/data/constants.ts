@@ -150,183 +150,143 @@ export const SUPPORTED_LANGUAGES: LanguageMeta[] = [
   }
 ];
 
-// Universal multi-language starter tabs
+// Exact 6 Tabs from Figma Design
 export const INITIAL_TABS: FileTab[] = [
   {
-    id: 'tab-python',
-    name: 'main.py',
-    language: 'python',
-    content: `# ========================================================
-# Crystall IDE - Universal Python Script
-# Supports: Python 3.12, AsyncIO, Data Structures, Automation
-# ========================================================
-
-import time
-import math
-
-class DataProcessor:
-    def __init__(self, name: str):
-        self.name = name
-        self.records = []
-
-    def compute_statistics(self, numbers):
-        mean = sum(numbers) / len(numbers)
-        variance = sum((x - mean) ** 2 for x in numbers) / len(numbers)
-        std_dev = math.sqrt(variance)
-        return {"count": len(numbers), "mean": round(mean, 2), "std_dev": round(std_dev, 2)}
-
-# Execution pipeline
-if __name__ == "__main__":
-    print(f"[Python] Starting execution pipeline for Crystall IDE...")
-    processor = DataProcessor("AnalyticsEngine")
-    dataset = [12, 45, 67, 89, 34, 23, 78, 90, 56, 44]
-    
-    stats = processor.compute_statistics(dataset)
-    print(f"[Python] Dataset Processed: {stats}")
-    print("[Python] Execution completed successfully in 8ms.")
-`
-  },
-  {
-    id: 'tab-typescript',
-    name: 'server.ts',
-    language: 'typescript',
-    content: `// ========================================================
-// Crystall IDE - TypeScript Microservice & Backend Router
-// ========================================================
-
-export interface ApiResponse<T> {
-  success: boolean;
-  status: number;
-  data: T;
-  timestamp: string;
-}
-
-export class ServiceRouter {
-  private routes: Map<string, Function> = new Map();
-
-  register(endpoint: string, handler: Function) {
-    this.routes.set(endpoint, handler);
-    console.log(\`[Router] Registered endpoint: \${endpoint}\`);
-  }
-
-  async dispatch(endpoint: string, payload: unknown): Promise<ApiResponse<unknown>> {
-    const handler = this.routes.get(endpoint);
-    if (!handler) {
-      throw new Error(\`Endpoint not found: \${endpoint}\`);
-    }
-    const result = await handler(payload);
-    return {
-      success: true,
-      status: 200,
-      data: result,
-      timestamp: new Date().toISOString()
-    };
-  }
-}
-
-// Initialize router
-const router = new ServiceRouter();
-router.register("/api/health", () => ({ status: "HEALTHY", uptime: 3600 }));
-console.log("[TypeScript] Server router online & listening.");
-`
-  },
-  {
-    id: 'tab-web',
-    name: 'index.html',
-    language: 'html',
-    content: `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crystall Web App</title>
-  <style>
-    body {
-      background: #0c0d12;
-      color: #f1f5f9;
-      font-family: 'Inter', -apple-system, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .badge {
-      background: rgba(249, 115, 22, 0.15);
-      border: 1px solid #f97316;
-      color: #f97316;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    h1 { margin-top: 16px; font-weight: 700; letter-spacing: -0.03em; }
-  </style>
-</head>
-<body>
-  <div class="badge">Universal Code IDE</div>
-  <h1>Built with Crystall IDE</h1>
-  <p>Live Web Preview enabled.</p>
-</body>
-</html>
-`
-  },
-  {
-    id: 'tab-lua',
-    name: 'script.lua',
+    id: 'tab-main',
+    name: 'Main.lua',
     language: 'lua',
-    content: `-- ========================================================
--- Crystall IDE - Lua / Luau Scripting Engine
--- High-speed embedded scripting & game logic
--- ========================================================
-
-local Vector3 = {
-    new = function(x, y, z)
-        return {x = x or 0, y = y or 0, z = z or 0}
+    content: `local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character
+if Character then
+    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+    if Humanoid then
+        Humanoid.WalkSpeed = 100
+        Humanoid.JumpPower = 200
+        print("Speed enabled ")
     end
-}
-
-local Entity = {}
-Entity.__index = Entity
-
-function Entity.new(name, position)
-    local self = setmetatable({}, Entity)
-    self.name = name
-    self.position = position or Vector3.new(0, 0, 0)
-    self.health = 100
-    return self
+    local Backpack = LocalPlayer:FindFirstChildOfClass("Backpack")
+    if Backpack then
+        print("Backpack is accessible ")
+    end
 end
-
-function Entity:TakeDamage(amount)
-    self.health = math.max(0, self.health - amount)
-    print(string.format("[Lua] %s took %d damage! Health: %d", self.name, amount, self.health))
-end
-
--- Test execution
-local hero = Entity.new("Commander", Vector3.new(10, 5, 20))
-hero:TakeDamage(25)
-print("[Lua] Entity state serialized successfully.")
+task.wait(0.5)
+print("Script finalized ")
+-- Ending block
+return true
 `
   },
   {
-    id: 'tab-config',
-    name: 'config.json',
-    language: 'json',
-    content: `{
-  "projectName": "crystall-app",
-  "version": "1.0.0",
-  "description": "General-purpose high-performance modern IDE project",
-  "compilerOptions": {
-    "target": "ES2024",
-    "pythonVersion": "3.12",
-    "luaVersion": "Luau-5.1"
+    id: 'tab-aimbot',
+    name: 'AimBot.lua',
+    language: 'lua',
+    content: `-- AimBot Silent Target Module
+local Camera = workspace.CurrentCamera
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local function GetClosestTarget()
+    local target = nil
+    local maxDist = math.huge
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
+            local head = player.Character.Head
+            local screenPos, onScreen = Camera:WorldToViewportPoint(head.Position)
+            if onScreen then
+                local dist = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)).Magnitude
+                if dist < maxDist then
+                    maxDist = dist
+                    target = player
+                end
+            end
+        end
+    end
+    return target
+end
+
+print("[AimBot] Silent targeting online.")
+`
   },
-  "runner": {
-    "autoDetect": true,
-    "hotReload": true
-  }
-}
+  {
+    id: 'tab-esp',
+    name: 'ESP.lua',
+    language: 'lua',
+    content: `-- Universal ESP Visuals
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local function AttachESP(player)
+    if player.Character and not player.Character:FindFirstChild("ESPHighlight") then
+        local hl = Instance.new("Highlight")
+        hl.Name = "ESPHighlight"
+        hl.FillColor = Color3.fromRGB(255, 115, 22)
+        hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+        hl.FillTransparency = 0.5
+        hl.Parent = player.Character
+    end
+end
+
+for _, p in pairs(Players:GetPlayers()) do
+    if p ~= LocalPlayer then AttachESP(p) end
+end
+print("[ESP] Visual box indicators active.")
+`
+  },
+  {
+    id: 'tab-fly',
+    name: 'Fly.lua',
+    language: 'lua',
+    content: `-- Flight and Noclip Engine
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Root = Character:WaitForChild("HumanoidRootPart")
+
+local BV = Instance.new("BodyVelocity")
+BV.Velocity = Vector3.new(0, 50, 0)
+BV.MaxForce = Vector3.new(9e4, 9e4, 9e4)
+BV.Parent = Root
+
+print("[Fly] Velocity controller anchored.")
+`
+  },
+  {
+    id: 'tab-bypass',
+    name: 'Bypass.lua',
+    language: 'lua',
+    content: `-- Anticheat Hook & Memory Bypass
+local HookMeta = {}
+local OriginalIndex = nil
+
+OriginalIndex = hookmetamethod(game, "__index", function(self, key)
+    if not checkcaller() and key == "WalkSpeed" then
+        return 16
+    end
+    return OriginalIndex(self, key)
+end)
+
+print("[Bypass] Memory protection overrides active.")
+`
+  },
+  {
+    id: 'tab-hitbox',
+    name: 'Hitbox.lua',
+    language: 'lua',
+    content: `-- Expand Player Hitboxes
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+for _, player in pairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local hrp = player.Character.HumanoidRootPart
+        hrp.Size = Vector3.new(8, 8, 8)
+        hrp.Transparency = 0.6
+        hrp.CanCollide = false
+    end
+end
+
+print("[Hitbox] Colliders extended.")
 `
   }
 ];
@@ -447,12 +407,13 @@ export const PROJECT_WORKSPACE_TREE: ExplorerNode[] = [
   }
 ];
 
-// Roblox Game Explorer Tree (Available as toggle mode in Explorer)
+// Roblox Game Explorer Tree matching Figma 1:1
 export const ROBLOX_EXPLORER_TREE: ExplorerNode[] = [
   { id: 'exp-workspace', name: 'Workspace', type: 'service', icon: 'workspace' },
   { id: 'exp-players', name: 'Players', type: 'service', icon: 'players' },
   { id: 'exp-lighting', name: 'Lighting', type: 'service', icon: 'lighting' },
   { id: 'exp-material', name: 'MaterialService', type: 'service', icon: 'material' },
+  { id: 'exp-replicatedfirst', name: 'ReplicatedFirst', type: 'service', icon: 'replicatedfirst' },
   { id: 'exp-replicatedstorage', name: 'ReplicatedStorage', type: 'service', icon: 'replicatedstorage' },
   { 
     id: 'exp-serverscriptservice', 
@@ -460,9 +421,76 @@ export const ROBLOX_EXPLORER_TREE: ExplorerNode[] = [
     type: 'service', 
     icon: 'serverscriptservice',
     children: [
-      { id: 'script-global', name: 'GlobalPop', type: 'script', language: 'lua', content: 'print("[Server] Initialized")' }
+      { id: 'fld-admin', name: 'Admin', type: 'folder' },
+      { id: 'fld-data', name: 'Data', type: 'folder' },
+      { id: 'fld-jobs', name: 'Jobs', type: 'folder' },
+      { id: 'fld-services', name: 'Services', type: 'folder' },
+      { id: 'script-bootstrap', name: 'Bootstrap', type: 'script', language: 'lua', content: 'print("[ServerScriptService] Bootstrap sequence initiated.")' }
     ]
   }
+];
+
+export interface FigmaQuickScript {
+  id: string;
+  name: string;
+  stats: string;
+  isStarred?: boolean;
+  content: string;
+  description?: string;
+}
+
+export const FIGMA_QUICK_SCRIPTS: FigmaQuickScript[] = [
+  {
+    id: 'script-infinite-yield',
+    name: 'Infinite Yield.lua',
+    stats: '2.4M',
+    isStarred: true,
+    content: `loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()`
+  },
+  {
+    id: 'script-dark-dex',
+    name: 'Dark Dex V4.lua',
+    stats: '850K',
+    isStarred: false,
+    content: `loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV4.lua"))()`
+  },
+  {
+    id: 'script-hydroxide',
+    name: 'Hydroxide Remote Spy.lua',
+    stats: '120K',
+    isStarred: false,
+    content: `local owner = "Upbolt"\nlocal branch = "revision"\nlocal function webImport(file)\n    return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua"):format(owner, branch, file)), file)()\nend\nwebImport("init")`
+  },
+  {
+    id: 'script-fly-noclip',
+    name: 'Fly & Noclip.lua',
+    stats: '460K',
+    isStarred: false,
+    content: `local Speed = 50\nloadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()`
+  },
+  {
+    id: 'script-universal-esp',
+    name: 'Universal ESP.lua',
+    stats: '630K',
+    isStarred: false,
+    content: `loadstring(game:HttpGet('https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua'))()`
+  },
+  {
+    id: 'script-admin-commands',
+    name: 'Admin Commands.lua',
+    stats: '50K',
+    isStarred: false,
+    content: `loadstring(game:HttpGet('https://raw.githubusercontent.com/CMD-X/CMD-X/master/Source', true))()`
+  }
+];
+
+export const FIGMA_CONSOLE_LOGS = [
+  { id: 'log-1', type: 'info' as const, message: 'Checking for updates...', timestamp: '12:15:02' },
+  { id: 'log-2', type: 'success' as const, message: 'Client is up to date!', timestamp: '12:15:03' },
+  { id: 'log-3', type: 'info' as const, message: 'Scanning active memory offsets...', timestamp: '12:15:04' },
+  { id: 'log-4', type: 'warn' as const, message: 'High latency detected: 145ms', timestamp: '12:15:05' },
+  { id: 'log-5', type: 'error' as const, message: 'Failed to inject into process (ErrorCode: 0x5)', timestamp: '12:15:06' },
+  { id: 'log-6', type: 'error' as const, message: 'Falling back to secure bypass reload...', timestamp: '12:15:07' }
 ];
 
 // Multi-Language Code Snippets & Templates

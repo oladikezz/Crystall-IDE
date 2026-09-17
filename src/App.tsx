@@ -29,7 +29,7 @@ import {
   ModalType,
   ExplorerNode
 } from './types';
-import { INITIAL_TABS, SUPPORTED_LANGUAGES } from './data/constants';
+import { INITIAL_TABS, SUPPORTED_LANGUAGES, FIGMA_CONSOLE_LOGS } from './data/constants';
 import { 
   loadStoredConfigs, 
   saveStoredConfigs, 
@@ -111,16 +111,16 @@ export default function App() {
     });
   };
 
-  // Tabs & Editor State - Universal multi-language project
+  // Tabs & Editor State - Exact Figma 1:1 tabs
   const [tabs, setTabs] = useState<FileTab[]>(() => {
     try {
-      const saved = localStorage.getItem('crystall_ide_tabs_v7_universal');
+      const saved = localStorage.getItem('crystall_ide_tabs_v8_figma');
       if (saved) return JSON.parse(saved);
     } catch {}
     return INITIAL_TABS;
   });
 
-  const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0]?.id || 'tab-python');
+  const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0]?.id || 'tab-main');
   const editorAreaRef = useRef<EditorAreaHandle>(null);
 
   // Runtime / Injector State
@@ -158,7 +158,7 @@ export default function App() {
   const [isDraggingVibecoder, setIsDraggingVibecoder] = useState(false);
 
   const [lastAction, setLastAction] = useState<string>('Ready');
-  const [execTime, setExecTime] = useState<number>(8);
+  const [execTime, setExecTime] = useState<number>(1215);
 
   // AI State
   const [configs, setConfigs] = useState<AllConfigs>(loadStoredConfigs);
@@ -167,7 +167,7 @@ export default function App() {
     {
       id: 'msg-welcome',
       role: 'assistant',
-      content: `Crystall Universal IDE Assistant ready.\n\nSupports Python 3.12, TypeScript, JavaScript, Lua, C++, Rust, and Web development.\nConfigure your AI models (DeepSeek R1, Claude 3.5, GPT-4o, Gemini 2.0) in Settings.`,
+      content: `J8Dsgn AI Assistant ready.\n\nDeepSeek R1 reasoning, Claude 3.5 Sonnet, GPT-4o, and Gemini 2.0 Flash enabled.\nPress Ctrl+L to chat or Ctrl+Enter to execute.`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       modelUsed: configs[activeProvider]?.model || 'DeepSeek-R1'
     }
@@ -177,32 +177,13 @@ export default function App() {
   const [streamingThinking, setStreamingThinking] = useState('');
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Console Logs matching multi-language IDE startup
-  const [logs, setLogs] = useState<ConsoleLog[]>([
-    {
-      id: 'log-1',
-      type: 'info',
-      message: 'Crystall Universal IDE initialized.',
-      timestamp: '12:00:01'
-    },
-    {
-      id: 'log-2',
-      type: 'success',
-      message: 'Language servers online (Python 3.12, TypeScript v5.4, Luau-VM).',
-      timestamp: '12:00:02'
-    },
-    {
-      id: 'log-3',
-      type: 'ready',
-      message: 'Workspace project loaded (5 files active). Ready for development.',
-      timestamp: '12:00:03'
-    }
-  ]);
+  // Console Logs matching Figma 1:1
+  const [logs, setLogs] = useState<ConsoleLog[]>(FIGMA_CONSOLE_LOGS);
 
   // Persist tabs
   useEffect(() => {
     try {
-      localStorage.setItem('crystall_ide_tabs_v7_universal', JSON.stringify(tabs));
+      localStorage.setItem('crystall_ide_tabs_v8_figma', JSON.stringify(tabs));
     } catch {}
   }, [tabs]);
 
@@ -1158,7 +1139,7 @@ export default function App() {
         <div className="fixed inset-0 z-50 cursor-col-resize select-none pointer-events-auto" />
       )}
 
-      {/* 3. Bottom Status Bar with Interactive Language Picker */}
+      {/* 3. Bottom Status Bar matching Figma 1:1 */}
       <StatusBar
         lastAction={lastAction}
         execTime={execTime}
@@ -1167,6 +1148,7 @@ export default function App() {
         activeTheme={activeTheme}
         onSelectTheme={setActiveTheme}
         injectorStatus={injectorStatus}
+        lineCount={activeTab?.content ? activeTab.content.split('\n').length : 19}
       />
 
       {/* 4. Preference & Tool Modals */}

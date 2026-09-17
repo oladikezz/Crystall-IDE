@@ -132,10 +132,10 @@ export const TitleBar: React.FC<TitleBarProps> = ({
     >
       {/* Left: Branding & Native Menus */}
       <div className="flex items-center gap-3 no-drag">
-        {/* Brand: Orange square badge + Crystall + v1.0.0 pill matching Figma */}
+        {/* Brand: Orange square badge + J8Dsgn + <1.0.0> tag matching Figma 1:1 */}
         <div className="flex items-center gap-2 mr-1">
           <div 
-            className="flex items-center justify-center w-[22px] h-[22px] rounded-[5px] shadow-sm text-white"
+            className="flex items-center justify-center w-[22px] h-[22px] rounded-[5px] shadow-sm text-white font-bold text-xs"
             style={{ backgroundColor: 'var(--accent-primary)' }}
           >
             <CrystallLogo size={14} />
@@ -144,7 +144,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
             className="text-[13px] font-semibold tracking-tight"
             style={{ color: 'var(--text-primary)' }}
           >
-            Crystall
+            J8Dsgn
           </span>
           <span 
             className="text-[10px] font-mono px-1.5 py-0.5 rounded border"
@@ -154,7 +154,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
               color: 'var(--text-muted)'
             }}
           >
-            v1.0.0
+            &lt;1.0.0&gt;
           </span>
         </div>
 
@@ -456,19 +456,19 @@ export const TitleBar: React.FC<TitleBarProps> = ({
             )}
           </div>
 
-          {/* 4. RUN MENU */}
+          {/* 4. EXECUTE MENU (matching Figma 1:1) */}
           <div className="relative">
             <button
-              onClick={() => setActiveMenu(activeMenu === 'run' ? null : 'run')}
+              onClick={() => setActiveMenu(activeMenu === 'execute' ? null : 'execute')}
               className="px-2 py-1 rounded transition-colors text-[12px] cursor-pointer"
               style={{
-                backgroundColor: activeMenu === 'run' ? 'var(--hover-bg)' : 'transparent',
-                color: activeMenu === 'run' ? 'var(--text-primary)' : 'var(--text-secondary)'
+                backgroundColor: activeMenu === 'execute' ? 'var(--hover-bg)' : 'transparent',
+                color: activeMenu === 'execute' ? 'var(--text-primary)' : 'var(--text-secondary)'
               }}
             >
-              Run
+              Execute
             </button>
-            {activeMenu === 'run' && (
+            {activeMenu === 'execute' && (
               <div 
                 className="absolute left-0 top-full mt-1 w-56 rounded-md border shadow-2xl py-1 text-xs z-50 font-sans backdrop-blur-md"
                 style={{
@@ -652,82 +652,14 @@ export const TitleBar: React.FC<TitleBarProps> = ({
         </div>
       </div>
 
-      {/* Center: Draggable Workspace Handle */}
+      {/* Center: Clean Draggable Region matching Figma 1:1 */}
       <div 
-        className="flex-1 h-full flex items-center justify-center app-draggable select-none cursor-default px-4"
+        className="flex-1 h-full app-draggable select-none cursor-default"
         onDoubleClick={handleMaximize}
-      >
-        <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity pointer-events-none">
-          <span className="text-[11px] font-sans font-medium" style={{ color: 'var(--text-primary)' }}>
-            Crystall IDE
-          </span>
-          <span className="text-[10px] font-mono opacity-50" style={{ color: 'var(--text-muted)' }}>
-            —
-          </span>
-          <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>
-            Professional Multi-Language Studio
-          </span>
-        </div>
-      </div>
+      />
 
-      {/* Right: Minimalist Native Window Controls & Quick Theme Palette */}
-      <div className="flex items-center gap-1 no-drag">
-        {/* Sleek Palette Icon for quick theme switching */}
-        <div ref={paletteRef} className="relative mr-1">
-          <button
-            onClick={() => setIsPaletteOpen(!isPaletteOpen)}
-            className="w-6 h-6 flex items-center justify-center rounded hover:bg-white/10 transition-colors cursor-pointer"
-            style={{ color: 'var(--text-secondary)' }}
-            title="Themes (4)"
-          >
-            <Palette className="w-3.5 h-3.5" />
-          </button>
-
-          {isPaletteOpen && (
-            <div 
-              className="absolute right-0 top-full mt-1 w-52 rounded-lg border shadow-2xl p-1.5 text-xs z-50 font-sans backdrop-blur-md"
-              style={{
-                backgroundColor: 'var(--bg-modal)',
-                borderColor: 'var(--border-color)',
-                color: 'var(--text-primary)'
-              }}
-            >
-              <div className="text-[10px] uppercase font-mono tracking-wider px-2 py-1 text-zinc-500">
-                Figma Themes (4)
-              </div>
-              <div className="space-y-0.5 mt-1">
-                {FIGMA_THEMES.map((thm) => {
-                  const isSelected = activeTheme === thm.id;
-                  return (
-                    <button
-                      key={thm.id}
-                      data-theme-id={thm.id}
-                      onClick={() => {
-                        onSelectTheme(thm.id);
-                        setIsPaletteOpen(false);
-                      }}
-                      className="w-full flex items-center justify-between px-2 py-1.5 rounded transition-colors text-left cursor-pointer hover:bg-white/5"
-                      style={{
-                        backgroundColor: isSelected ? 'var(--hover-bg)' : 'transparent'
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span 
-                          className="w-2.5 h-2.5 rounded-full border border-black/20 shrink-0"
-                          style={{ backgroundColor: thm.previewColors.accent }}
-                        />
-                        <span className="text-xs font-medium">{thm.name}</span>
-                      </div>
-                      {isSelected && (
-                        <Check className="w-3.5 h-3.5" style={{ color: 'var(--accent-primary)' }} />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
+      {/* Right: Minimalist Native Window Controls matching Figma 1:1 */}
+      <div className="flex items-center gap-0.5 no-drag">
 
         {/* Window controls */}
         <button

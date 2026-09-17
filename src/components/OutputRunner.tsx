@@ -242,40 +242,6 @@ export const OutputRunner: React.FC<OutputRunnerProps> = ({
           ))
         )}
       </div>
-
-      {/* Interactive Command Prompt matching professional executor tools */}
-      <div 
-        className="h-7 px-2.5 border-t flex items-center gap-2 shrink-0 font-mono text-[11px]"
-        style={{
-          backgroundColor: 'var(--bg-app)',
-          borderColor: 'var(--border-color)'
-        }}
-      >
-        <span style={{ color: 'var(--accent-primary)' }} className="font-bold select-none">&gt;</span>
-        <input
-          type="text"
-          value={commandInput}
-          onChange={(e) => setCommandInput(e.target.value)}
-          onKeyDown={handleCommandKeyDown}
-          placeholder="Execute Lua command or expression (e.g. print(game.PlaceId), clear, help)..."
-          className="flex-1 bg-transparent outline-none text-[11px] text-zinc-200 placeholder-zinc-600 font-mono"
-        />
-        {commandInput.trim() && (
-          <button
-            onClick={() => {
-              if (onExecuteCommand && commandInput.trim()) {
-                onExecuteCommand(commandInput.trim());
-                setHistory(prev => [...prev, commandInput.trim()]);
-                setCommandInput('');
-              }
-            }}
-            className="flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 text-zinc-300 cursor-pointer"
-          >
-            <span>Run</span>
-            <CornerDownLeft className="w-2.5 h-2.5" />
-          </button>
-        )}
-      </div>
     </div>
   );
 };

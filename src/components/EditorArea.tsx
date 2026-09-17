@@ -33,6 +33,268 @@ export interface EditorAreaHandle {
   getSelectedText: () => string;
 }
 
+const MONACO_THEME_MAP: Record<string, string> = {
+  'dark-solid': 'crystall-dark-v1',
+  'dark-transparent': 'crystall-dark-v2',
+  'light-solid': 'crystall-light-v1',
+  'light-transparent': 'crystall-light-v2',
+  'dark-v1': 'crystall-dark-v1',
+  'dark-v2': 'crystall-dark-v2',
+  'dark-v3': 'crystall-dark-v3',
+  'light-v1': 'crystall-light-v1',
+  'light-v2': 'crystall-light-v2',
+  'light-v3': 'crystall-light-v3',
+  'dark-charcoal': 'crystall-dark-v1',
+  'midnight-oled': 'crystall-dark-v2',
+  'slate-navy': 'crystall-dark-v3',
+  'light-classic': 'crystall-light-v1',
+  'warm-paper': 'crystall-light-v2',
+  'acrylic-glass': 'crystall-dark-v2'
+};
+
+export const getMonacoTheme = (activeTheme: string) => {
+  return MONACO_THEME_MAP[activeTheme] || (activeTheme.includes('light') ? 'crystall-light-v1' : 'crystall-dark-v1');
+};
+
+export const defineMonacoThemes = (monaco: any) => {
+  if (!monaco?.editor?.defineTheme) return;
+
+  // 1. Dark v1 (Solid Abyss)
+  monaco.editor.defineTheme('crystall-dark-v1', {
+    base: 'vs-dark',
+    inherit: true,
+    rules: [
+      { token: '', foreground: 'e2e8f0' },
+      { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
+      { token: 'identifier', foreground: 'f8fafc' },
+      { token: 'string', foreground: '38bdf8' },
+      { token: 'number', foreground: 'fbbf24' },
+      { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
+      { token: 'type', foreground: 'c084fc' },
+      { token: 'function', foreground: '60a5fa' },
+      { token: 'delimiter', foreground: '94a3b8' },
+      { token: 'operator', foreground: 'f97316' },
+    ],
+    colors: {
+      'editor.background': '#0c0e14',
+      'editor.foreground': '#f8fafc',
+      'editorLineNumber.foreground': '#3f3f46',
+      'editorLineNumber.activeForeground': '#f97316',
+      'editor.selectionBackground': '#f9731633',
+      'editor.inactiveSelectionBackground': '#f973161a',
+      'editorCursor.foreground': '#f97316',
+      'editor.lineHighlightBackground': '#ffffff05',
+      'editorGutter.background': '#0c0e14',
+      'minimap.background': '#0c0e14',
+      'minimapSlider.background': '#ea580c20',
+      'minimapSlider.hoverBackground': '#ea580c35',
+      'minimapSlider.activeBackground': '#ea580c50',
+      'editorOverviewRuler.background': '#0c0e14',
+      'editorOverviewRuler.border': '#00000000',
+      'scrollbar.shadow': '#00000000',
+      'scrollbarSlider.background': '#ea580c20',
+      'scrollbarSlider.hoverBackground': '#ea580c35',
+      'scrollbarSlider.activeBackground': '#ea580c50',
+    }
+  });
+
+  // 2. Dark v2 (Acrylic / Frosted Night)
+  monaco.editor.defineTheme('crystall-dark-v2', {
+    base: 'vs-dark',
+    inherit: true,
+    rules: [
+      { token: '', foreground: 'e2e8f0' },
+      { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
+      { token: 'identifier', foreground: 'f8fafc' },
+      { token: 'string', foreground: '38bdf8' },
+      { token: 'number', foreground: 'fbbf24' },
+      { token: 'comment', foreground: '71717a', fontStyle: 'italic' },
+      { token: 'type', foreground: 'c084fc' },
+      { token: 'function', foreground: '60a5fa' },
+      { token: 'delimiter', foreground: '94a3b8' },
+      { token: 'operator', foreground: 'f97316' },
+    ],
+    colors: {
+      'editor.background': '#00000000',
+      'editor.foreground': '#f8fafc',
+      'editorLineNumber.foreground': '#52525b',
+      'editorLineNumber.activeForeground': '#f97316',
+      'editor.selectionBackground': '#f9731640',
+      'editorCursor.foreground': '#f97316',
+      'editor.lineHighlightBackground': '#ffffff08',
+      'editorGutter.background': '#00000000',
+      'minimap.background': '#00000000',
+      'minimapSlider.background': '#ea580c20',
+      'minimapSlider.hoverBackground': '#ea580c35',
+      'minimapSlider.activeBackground': '#ea580c50',
+      'editorOverviewRuler.background': '#00000000',
+      'editorOverviewRuler.border': '#00000000',
+      'scrollbar.shadow': '#00000000',
+      'scrollbarSlider.background': '#ea580c20',
+      'scrollbarSlider.hoverBackground': '#ea580c35',
+      'scrollbarSlider.activeBackground': '#ea580c50',
+    }
+  });
+
+  // 3. Dark v3 (Liquid Glass)
+  monaco.editor.defineTheme('crystall-dark-v3', {
+    base: 'vs-dark',
+    inherit: true,
+    rules: [
+      { token: '', foreground: 'ffffff' },
+      { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
+      { token: 'identifier', foreground: 'ffffff' },
+      { token: 'string', foreground: '38bdf8' },
+      { token: 'number', foreground: 'facc15' },
+      { token: 'comment', foreground: '71717a', fontStyle: 'italic' },
+      { token: 'type', foreground: 'e879f9' },
+      { token: 'function', foreground: '38bdf8' },
+      { token: 'delimiter', foreground: 'cbd5e1' },
+      { token: 'operator', foreground: 'f97316' },
+    ],
+    colors: {
+      'editor.background': '#00000000',
+      'editor.foreground': '#ffffff',
+      'editorLineNumber.foreground': '#71717a',
+      'editorLineNumber.activeForeground': '#f97316',
+      'editor.selectionBackground': '#f973164d',
+      'editorCursor.foreground': '#f97316',
+      'editor.lineHighlightBackground': '#ffffff0c',
+      'editorGutter.background': '#00000000',
+      'minimap.background': '#00000000',
+      'minimapSlider.background': '#ea580c20',
+      'minimapSlider.hoverBackground': '#ea580c35',
+      'minimapSlider.activeBackground': '#ea580c50',
+      'editorOverviewRuler.background': '#00000000',
+      'editorOverviewRuler.border': '#00000000',
+      'scrollbar.shadow': '#00000000',
+      'scrollbarSlider.background': '#ea580c20',
+      'scrollbarSlider.hoverBackground': '#ea580c35',
+      'scrollbarSlider.activeBackground': '#ea580c50',
+    }
+  });
+
+  // 4. Light v1 (Solid Studio Light)
+  monaco.editor.defineTheme('crystall-light-v1', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      { token: '', foreground: '0f172a' },
+      { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
+      { token: 'identifier', foreground: '0369a1' },
+      { token: 'string', foreground: '15803d' },
+      { token: 'number', foreground: '7c3aed' },
+      { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
+      { token: 'type', foreground: 'b45309' },
+      { token: 'function', foreground: '2563eb' },
+      { token: 'delimiter', foreground: '475569' },
+      { token: 'operator', foreground: 'ea580c' },
+    ],
+    colors: {
+      'editor.background': '#ffffff',
+      'editor.foreground': '#0f172a',
+      'editorLineNumber.foreground': '#94a3b8',
+      'editorLineNumber.activeForeground': '#ea580c',
+      'editor.selectionBackground': '#ea580c25',
+      'editorCursor.foreground': '#ea580c',
+      'editor.lineHighlightBackground': '#00000006',
+      'editorGutter.background': '#ffffff',
+      'minimap.background': '#ffffff',
+      'minimapSlider.background': '#ea580c20',
+      'minimapSlider.hoverBackground': '#ea580c35',
+      'minimapSlider.activeBackground': '#ea580c50',
+      'editorOverviewRuler.background': '#ffffff',
+      'editorOverviewRuler.border': '#00000000',
+      'scrollbar.shadow': '#00000000',
+      'scrollbarSlider.background': '#ea580c20',
+      'scrollbarSlider.hoverBackground': '#ea580c35',
+      'scrollbarSlider.activeBackground': '#ea580c50',
+    }
+  });
+
+  // 5. Light v2 (Acrylic Frosted Light)
+  monaco.editor.defineTheme('crystall-light-v2', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      { token: '', foreground: '0f172a' },
+      { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
+      { token: 'identifier', foreground: '0284c7' },
+      { token: 'string', foreground: '15803d' },
+      { token: 'number', foreground: '6d28d9' },
+      { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
+      { token: 'type', foreground: 'b45309' },
+      { token: 'function', foreground: '2563eb' },
+      { token: 'delimiter', foreground: '475569' },
+      { token: 'operator', foreground: 'ea580c' },
+    ],
+    colors: {
+      'editor.background': '#00000000',
+      'editor.foreground': '#0f172a',
+      'editorLineNumber.foreground': '#94a3b8',
+      'editorLineNumber.activeForeground': '#ea580c',
+      'editor.selectionBackground': '#ea580c30',
+      'editorCursor.foreground': '#ea580c',
+      'editor.lineHighlightBackground': '#00000008',
+      'editorGutter.background': '#00000000',
+      'minimap.background': '#00000000',
+      'minimapSlider.background': '#ea580c20',
+      'minimapSlider.hoverBackground': '#ea580c35',
+      'minimapSlider.activeBackground': '#ea580c50',
+      'editorOverviewRuler.background': '#00000000',
+      'editorOverviewRuler.border': '#00000000',
+      'scrollbar.shadow': '#00000000',
+      'scrollbarSlider.background': '#ea580c20',
+      'scrollbarSlider.hoverBackground': '#ea580c35',
+      'scrollbarSlider.activeBackground': '#ea580c50',
+    }
+  });
+
+  // 6. Light v3 (Crystal Glass Light)
+  monaco.editor.defineTheme('crystall-light-v3', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      { token: '', foreground: '0f172a' },
+      { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
+      { token: 'identifier', foreground: '0369a1' },
+      { token: 'string', foreground: '15803d' },
+      { token: 'number', foreground: '581c87' },
+      { token: 'comment', foreground: '475569', fontStyle: 'italic' },
+      { token: 'type', foreground: '9a3412' },
+      { token: 'function', foreground: '2563eb' },
+      { token: 'delimiter', foreground: '475569' },
+      { token: 'operator', foreground: 'ea580c' },
+    ],
+    colors: {
+      'editor.background': '#00000000',
+      'editor.foreground': '#0f172a',
+      'editorLineNumber.foreground': '#64748b',
+      'editorLineNumber.activeForeground': '#ea580c',
+      'editor.selectionBackground': '#ea580c38',
+      'editorCursor.foreground': '#ea580c',
+      'editor.lineHighlightBackground': '#ffffff20',
+      'editorGutter.background': '#00000000',
+      'minimap.background': '#00000000',
+      'minimapSlider.background': '#ea580c20',
+      'minimapSlider.hoverBackground': '#ea580c35',
+      'minimapSlider.activeBackground': '#ea580c50',
+      'editorOverviewRuler.background': '#00000000',
+      'editorOverviewRuler.border': '#00000000',
+      'scrollbar.shadow': '#00000000',
+      'scrollbarSlider.background': '#ea580c20',
+      'scrollbarSlider.hoverBackground': '#ea580c35',
+      'scrollbarSlider.activeBackground': '#ea580c50',
+    }
+  });
+};
+
 interface EditorAreaProps {
   tabs: FileTab[];
   activeTabId: string;
@@ -109,269 +371,20 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
     }
   }));
 
+  const handleBeforeMount = (monaco: any) => {
+    defineMonacoThemes(monaco);
+  };
+
   const handleEditorMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
     monacoRef.current = monaco;
-
-    // --- 6 EXACT FIGMA THEMES ---
-    // 1. Dark v1 (Solid Abyss)
-    monaco.editor.defineTheme('crystall-dark-v1', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
-        { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
-        { token: 'identifier', foreground: 'f8fafc' },
-        { token: 'string', foreground: '38bdf8' },
-        { token: 'number', foreground: 'fbbf24' },
-        { token: 'comment', foreground: '52525b', fontStyle: 'italic' },
-        { token: 'type', foreground: 'c084fc' },
-        { token: 'function', foreground: '60a5fa' },
-      ],
-      colors: {
-        'editor.background': '#0c0e14',
-        'editor.foreground': '#f8fafc',
-        'editorLineNumber.foreground': '#3f3f46',
-        'editorLineNumber.activeForeground': '#f97316',
-        'editor.selectionBackground': '#f9731633',
-        'editor.inactiveSelectionBackground': '#f973161a',
-        'editorCursor.foreground': '#f97316',
-        'editor.lineHighlightBackground': '#ffffff05',
-        'editorGutter.background': '#0c0e14',
-        'minimap.background': '#0c0e14',
-        'minimapSlider.background': '#ea580c20',
-        'minimapSlider.hoverBackground': '#ea580c35',
-        'minimapSlider.activeBackground': '#ea580c50',
-        'editorOverviewRuler.background': '#0c0e14',
-        'editorOverviewRuler.border': '#00000000',
-        'scrollbar.shadow': '#00000000',
-        'scrollbarSlider.background': '#ea580c20',
-        'scrollbarSlider.hoverBackground': '#ea580c35',
-        'scrollbarSlider.activeBackground': '#ea580c50',
-      }
-    });
-
-    // 2. Dark v2 (Acrylic / Frosted Night)
-    monaco.editor.defineTheme('crystall-dark-v2', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
-        { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
-        { token: 'identifier', foreground: 'f8fafc' },
-        { token: 'string', foreground: '38bdf8' },
-        { token: 'number', foreground: 'fbbf24' },
-        { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
-        { token: 'type', foreground: 'c084fc' },
-        { token: 'function', foreground: '60a5fa' },
-      ],
-      colors: {
-        'editor.background': '#00000000',
-        'editor.foreground': '#f8fafc',
-        'editorLineNumber.foreground': '#52525b',
-        'editorLineNumber.activeForeground': '#f97316',
-        'editor.selectionBackground': '#f9731640',
-        'editorCursor.foreground': '#f97316',
-        'editor.lineHighlightBackground': '#ffffff08',
-        'editorGutter.background': '#00000000',
-        'minimap.background': '#00000000',
-        'minimapSlider.background': '#ea580c20',
-        'minimapSlider.hoverBackground': '#ea580c35',
-        'minimapSlider.activeBackground': '#ea580c50',
-        'editorOverviewRuler.background': '#00000000',
-        'editorOverviewRuler.border': '#00000000',
-        'scrollbar.shadow': '#00000000',
-        'scrollbarSlider.background': '#ea580c20',
-        'scrollbarSlider.hoverBackground': '#ea580c35',
-        'scrollbarSlider.activeBackground': '#ea580c50',
-      }
-    });
-
-    // 3. Dark v3 (Liquid Glass)
-    monaco.editor.defineTheme('crystall-dark-v3', {
-      base: 'vs-dark',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: 'f97316', fontStyle: 'bold' },
-        { token: 'keyword.control', foreground: 'f97316', fontStyle: 'bold' },
-        { token: 'identifier', foreground: 'ffffff' },
-        { token: 'string', foreground: '38bdf8' },
-        { token: 'number', foreground: 'facc15' },
-        { token: 'comment', foreground: '71717a', fontStyle: 'italic' },
-        { token: 'type', foreground: 'e879f9' },
-        { token: 'function', foreground: '38bdf8' },
-      ],
-      colors: {
-        'editor.background': '#00000000',
-        'editor.foreground': '#ffffff',
-        'editorLineNumber.foreground': '#71717a',
-        'editorLineNumber.activeForeground': '#f97316',
-        'editor.selectionBackground': '#f973164d',
-        'editorCursor.foreground': '#f97316',
-        'editor.lineHighlightBackground': '#ffffff0c',
-        'editorGutter.background': '#00000000',
-        'minimap.background': '#00000000',
-        'minimapSlider.background': '#ea580c20',
-        'minimapSlider.hoverBackground': '#ea580c35',
-        'minimapSlider.activeBackground': '#ea580c50',
-        'editorOverviewRuler.background': '#00000000',
-        'editorOverviewRuler.border': '#00000000',
-        'scrollbar.shadow': '#00000000',
-        'scrollbarSlider.background': '#ea580c20',
-        'scrollbarSlider.hoverBackground': '#ea580c35',
-        'scrollbarSlider.activeBackground': '#ea580c50',
-      }
-    });
-
-    // 4. Light v1 (Solid Studio Light)
-    monaco.editor.defineTheme('crystall-light-v1', {
-      base: 'vs',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
-        { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
-        { token: 'identifier', foreground: '0284c7' },
-        { token: 'string', foreground: '16a34a' },
-        { token: 'number', foreground: '7c3aed' },
-        { token: 'comment', foreground: '94a3b8', fontStyle: 'italic' },
-        { token: 'type', foreground: 'd97706' },
-        { token: 'function', foreground: '2563eb' },
-      ],
-      colors: {
-        'editor.background': '#ffffff',
-        'editor.foreground': '#0f172a',
-        'editorLineNumber.foreground': '#cbd5e1',
-        'editorLineNumber.activeForeground': '#ea580c',
-        'editor.selectionBackground': '#ea580c25',
-        'editorCursor.foreground': '#ea580c',
-        'editor.lineHighlightBackground': '#00000006',
-        'editorGutter.background': '#ffffff',
-        'minimap.background': '#ffffff',
-        'minimapSlider.background': '#ea580c20',
-        'minimapSlider.hoverBackground': '#ea580c35',
-        'minimapSlider.activeBackground': '#ea580c50',
-        'editorOverviewRuler.background': '#ffffff',
-        'editorOverviewRuler.border': '#00000000',
-        'scrollbar.shadow': '#00000000',
-        'scrollbarSlider.background': '#ea580c20',
-        'scrollbarSlider.hoverBackground': '#ea580c35',
-        'scrollbarSlider.activeBackground': '#ea580c50',
-      }
-    });
-
-    // 5. Light v2 (Acrylic Frosted Light)
-    monaco.editor.defineTheme('crystall-light-v2', {
-      base: 'vs',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
-        { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
-        { token: 'identifier', foreground: '0284c7' },
-        { token: 'string', foreground: '15803d' },
-        { token: 'number', foreground: '6d28d9' },
-        { token: 'comment', foreground: '64748b', fontStyle: 'italic' },
-        { token: 'type', foreground: 'b45309' },
-      ],
-      colors: {
-        'editor.background': '#00000000',
-        'editor.foreground': '#0f172a',
-        'editorLineNumber.foreground': '#94a3b8',
-        'editorLineNumber.activeForeground': '#ea580c',
-        'editor.selectionBackground': '#ea580c30',
-        'editorCursor.foreground': '#ea580c',
-        'editor.lineHighlightBackground': '#00000008',
-        'editorGutter.background': '#00000000',
-        'minimap.background': '#00000000',
-        'minimapSlider.background': '#ea580c20',
-        'minimapSlider.hoverBackground': '#ea580c35',
-        'minimapSlider.activeBackground': '#ea580c50',
-        'editorOverviewRuler.background': '#00000000',
-        'editorOverviewRuler.border': '#00000000',
-        'scrollbar.shadow': '#00000000',
-        'scrollbarSlider.background': '#ea580c20',
-        'scrollbarSlider.hoverBackground': '#ea580c35',
-        'scrollbarSlider.activeBackground': '#ea580c50',
-      }
-    });
-
-    // 6. Light v3 (Crystal Glass Light)
-    monaco.editor.defineTheme('crystall-light-v3', {
-      base: 'vs',
-      inherit: true,
-      rules: [
-        { token: 'keyword', foreground: 'ea580c', fontStyle: 'bold' },
-        { token: 'keyword.control', foreground: 'ea580c', fontStyle: 'bold' },
-        { token: 'identifier', foreground: '0369a1' },
-        { token: 'string', foreground: '15803d' },
-        { token: 'number', foreground: '581c87' },
-        { token: 'comment', foreground: '475569', fontStyle: 'italic' },
-        { token: 'type', foreground: '9a3412' },
-      ],
-      colors: {
-        'editor.background': '#00000000',
-        'editor.foreground': '#0f172a',
-        'editorLineNumber.foreground': '#64748b',
-        'editorLineNumber.activeForeground': '#ea580c',
-        'editor.selectionBackground': '#ea580c38',
-        'editorCursor.foreground': '#ea580c',
-        'editor.lineHighlightBackground': '#ffffff20',
-        'editorGutter.background': '#00000000',
-        'minimap.background': '#00000000',
-        'minimapSlider.background': '#ea580c20',
-        'minimapSlider.hoverBackground': '#ea580c35',
-        'minimapSlider.activeBackground': '#ea580c50',
-        'editorOverviewRuler.background': '#00000000',
-        'editorOverviewRuler.border': '#00000000',
-        'scrollbar.shadow': '#00000000',
-        'scrollbarSlider.background': '#ea580c20',
-        'scrollbarSlider.hoverBackground': '#ea580c35',
-        'scrollbarSlider.activeBackground': '#ea580c50',
-      }
-    });
-
-    const themeMap: Record<string, string> = {
-      'dark-solid': 'crystall-dark-v1',
-      'dark-transparent': 'crystall-dark-v2',
-      'light-solid': 'crystall-light-v1',
-      'light-transparent': 'crystall-light-v2',
-      // Legacy compatibility
-      'dark-v1': 'crystall-dark-v1',
-      'dark-v2': 'crystall-dark-v2',
-      'dark-v3': 'crystall-dark-v3',
-      'light-v1': 'crystall-light-v1',
-      'light-v2': 'crystall-light-v2',
-      'light-v3': 'crystall-light-v3',
-      'dark-charcoal': 'crystall-dark-v1',
-      'midnight-oled': 'crystall-dark-v2',
-      'slate-navy': 'crystall-dark-v3',
-      'light-classic': 'crystall-light-v1',
-      'warm-paper': 'crystall-light-v2',
-      'acrylic-glass': 'crystall-dark-v2'
-    };
-    monaco.editor.setTheme(themeMap[activeTheme] || 'crystall-dark-v1');
+    defineMonacoThemes(monaco);
+    monaco.editor.setTheme(getMonacoTheme(activeTheme));
   };
 
   useEffect(() => {
     if (monacoRef.current) {
-      const themeMap: Record<string, string> = {
-        'dark-solid': 'crystall-dark-v1',
-        'dark-transparent': 'crystall-dark-v2',
-        'light-solid': 'crystall-light-v1',
-        'light-transparent': 'crystall-light-v2',
-        'dark-v1': 'crystall-dark-v1',
-        'dark-v2': 'crystall-dark-v2',
-        'dark-v3': 'crystall-dark-v3',
-        'light-v1': 'crystall-light-v1',
-        'light-v2': 'crystall-light-v2',
-        'light-v3': 'crystall-light-v3',
-        'dark-charcoal': 'crystall-dark-v1',
-        'midnight-oled': 'crystall-dark-v2',
-        'slate-navy': 'crystall-dark-v3',
-        'light-classic': 'crystall-light-v1',
-        'warm-paper': 'crystall-light-v2',
-        'acrylic-glass': 'crystall-dark-v2'
-      };
-      monacoRef.current.editor.setTheme(themeMap[activeTheme] || 'crystall-dark-v1');
+      monacoRef.current.editor.setTheme(getMonacoTheme(activeTheme));
     }
   }, [activeTheme]);
 
@@ -464,8 +477,6 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
                   borderColor: isActive ? 'var(--border-color)' : 'transparent'
                 }}
               >
-                {getTabIcon(tab)}
-
                 {isEditing ? (
                   <input
                     type="text"
@@ -490,7 +501,9 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
                       e.stopPropagation();
                       onCloseTab(tab.id);
                     }}
-                    className="opacity-0 group-hover:opacity-100 p-0.5 rounded hover:bg-white/10 hover:text-red-400 transition-opacity ml-1"
+                    className={`p-0.5 rounded hover:bg-white/10 hover:text-red-400 transition-opacity ml-1 ${
+                      isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                    }`}
                     title="Close Tab"
                   >
                     <X className="w-2.5 h-2.5" />
@@ -509,90 +522,43 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
           </button>
         </div>
 
-        {/* Right: Modern IDE Toolbar */}
-        <div className="flex items-center gap-1.5 shrink-0 pl-2">
-          {/* Runtime Connect / Attach Button */}
-          <button
-            onClick={onAttach}
-            disabled={injectorStatus === 'injecting'}
-            className="flex items-center justify-center w-6 h-6 rounded-full transition-all cursor-pointer shadow-sm relative group"
-            style={{
-              backgroundColor: injectorStatus === 'injected' 
-                ? 'rgba(16, 185, 129, 0.2)' 
-                : injectorStatus === 'injecting'
-                  ? 'rgba(245, 158, 11, 0.2)'
-                  : 'rgba(255, 255, 255, 0.08)',
-              border: `1px solid ${injectorStatus === 'injected' ? '#10b981' : injectorStatus === 'injecting' ? '#f59e0b' : 'rgba(255, 255, 255, 0.15)'}`
-            }}
-            title={
-              injectorStatus === 'injected' 
-                ? 'Runtime Target Connected (Click to Re-link)' 
-                : injectorStatus === 'injecting' 
-                  ? 'Linking Environment...' 
-                  : 'Connect Runtime Environment (F6)'
-            }
-          >
-            {injectorStatus === 'injecting' ? (
-              <RotateCw className="w-3 h-3 text-amber-400 animate-spin" />
-            ) : injectorStatus === 'injected' ? (
-              <Check className="w-3 h-3 text-emerald-400" />
-            ) : (
-              <Zap className="w-3 h-3 text-zinc-300 group-hover:text-amber-400 transition-colors" />
-            )}
-          </button>
-
-          {/* Orange Circular Play Button */}
+        {/* Right: Exact 4 Circular Action Buttons matching Figma 1:1 */}
+        <div className="flex items-center gap-2 shrink-0 pl-2 pr-1">
+          {/* 1. Orange Circular Execute Button */}
           <button
             onClick={onExecute}
-            className="flex items-center justify-center w-6 h-6 rounded-full hover:scale-105 active:scale-95 transition-transform cursor-pointer text-white shadow-md"
+            className="flex items-center justify-center w-[26px] h-[26px] rounded-full hover:scale-105 active:scale-95 transition-transform cursor-pointer text-white shadow-md"
             style={{ backgroundColor: 'var(--accent-primary)' }}
-            title="Run Program / Script (F5)"
+            title="Execute (F5)"
           >
-            <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
+            <Play className="w-3 h-3 fill-current ml-0.5" />
           </button>
 
-          {/* Circular Clear Button */}
+          {/* 2. Circular Clear Button */}
           <button
             onClick={onClear}
-            className="flex items-center justify-center w-6 h-6 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/5 transition-all cursor-pointer text-zinc-400 hover:text-white"
-            title="Clear Active Buffer"
+            className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all cursor-pointer text-zinc-400 hover:text-white"
+            title="Clear Editor"
           >
-            <Trash2 className="w-3 h-3" />
+            <Trash2 className="w-3.5 h-3.5" />
           </button>
 
-          {/* Circular Save Button */}
+          {/* 3. Circular Save Button */}
           <button
             onClick={onSave}
-            className="flex items-center justify-center w-6 h-6 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/5 transition-all cursor-pointer text-zinc-400 hover:text-white"
+            className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all cursor-pointer text-zinc-400 hover:text-white"
             title="Save File (Ctrl+S)"
           >
-            <Save className="w-3 h-3" />
+            <Save className="w-3.5 h-3.5" />
           </button>
 
-          {/* Circular Copy Button */}
+          {/* 4. Circular Copy Button */}
           <button
             onClick={handleCopy}
-            className="flex items-center justify-center w-6 h-6 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/5 transition-all cursor-pointer text-zinc-400 hover:text-white"
+            className="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 transition-all cursor-pointer text-zinc-400 hover:text-white"
             title="Copy Code"
           >
-            <Copy className="w-3 h-3" />
-          </button>
-
-          <div className="w-px h-3.5 bg-white/10 mx-0.5" />
-
-          {/* AI Vibecoder Button */}
-          <button
-            onClick={onToggleVibecoder}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer border"
-            style={{
-              backgroundColor: isVibecoderOpen ? 'var(--status-badge-bg)' : 'transparent',
-              color: isVibecoderOpen ? 'var(--accent-primary)' : 'var(--text-secondary)',
-              borderColor: isVibecoderOpen ? 'var(--status-badge-border)' : 'var(--border-color)'
-            }}
-            title="AI Assistant Drawer (Ctrl+I)"
-          >
-            <Bot className="w-3 h-3" />
-            <span>Crystall AI</span>
+            <Copy className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
@@ -659,8 +625,10 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
 
         <Editor
           height="100%"
-          language={activeTab?.language || 'python'}
+          language={activeTab?.language || 'lua'}
           value={activeTab?.content || ''}
+          theme={getMonacoTheme(activeTheme)}
+          beforeMount={handleBeforeMount}
           onChange={(value) => onContentChange(value || '')}
           onMount={handleEditorMount}
           options={{
