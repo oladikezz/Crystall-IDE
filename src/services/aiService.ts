@@ -8,7 +8,15 @@ export function loadStoredConfigs(): AllConfigs {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      return { ...DEFAULT_CONFIGS, ...JSON.parse(raw) };
+      const parsed = JSON.parse(raw);
+      const merged: AllConfigs = { ...DEFAULT_CONFIGS };
+      for (const k of Object.keys(DEFAULT_CONFIGS) as AIProvider[]) {
+        merged[k] = {
+          ...DEFAULT_CONFIGS[k],
+          ...(parsed[k] || {})
+        };
+      }
+      return merged;
     }
   } catch (e) {
     console.error('Failed to parse stored configs:', e);
@@ -29,7 +37,7 @@ export function loadActiveProvider(): AIProvider {
     const p = localStorage.getItem(ACTIVE_PROVIDER_KEY) as AIProvider;
     if (p && DEFAULT_CONFIGS[p]) return p;
   } catch {}
-  return 'deepseek';
+  return 'openrouter';
 }
 
 export function saveActiveProvider(provider: AIProvider): void {
@@ -94,6 +102,10 @@ async function streamOpenAICompatible(
   if (config.apiKey) {
     headers['Authorization'] = `Bearer ${config.apiKey}`;
   }
+  if (baseUrl.includes('openrouter.ai')) {
+    headers['HTTP-Referer'] = 'https://crystall-ide.app';
+    headers['X-Title'] = 'Crystall IDE';
+  }
 
   const payload = {
     model: config.model,
@@ -147,8 +159,9 @@ async function streamOpenAICompatible(
           if (!delta) continue;
 
           // DeepSeek R1 reasoning extraction
-          if (delta.reasoning_content && onThinkingChunk) {
-            onThinkingChunk(delta.reasoning_content);
+          const reasoning = delta.reasoning_content || delta.reasoning;
+          if (reasoning && onThinkingChunk) {
+            onThinkingChunk(reasoning);
           }
 
           if (delta.content) {

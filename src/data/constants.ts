@@ -50,9 +50,9 @@ export const DEFAULT_CONFIGS: AllConfigs = {
   openrouter: {
     apiKey: '',
     baseUrl: 'https://openrouter.ai/api/v1',
-    model: 'deepseek/deepseek-r1',
+    model: 'deepseek/deepseek-chat',
     temperature: 0.7,
-    systemPrompt: 'You are an expert coding assistant in Crystall IDE.'
+    systemPrompt: 'You are an expert AI coding assistant in Crystall IDE. Provide high quality, clean code with concise explanations.'
   },
   ollama: {
     apiKey: 'ollama',

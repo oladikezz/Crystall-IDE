@@ -38,7 +38,15 @@ const MODEL_PRESETS: Record<AIProvider, string[]> = {
   anthropic: ['claude-3-7-sonnet-20250219', 'claude-3-5-sonnet-20241022', 'claude-3-5-haiku-20241022'],
   gemini: ['gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-2.5-flash'],
   groq: ['llama-3.3-70b-versatile', 'mixtral-8x7b-32768', 'llama-3.1-8b-instant'],
-  openrouter: ['deepseek/deepseek-r1', 'anthropic/claude-3.7-sonnet', 'openai/gpt-4o', 'meta-llama/llama-3.3-70b-instruct'],
+  openrouter: [
+    'deepseek/deepseek-chat',
+    'deepseek/deepseek-r1',
+    'anthropic/claude-3.7-sonnet',
+    'openai/gpt-4o',
+    'google/gemini-2.0-flash-001',
+    'meta-llama/llama-3.3-70b-instruct',
+    'deepseek/deepseek-r1:free'
+  ],
   ollama: ['llama3:latest', 'deepseek-r1:latest', 'qwen2.5-coder:latest', 'codellama:latest'],
   custom: ['custom-model']
 };
