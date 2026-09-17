@@ -81,10 +81,15 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.foreground': '#f8fafc',
       'editorLineNumber.foreground': '#3f3f46',
       'editorLineNumber.activeForeground': '#f97316',
-      'editor.selectionBackground': '#f9731633',
-      'editor.inactiveSelectionBackground': '#f973161a',
+      'editor.selectionBackground': '#f9731640',
+      'editor.inactiveSelectionBackground': '#f9731625',
+      'editor.selectionHighlightBackground': '#f9731618',
+      'editor.selectionHighlightBorder': '#00000000',
       'editorCursor.foreground': '#f97316',
-      'editor.lineHighlightBackground': '#ffffff05',
+      'editor.lineHighlightBackground': '#00000000',
+      'editor.lineHighlightBorder': '#00000000',
+      'editor.rangeHighlightBackground': '#00000000',
+      'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#0c0e14',
       'minimap.background': '#0c0e14',
       'minimapSlider.background': '#ea580c20',
@@ -122,8 +127,14 @@ export const defineMonacoThemes = (monaco: any) => {
       'editorLineNumber.foreground': '#52525b',
       'editorLineNumber.activeForeground': '#f97316',
       'editor.selectionBackground': '#f9731640',
+      'editor.inactiveSelectionBackground': '#f9731625',
+      'editor.selectionHighlightBackground': '#f9731618',
+      'editor.selectionHighlightBorder': '#00000000',
       'editorCursor.foreground': '#f97316',
-      'editor.lineHighlightBackground': '#ffffff08',
+      'editor.lineHighlightBackground': '#00000000',
+      'editor.lineHighlightBorder': '#00000000',
+      'editor.rangeHighlightBackground': '#00000000',
+      'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
       'minimapSlider.background': '#ea580c20',
@@ -160,9 +171,15 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.foreground': '#ffffff',
       'editorLineNumber.foreground': '#71717a',
       'editorLineNumber.activeForeground': '#f97316',
-      'editor.selectionBackground': '#f973164d',
+      'editor.selectionBackground': '#f9731640',
+      'editor.inactiveSelectionBackground': '#f9731625',
+      'editor.selectionHighlightBackground': '#f9731618',
+      'editor.selectionHighlightBorder': '#00000000',
       'editorCursor.foreground': '#f97316',
-      'editor.lineHighlightBackground': '#ffffff0c',
+      'editor.lineHighlightBackground': '#00000000',
+      'editor.lineHighlightBorder': '#00000000',
+      'editor.rangeHighlightBackground': '#00000000',
+      'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
       'minimapSlider.background': '#ea580c20',
@@ -199,9 +216,15 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.foreground': '#0f172a',
       'editorLineNumber.foreground': '#94a3b8',
       'editorLineNumber.activeForeground': '#ea580c',
-      'editor.selectionBackground': '#ea580c25',
+      'editor.selectionBackground': '#ea580c35',
+      'editor.inactiveSelectionBackground': '#ea580c20',
+      'editor.selectionHighlightBackground': '#ea580c15',
+      'editor.selectionHighlightBorder': '#00000000',
       'editorCursor.foreground': '#ea580c',
-      'editor.lineHighlightBackground': '#00000006',
+      'editor.lineHighlightBackground': '#00000000',
+      'editor.lineHighlightBorder': '#00000000',
+      'editor.rangeHighlightBackground': '#00000000',
+      'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#ffffff',
       'minimap.background': '#ffffff',
       'minimapSlider.background': '#ea580c20',
@@ -238,9 +261,15 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.foreground': '#0f172a',
       'editorLineNumber.foreground': '#94a3b8',
       'editorLineNumber.activeForeground': '#ea580c',
-      'editor.selectionBackground': '#ea580c30',
+      'editor.selectionBackground': '#ea580c35',
+      'editor.inactiveSelectionBackground': '#ea580c20',
+      'editor.selectionHighlightBackground': '#ea580c15',
+      'editor.selectionHighlightBorder': '#00000000',
       'editorCursor.foreground': '#ea580c',
-      'editor.lineHighlightBackground': '#00000008',
+      'editor.lineHighlightBackground': '#00000000',
+      'editor.lineHighlightBorder': '#00000000',
+      'editor.rangeHighlightBackground': '#00000000',
+      'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
       'minimapSlider.background': '#ea580c20',
@@ -277,9 +306,15 @@ export const defineMonacoThemes = (monaco: any) => {
       'editor.foreground': '#0f172a',
       'editorLineNumber.foreground': '#64748b',
       'editorLineNumber.activeForeground': '#ea580c',
-      'editor.selectionBackground': '#ea580c38',
+      'editor.selectionBackground': '#ea580c35',
+      'editor.inactiveSelectionBackground': '#ea580c20',
+      'editor.selectionHighlightBackground': '#ea580c15',
+      'editor.selectionHighlightBorder': '#00000000',
       'editorCursor.foreground': '#ea580c',
-      'editor.lineHighlightBackground': '#ffffff20',
+      'editor.lineHighlightBackground': '#00000000',
+      'editor.lineHighlightBorder': '#00000000',
+      'editor.rangeHighlightBackground': '#00000000',
+      'editorWhitespace.foreground': '#00000000',
       'editorGutter.background': '#00000000',
       'minimap.background': '#00000000',
       'minimapSlider.background': '#ea580c20',
@@ -612,16 +647,18 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
 
       {/* 2. Monaco Editor Container */}
       <div className="flex-1 relative min-h-0">
-        {/* Centered 3D Crystal Watermark */}
-        <div 
-          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0"
-          style={{ 
-            opacity: (activeTheme.includes('transparent') || activeTheme.includes('v2') || activeTheme.includes('v3') || activeTheme === 'acrylic-glass') ? 0.22 : 0.04,
-            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.5))' 
-          }}
-        >
-          <CrystallLogo size={200} />
-        </div>
+        {/* Centered 3D Crystal Watermark (only shown when editor is empty, matching Figma) */}
+        {(!activeTab?.content || !activeTab.content.trim()) && (
+          <div 
+            className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0"
+            style={{ 
+              opacity: (activeTheme.includes('transparent') || activeTheme.includes('v2') || activeTheme.includes('v3') || activeTheme === 'acrylic-glass') ? 0.18 : 0.05,
+              filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.5))' 
+            }}
+          >
+            <CrystallLogo size={180} />
+          </div>
+        )}
 
         <Editor
           height="100%"
@@ -637,7 +674,15 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             lineHeight: Math.round((settings.fontSize || 12.5) * 1.55),
             lineNumbers: settings.lineNumbers ? 'on' : 'off',
             lineNumbersMinChars: 3,
+            lineDecorationsWidth: 6,
+            glyphMargin: false,
+            folding: true,
             wordWrap: settings.wordWrap ? 'on' : 'off',
+            renderWhitespace: 'none',
+            renderLineHighlight: 'none',
+            matchBrackets: 'always',
+            selectionHighlight: false,
+            tabSize: 2,
             minimap: { 
               enabled: !!settings.minimap,
               renderCharacters: false,
@@ -648,15 +693,13 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             hideCursorInOverviewRuler: true,
             scrollbar: {
               vertical: 'visible',
-              horizontal: 'auto',
-              verticalScrollbarSize: 8,
-              horizontalScrollbarSize: 8,
+              horizontal: 'hidden',
+              verticalScrollbarSize: 6,
+              horizontalScrollbarSize: 0,
               useShadows: false
             },
             scrollBeyondLastLine: false,
             automaticLayout: true,
-            tabSize: settings.tabSize || 4,
-            renderLineHighlight: 'line',
             cursorBlinking: 'smooth',
             smoothScrolling: true,
             padding: { top: 12, bottom: 12 }

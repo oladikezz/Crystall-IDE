@@ -156,23 +156,24 @@ export const INITIAL_TABS: FileTab[] = [
     id: 'tab-main',
     name: 'Main.lua',
     language: 'lua',
-    content: `local Players = game:GetService("Players")
+    content: `local Players = game:GetService('Players')
 local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character
 if Character then
-    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-    if Humanoid then
-        Humanoid.WalkSpeed = 100
-        Humanoid.JumpPower = 200
-        print("Speed enabled ")
-    end
-    local Backpack = LocalPlayer:FindFirstChildOfClass("Backpack")
-    if Backpack then
-        print("Backpack is accessible ")
-    end
+  local Humanoid = Character:FindFirstChildOfClass('Humanoid')
+  if Humanoid then
+    Humanoid.WalkSpeed = 100
+    Humanoid.JumpPower = 200
+    print('Speed enabled.')
+  end
+  local Backpack = LocalPlayer:FindFirstChildOfClass('Backpack')
+  if Backpack then
+    print('Backpack is accessible.')
+  end
 end
+
 task.wait(0.5)
-print("Script finalized ")
+print('Script finalized.')
 -- Ending block
 return true
 `
