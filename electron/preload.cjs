@@ -8,6 +8,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   isMaximized: () => ipcRenderer.invoke('window-is-maximized'),
   openFileDialog: () => ipcRenderer.invoke('dialog-open-file'),
   saveFileDialog: (data) => ipcRenderer.invoke('dialog-save-file', data),
+  openFolderDialog: () => ipcRenderer.invoke('dialog-open-folder'),
+  readFile: (filePath) => ipcRenderer.invoke('dialog-read-file', filePath),
   setAlwaysOnTop: (flag) => ipcRenderer.invoke('window-set-always-on-top', flag),
   setThemeMode: (opts) => ipcRenderer.send('window-set-theme-mode', opts),
 });

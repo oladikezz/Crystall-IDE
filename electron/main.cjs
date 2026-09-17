@@ -126,6 +126,93 @@ ipcMain.handle('dialog-save-file', async (event, { name, content }) => {
   return { success: true, filePath: result.filePath };
 });
 
+// Native Folder Dialog & Directory Reading
+ipcMain.handle('dialog-open-folder', async () => {
+  if (!mainWindow) return null;
+  const result = await dialog.showOpenDialog(mainWindow, {
+    properties: ['openDirectory']
+  });
+  if (result.canceled || result.filePaths.length === 0) return null;
+  const folderPath = result.filePaths[0];
+
+  function readDirRecursive(dir, depth = 0) {
+    if (depth > 4) return [];
+    try {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      entries.sort((a, b) => {
+        if (a.isDirectory() === b.isDirectory()) {
+          return a.name.localeCompare(b.name);
+        }
+        return a.isDirectory() ? -1 : 1;
+      });
+
+      const nodes = [];
+      for (const entry of entries) {
+        if (
+          entry.name.startsWith('.') || 
+          entry.name === 'node_modules' || 
+          entry.name === '__pycache__' || 
+          entry.name === 'dist' ||
+          entry.name === 'build' ||
+          entry.name === '.git'
+        ) {
+          continue;
+        }
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          nodes.push({
+            id: 'folder-' + fullPath,
+            name: entry.name,
+            type: 'folder',
+            path: fullPath,
+            children: readDirRecursive(fullPath, depth + 1)
+          });
+        } else {
+          const ext = path.extname(entry.name).toLowerCase();
+          let lang = 'plaintext';
+          if (ext === '.py') lang = 'python';
+          else if (ext === '.ts' || ext === '.tsx') lang = 'typescript';
+          else if (ext === '.js' || ext === '.jsx') lang = 'javascript';
+          else if (ext === '.lua' || ext === '.luau') lang = 'lua';
+          else if (ext === '.html' || ext === '.htm') lang = 'html';
+          else if (ext === '.css') lang = 'css';
+          else if (ext === '.json') lang = 'json';
+          else if (ext === '.cpp' || ext === '.c' || ext === '.h' || ext === '.hpp') lang = 'cpp';
+          else if (ext === '.rs') lang = 'rust';
+          else if (ext === '.go') lang = 'go';
+          else if (ext === '.md') lang = 'markdown';
+
+          nodes.push({
+            id: 'file-' + fullPath,
+            name: entry.name,
+            type: 'file',
+            path: fullPath,
+            language: lang
+          });
+        }
+      }
+      return nodes;
+    } catch {
+      return [];
+    }
+  }
+
+  return {
+    folderName: path.basename(folderPath),
+    folderPath: folderPath,
+    tree: readDirRecursive(folderPath)
+  };
+});
+
+ipcMain.handle('dialog-read-file', async (event, filePath) => {
+  try {
+    const content = fs.readFileSync(filePath, 'utf-8');
+    return { success: true, content, name: path.basename(filePath), path: filePath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {

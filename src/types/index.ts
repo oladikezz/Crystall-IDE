@@ -123,7 +123,8 @@ declare global {
       isMaximized: () => Promise<boolean>;
       openFileDialog: () => Promise<{ name: string; path: string; content: string } | null>;
       saveFileDialog: (data: { name: string; content: string }) => Promise<{ success: boolean; filePath?: string }>;
-      openFolderDialog?: () => Promise<{ path: string; name: string } | null>;
+      openFolderDialog?: () => Promise<{ folderName: string; folderPath: string; tree: ExplorerNode[] } | null>;
+      readFile?: (filePath: string) => Promise<{ success: boolean; content?: string; name?: string; path?: string; error?: string }>;
       setAlwaysOnTop?: (flag: boolean) => Promise<boolean>;
       setThemeMode?: (opts: { isTransparent: boolean; isLight: boolean }) => void;
     };

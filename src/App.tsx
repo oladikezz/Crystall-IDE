@@ -117,17 +117,23 @@ export default function App() {
     });
   };
 
-  // Tabs & Editor State - Universal Multi-Language Starter Tabs
+  // Tabs & Editor State - Clean Universal IDE Starter Tabs
   const [tabs, setTabs] = useState<FileTab[]>(() => {
     try {
-      const saved = localStorage.getItem('crystall_ide_tabs_v11_universal');
-      if (saved) return JSON.parse(saved);
+      const saved = localStorage.getItem('crystall_ide_tabs_clean_v1');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
     } catch {}
     return INITIAL_TABS;
   });
 
   const [activeTabId, setActiveTabId] = useState<string>(() => tabs[0]?.id || 'tab-main-py');
   const editorAreaRef = useRef<EditorAreaHandle>(null);
+
+  // Workspace folder state
+  const [openedFolder, setOpenedFolder] = useState<{ folderName: string; folderPath: string; tree: ExplorerNode[] } | null>(null);
 
   // Runtime / Injector State
   const [injectorStatus, setInjectorStatus] = useState<InjectorStatus>('unattached');
@@ -189,7 +195,7 @@ export default function App() {
   // Persist tabs
   useEffect(() => {
     try {
-      localStorage.setItem('crystall_ide_tabs_v8_figma', JSON.stringify(tabs));
+      localStorage.setItem('crystall_ide_tabs_clean_v1', JSON.stringify(tabs));
     } catch {}
   }, [tabs]);
 
@@ -413,12 +419,21 @@ export default function App() {
   };
 
   const handleOpenFolder = async () => {
-    addLog('info', 'Opening Project Workspace Folder...');
-    if (window.electronAPI?.openFileDialog) {
-      addLog('success', 'Workspace project directory synced.');
+    if (window.electronAPI?.openFolderDialog) {
+      addLog('info', 'Opening folder dialog...');
+      const result = await window.electronAPI.openFolderDialog();
+      if (result) {
+        setOpenedFolder(result);
+        addLog('success', `Opened folder "${result.folderName}".`);
+      }
     } else {
-      addLog('success', 'Project workspace loaded.');
+      addLog('info', 'Folder open is available in the desktop app.');
     }
+  };
+
+  const handleCloseFolder = () => {
+    setOpenedFolder(null);
+    addLog('info', 'Closed workspace folder.');
   };
 
   const handleSaveFile = async () => {
@@ -680,10 +695,35 @@ export default function App() {
   };
 
   // Project Explorer node click handler
-  const handleSelectExplorerNode = (node: ExplorerNode) => {
+  const handleSelectExplorerNode = async (node: ExplorerNode) => {
     if (node.type === 'folder') return;
 
-    // Check if tab already open
+    // If node has path on disk, read it
+    if (node.path && window.electronAPI?.readFile) {
+      const existing = tabs.find(t => t.path === node.path || t.name === node.name);
+      if (existing) {
+        setActiveTabId(existing.id);
+        addLog('info', `Switched to active tab "${node.name}".`);
+        return;
+      }
+      const res = await window.electronAPI.readFile(node.path);
+      if (res && res.success && res.content !== undefined) {
+        const newTab: FileTab = {
+          id: 'tab-' + Date.now(),
+          name: node.name,
+          language: node.language || 'plaintext',
+          content: res.content,
+          path: node.path
+        };
+        setTabs(prev => [...prev, newTab]);
+        setActiveTabId(newTab.id);
+        addLog('success', `Opened file: "${node.name}".`);
+        if (editorSettings.soundEffects) playClickSound();
+        return;
+      }
+    }
+
+    // Check if tab already open in memory
     const existing = tabs.find(t => t.name === node.name);
     if (existing) {
       setActiveTabId(existing.id);
@@ -1064,6 +1104,12 @@ export default function App() {
                 onSelectNode={handleSelectExplorerNode}
                 onOpenFolder={handleOpenFolder}
                 onNewFile={handleNewTab}
+                openedFolder={openedFolder}
+                openTabs={tabs}
+                activeTabId={activeTabId}
+                onSelectTab={handleSelectTab}
+                onCloseTab={handleCloseTab}
+                onCloseFolder={handleCloseFolder}
               />
             </div>
 
