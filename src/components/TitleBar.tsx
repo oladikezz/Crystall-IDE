@@ -138,7 +138,7 @@ export const TitleBar: React.FC<TitleBarProps> = ({
             className="flex items-center justify-center w-[22px] h-[22px] rounded-[5px] shadow-sm text-white font-bold text-xs"
             style={{ backgroundColor: 'var(--accent-primary)' }}
           >
-            <CrystallLogo size={15} />
+            <CrystallLogo size={16} />
           </div>
           <span 
             className="text-[13px] font-semibold tracking-tight whitespace-nowrap"
