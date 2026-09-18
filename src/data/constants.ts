@@ -8,6 +8,7 @@ export const PROVIDER_LABELS: Record<string, { name: string; badge: string; colo
   groq: { name: 'Groq', badge: 'Ultra Fast', color: '#f43f5e' },
   openrouter: { name: 'OpenRouter', badge: '200+ Models', color: '#ec4899' },
   ollama: { name: 'Ollama (Local)', badge: 'Free / Offline', color: '#64748b' },
+  llamacpp: { name: 'Llama.cpp / LM Studio', badge: 'Local Server', color: '#38bdf8' },
   custom: { name: 'Custom Proxy', badge: 'Self-Hosted', color: '#a855f7' }
 };
 
@@ -60,6 +61,13 @@ export const DEFAULT_CONFIGS: AllConfigs = {
     model: 'llama3:latest',
     temperature: 0.7,
     systemPrompt: 'You are a local coding assistant running via Ollama in Crystall IDE.'
+  },
+  llamacpp: {
+    apiKey: 'local',
+    baseUrl: 'http://localhost:8080/v1',
+    model: 'default',
+    temperature: 0.7,
+    systemPrompt: 'You are a local coding assistant running via llama.cpp or LM Studio in Crystall IDE.'
   },
   custom: {
     apiKey: '',

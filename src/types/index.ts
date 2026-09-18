@@ -6,7 +6,10 @@ export type AIProvider =
   | 'groq'
   | 'openrouter'
   | 'ollama'
+  | 'llamacpp'
   | 'custom';
+
+export * from './ai';
 
 export interface ProviderConfig {
   apiKey: string;
@@ -56,6 +59,8 @@ export interface ChatMessage {
   thinking?: string;
   timestamp: string;
   modelUsed?: string;
+  tokensUsed?: { prompt: number; completion: number };
+  contextSummary?: string;
 }
 
 export interface ConsoleLog {

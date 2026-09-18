@@ -31,6 +31,8 @@ export interface EditorAreaHandle {
   format: () => void;
   selectAll: () => void;
   getSelectedText: () => string;
+  getDiagnostics?: () => any[];
+  getCursorPosition?: () => { lineNumber: number; column: number } | null;
 }
 
 const MONACO_THEME_MAP: Record<string, string> = {
@@ -463,6 +465,22 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
         return editorRef.current.getModel()?.getValueInRange(selection) || '';
       }
       return '';
+    },
+    getDiagnostics: () => {
+      if (monacoRef.current && editorRef.current) {
+        const model = editorRef.current.getModel();
+        if (model) {
+          return monacoRef.current.editor.getModelMarkers({ resource: model.uri }) || [];
+        }
+      }
+      return [];
+    },
+    getCursorPosition: () => {
+      if (editorRef.current) {
+        const pos = editorRef.current.getPosition();
+        return pos ? { lineNumber: pos.lineNumber, column: pos.column } : null;
+      }
+      return null;
     }
   }));
 

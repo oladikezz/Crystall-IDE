@@ -35,7 +35,8 @@ import {
   saveStoredConfigs, 
   loadActiveProvider, 
   saveActiveProvider, 
-  sendStreamingPrompt 
+  sendStreamingPrompt,
+  ContextEngine
 } from './services/aiService';
 import { applyThemeVariables, CRYSTALL_THEMES, resolveTheme } from './data/themes';
 import { 
@@ -826,28 +827,55 @@ export default function App() {
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
-    const conversationHistory = [...messages, userMsg].map(m => ({
+    // 1. Gather live compiler / LSP markers & cursor info from Monaco
+    const markers = editorAreaRef.current?.getDiagnostics?.() || [];
+    const cursorPos = editorAreaRef.current?.getCursorPosition?.();
+    const selection = editorAreaRef.current?.getSelectedText?.();
+
+    // 2. Build structured codebase context payload
+    const context = ContextEngine.buildContext({
+      activeTab: {
+        ...activeTab,
+        content: contextCode !== undefined ? contextCode : activeTab.content
+      },
+      selectionText: selection || undefined,
+      cursorLine: cursorPos?.lineNumber,
+      monacoMarkers: markers,
+      consoleLogs: logs,
+      allTabs: tabs,
+      maxContextTokens: (activeProvider === 'ollama' || activeProvider === 'llamacpp') ? 8192 : 64000
+    });
+
+    // 3. Format and budget the prompt with sliding window priority
+    const conversationHistory = messages.map(m => ({
       role: m.role,
       content: m.content
     }));
 
-    if (contextCode) {
-      conversationHistory.unshift({
-        role: 'system',
-        content: `Active editor script [${activeTab.name} - ${activeTab.language}]:\n\`\`\`\n${contextCode}\n\`\`\``
-      });
-    }
+    const config = configs[activeProvider];
+    const prepared = ContextEngine.preparePrompt(
+      config.systemPrompt,
+      promptText,
+      context,
+      conversationHistory,
+      (activeProvider === 'ollama' || activeProvider === 'llamacpp') ? 8192 : 64000
+    );
+
+    let accumulatedContent = '';
+    let accumulatedThinking = '';
 
     try {
       await sendStreamingPrompt(
         activeProvider,
-        configs[activeProvider],
-        conversationHistory,
+        config,
+        prepared.messages,
         {
           onChunk: (chunk: string) => {
+            accumulatedContent += chunk;
             setStreamingContent(prev => prev + chunk);
           },
           onThinkingChunk: (chunk: string) => {
+            accumulatedThinking += chunk;
             setStreamingThinking(prev => prev + chunk);
           },
           onError: (err: Error) => {
@@ -860,16 +888,20 @@ export default function App() {
               {
                 id: 'msg-' + Date.now(),
                 role: 'assistant',
-                content: streamingContent || '',
-                thinking: streamingThinking || undefined,
+                content: accumulatedContent,
+                thinking: accumulatedThinking || undefined,
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                modelUsed: configs[activeProvider]?.model
+                modelUsed: config?.model,
+                tokensUsed: {
+                  prompt: prepared.totalEstimatedTokens,
+                  completion: Math.ceil(accumulatedContent.length / 3.8)
+                }
               }
             ]);
             setIsStreaming(false);
             setStreamingContent('');
             setStreamingThinking('');
-            addLog('success', `AI response completed [${configs[activeProvider]?.model}]`);
+            addLog('success', `AI response completed [${config?.model}]`);
           }
         },
         controller.signal
@@ -1169,6 +1201,7 @@ export default function App() {
             onChangeProvider={handleChangeActiveProvider}
             configs={configs}
             activeTab={activeTab}
+            diagnosticsCount={editorAreaRef.current?.getDiagnostics?.()?.length || 0}
             onApplyCodeToEditor={handleApplyCodeToEditor}
             onApplyCodeToNewTab={handleApplyCodeToNewTab}
             onSendMessage={handleSendPrompt}

@@ -48,6 +48,7 @@ const MODEL_PRESETS: Record<AIProvider, string[]> = {
     'deepseek/deepseek-r1:free'
   ],
   ollama: ['llama3:latest', 'deepseek-r1:latest', 'qwen2.5-coder:latest', 'codellama:latest'],
+  llamacpp: ['default', 'llama-3-8b-instruct', 'mistral-7b-instruct', 'qwen2.5-coder-7b'],
   custom: ['custom-model']
 };
 
