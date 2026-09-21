@@ -29,6 +29,28 @@ export class ASTSlicer {
       this.parseRust(lines, symbols);
     } else if (normLang.includes('go')) {
       this.parseGo(lines, symbols);
+    } else if (normLang.includes('java')) {
+      this.parseJava(lines, symbols);
+    } else if (normLang.includes('csharp') || normLang === 'cs' || normLang === 'c#') {
+      this.parseCSharp(lines, symbols);
+    } else if (normLang.includes('cpp') || normLang === 'c++' || normLang === 'c') {
+      this.parseCAndCpp(lines, symbols);
+    } else if (normLang.includes('php')) {
+      this.parsePHP(lines, symbols);
+    } else if (normLang.includes('ruby') || normLang === 'rb') {
+      this.parseRuby(lines, symbols);
+    } else if (normLang.includes('kotlin') || normLang === 'kt') {
+      this.parseKotlin(lines, symbols);
+    } else if (normLang.includes('swift')) {
+      this.parseSwift(lines, symbols);
+    } else if (normLang.includes('dart')) {
+      this.parseDart(lines, symbols);
+    } else if (normLang.includes('scala')) {
+      this.parseScala(lines, symbols);
+    } else if (normLang.includes('zig')) {
+      this.parseZig(lines, symbols);
+    } else if (normLang.includes('haskell') || normLang === 'hs') {
+      this.parseHaskell(lines, symbols);
     } else {
       this.parseGeneric(lines, symbols);
     }
@@ -266,6 +288,470 @@ export class ASTSlicer {
           signature: trimmed.slice(0, 60),
           startLine: lineNum,
           endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // Java AST: packages, imports, classes, records, interfaces, methods
+  private static parseJava(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('package ') || trimmed.startsWith('import ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.replace(/^(package|import)\s+/, '').replace(/;$/, '').slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const classMatch = trimmed.match(/^(?:public\s+|protected\s+|private\s+)?(?:abstract\s+|final\s+|static\s+)?(class|interface|record|enum)\s+([A-Za-z0-9_]+)/);
+      if (classMatch) {
+        symbols.push({
+          type: classMatch[1] === 'interface' ? 'interface' : 'class',
+          name: classMatch[2],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const methodMatch = trimmed.match(/^(?:public|protected|private|static|final|synchronized|abstract|\s)+[\w<>\[\], ?]+\s+([A-Za-z0-9_]+)\s*\([^)]*\)\s*(?:throws\s+[\w,\s]+)?\s*\{?/);
+      if (methodMatch && !trimmed.startsWith('if') && !trimmed.startsWith('while') && !trimmed.startsWith('for') && !trimmed.startsWith('switch')) {
+        symbols.push({
+          type: 'method',
+          name: methodMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // C# AST: namespaces, usings, classes, interfaces, structs, methods
+  private static parseCSharp(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('using ') || trimmed.startsWith('namespace ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.replace(/^(using|namespace)\s+/, '').replace(/;$/, '').slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const classMatch = trimmed.match(/^(?:public\s+|protected\s+|private\s+|internal\s+)?(?:abstract\s+|sealed\s+|static\s+)?(class|interface|struct|record)\s+([A-Za-z0-9_]+)/);
+      if (classMatch) {
+        symbols.push({
+          type: classMatch[1] === 'interface' ? 'interface' : 'class',
+          name: classMatch[2],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const methodMatch = trimmed.match(/^(?:public|protected|private|internal|static|async|override|virtual|\s)+[\w<>\[\], ?]+\s+([A-Za-z0-9_]+)\s*\([^)]*\)\s*\{?/);
+      if (methodMatch && !trimmed.startsWith('if') && !trimmed.startsWith('while') && !trimmed.startsWith('for') && !trimmed.startsWith('switch')) {
+        symbols.push({
+          type: 'method',
+          name: methodMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // C & C++ AST: includes, structs, classes, functions
+  private static parseCAndCpp(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('#include') || trimmed.startsWith('using namespace')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const structOrClass = trimmed.match(/^(?:typedef\s+)?(class|struct|namespace)\s+([A-Za-z0-9_]+)/);
+      if (structOrClass) {
+        symbols.push({
+          type: 'class',
+          name: structOrClass[2],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const fnMatch = trimmed.match(/^(?:[\w:*&<>]+\s+)+([A-Za-z0-9_]+)\s*\([^;]*\)\s*(?:const)?\s*\{?/);
+      if (fnMatch && !trimmed.startsWith('if') && !trimmed.startsWith('while') && !trimmed.startsWith('for') && !trimmed.startsWith('switch') && !trimmed.startsWith('return')) {
+        symbols.push({
+          type: 'function',
+          name: fnMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // PHP AST: namespaces, classes, functions
+  private static parsePHP(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('use ') || trimmed.startsWith('namespace ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const classMatch = trimmed.match(/^(?:abstract\s+|final\s+)?(class|interface|trait)\s+([A-Za-z0-9_]+)/);
+      if (classMatch) {
+        symbols.push({
+          type: classMatch[1] === 'interface' ? 'interface' : 'class',
+          name: classMatch[2],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const fnMatch = trimmed.match(/^(?:public\s+|protected\s+|private\s+|static\s+)*function\s+([A-Za-z0-9_]+)\s*\(/);
+      if (fnMatch) {
+        symbols.push({
+          type: 'function',
+          name: fnMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // Ruby AST: classes, modules, defs
+  private static parseRuby(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('require ') || trimmed.startsWith('require_relative ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const classMatch = trimmed.match(/^(?:class|module)\s+([A-Za-z0-9_:]+)/);
+      if (classMatch) {
+        symbols.push({
+          type: 'class',
+          name: classMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findRubyEnd(lines, i)
+        });
+        continue;
+      }
+
+      const defMatch = trimmed.match(/^def\s+([A-Za-z0-9_.:!?]+)/);
+      if (defMatch) {
+        symbols.push({
+          type: 'function',
+          name: defMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findRubyEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  private static findRubyEnd(lines: string[], startIdx: number): number {
+    let depth = 1;
+    for (let j = startIdx + 1; j < lines.length; j++) {
+      const t = lines[j].trim();
+      if (t.match(/^(?:class|module|def|if|unless|while|until|case)\b/) || t.endsWith(' do')) {
+        depth++;
+      } else if (t === 'end' || t.startsWith('end ') || t.startsWith('end)')) {
+        depth--;
+        if (depth === 0) return j + 1;
+      }
+    }
+    return lines.length;
+  }
+
+  // Kotlin AST: packages, classes, funs
+  private static parseKotlin(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('package ') || trimmed.startsWith('import ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const classMatch = trimmed.match(/^(?:data\s+|sealed\s+|open\s+)?(class|interface|object)\s+([A-Za-z0-9_]+)/);
+      if (classMatch) {
+        symbols.push({
+          type: classMatch[1] === 'interface' ? 'interface' : 'class',
+          name: classMatch[2],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const funMatch = trimmed.match(/^fun\s+([A-Za-z0-9_]+)/);
+      if (funMatch) {
+        symbols.push({
+          type: 'function',
+          name: funMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // Swift AST: imports, structs, classes, funcs
+  private static parseSwift(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('import ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const classMatch = trimmed.match(/^(?:public\s+|open\s+|final\s+)?(class|struct|protocol|extension|enum)\s+([A-Za-z0-9_]+)/);
+      if (classMatch) {
+        symbols.push({
+          type: classMatch[1] === 'protocol' ? 'interface' : 'class',
+          name: classMatch[2],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const funcMatch = trimmed.match(/^(?:public\s+|private\s+|static\s+|mutating\s+)*func\s+([A-Za-z0-9_]+)/);
+      if (funcMatch) {
+        symbols.push({
+          type: 'function',
+          name: funcMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // Dart AST: imports, classes, functions
+  private static parseDart(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('import ') || trimmed.startsWith('export ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const classMatch = trimmed.match(/^(?:abstract\s+)?class\s+([A-Za-z0-9_]+)/);
+      if (classMatch) {
+        symbols.push({
+          type: 'class',
+          name: classMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const fnMatch = trimmed.match(/^(?:void|Future<[^>]+>|[\w<>]+)\s+([A-Za-z0-9_]+)\s*\(/);
+      if (fnMatch && !trimmed.startsWith('if') && !trimmed.startsWith('for')) {
+        symbols.push({
+          type: 'function',
+          name: fnMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // Scala AST: objects, classes, defs
+  private static parseScala(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('package ') || trimmed.startsWith('import ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const objMatch = trimmed.match(/^(?:case\s+)?(class|object|trait|enum)\s+([A-Za-z0-9_]+)/);
+      if (objMatch) {
+        symbols.push({
+          type: objMatch[1] === 'trait' ? 'interface' : 'class',
+          name: objMatch[2],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+        continue;
+      }
+
+      const defMatch = trimmed.match(/^def\s+([A-Za-z0-9_]+)/);
+      if (defMatch) {
+        symbols.push({
+          type: 'function',
+          name: defMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // Zig AST: const, pub fn
+  private static parseZig(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.includes('@import(')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const fnMatch = trimmed.match(/^(?:pub\s+)?fn\s+([A-Za-z0-9_]+)/);
+      if (fnMatch) {
+        symbols.push({
+          type: 'function',
+          name: fnMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: this.findBraceBlockEnd(lines, i)
+        });
+      }
+    }
+  }
+
+  // Haskell AST: data, type, function signatures
+  private static parseHaskell(lines: string[], symbols: ASTNodeSummary[]) {
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      const lineNum = i + 1;
+
+      if (trimmed.startsWith('module ') || trimmed.startsWith('import ')) {
+        symbols.push({
+          type: 'import',
+          name: trimmed.slice(0, 40),
+          signature: trimmed,
+          startLine: lineNum,
+          endLine: lineNum
+        });
+        continue;
+      }
+
+      const dataMatch = trimmed.match(/^(?:data|type|newtype)\s+([A-Za-z0-9_]+)/);
+      if (dataMatch) {
+        symbols.push({
+          type: 'class',
+          name: dataMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: lineNum + 4
+        });
+        continue;
+      }
+
+      const sigMatch = trimmed.match(/^([a-z][A-Za-z0-9_]*)\s*::/);
+      if (sigMatch) {
+        symbols.push({
+          type: 'function',
+          name: sigMatch[1],
+          signature: trimmed.slice(0, 60),
+          startLine: lineNum,
+          endLine: lineNum + 4
         });
       }
     }

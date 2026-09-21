@@ -101,11 +101,137 @@ export const SUPPORTED_LANGUAGES: LanguageMeta[] = [
     sampleCode: `// JavaScript Node / Web script in Crystall IDE\nconst calculateMetrics = (items) => {\n  const sum = items.reduce((acc, v) => acc + v, 0);\n  return { count: items.length, average: sum / items.length };\n};\n\nconsole.log("[JS] Metrics:", calculateMetrics([12, 45, 78, 23, 90]));\n`
   },
   {
+    id: 'c',
+    name: 'C',
+    ext: '.c',
+    color: '#555555',
+    sampleCode: `#include <stdio.h>\n#include <stdlib.h>\n\ntypedef struct {\n    int id;\n    const char *name;\n} Worker;\n\nint main(void) {\n    Worker w = { .id = 101, .name = "Crystall Native Worker" };\n    printf("[C] Initialized worker: %s (ID: %d)\\n", w.name, w.id);\n    return 0;\n}\n`
+  },
+  {
+    id: 'cpp',
+    name: 'C++',
+    ext: '.cpp',
+    color: '#a855f7',
+    sampleCode: `#include <iostream>\n#include <vector>\n#include <numeric>\n\nint main() {\n    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};\n    int sum = std::accumulate(numbers.begin(), numbers.end(), 0);\n    std::cout << "[C++] High-Performance Compute: Sum = " << sum << std::endl;\n    return 0;\n}\n`
+  },
+  {
+    id: 'rust',
+    name: 'Rust',
+    ext: '.rs',
+    color: '#f97316',
+    sampleCode: `// Rust Safe Systems Execution in Crystall IDE\nfn main() {\n    let items = vec!["Fast", "Safe", "Concurrent"];\n    for (i, feature) in items.iter().enumerate() {\n        println!("[Rust] Feature {}: {}", i + 1, feature);\n    }\n}\n`
+  },
+  {
+    id: 'csharp',
+    name: 'C#',
+    ext: '.cs',
+    color: '#10b981',
+    sampleCode: `// C# .NET Execution in Crystall IDE\nusing System;\nusing System.Collections.Generic;\nusing System.Linq;\n\nclass Program {\n    static void Main() {\n        var data = new List<int> { 10, 20, 30, 40, 50 };\n        var average = data.Average();\n        Console.WriteLine($"[C#] Computed average: {average}");\n    }\n}\n`
+  },
+  {
+    id: 'java',
+    name: 'Java',
+    ext: '.java',
+    color: '#ea580c',
+    sampleCode: `// Java Modern Execution in Crystall IDE\nimport java.util.List;\nimport java.util.stream.Collectors;\n\npublic class Main {\n    public static void main(String[] args) {\n        List<String> items = List.of("Crystall", "IDE", "Java", "Backend");\n        String joined = items.stream()\n            .map(String::toUpperCase)\n            .collect(Collectors.joining(" | "));\n        System.out.println("[Java] " + joined);\n    }\n}\n`
+  },
+  {
+    id: 'go',
+    name: 'Go',
+    ext: '.go',
+    color: '#06b6d4',
+    sampleCode: `package main\n\nimport (\n\t"fmt"\n\t"time"\n)\n\nfunc worker(id int, ch chan string) {\n\ttime.Sleep(50 * time.Millisecond)\n\tch <- fmt.Sprintf("Worker %d finished", id)\n}\n\nfunc main() {\n\tch := make(chan string)\n\tgo worker(1, ch)\n\tfmt.Println("[Go]", <-ch)\n}\n`
+  },
+  {
     id: 'lua',
     name: 'Lua / Luau',
     ext: '.lua',
     color: '#0284c7',
     sampleCode: `-- Lua Script in Crystall IDE\nlocal function fibonacci(n)\n    if n <= 1 then return n end\n    return fibonacci(n - 1) + fibonacci(n - 2)\nend\n\nprint("[Lua] Fibonacci(10) =", fibonacci(10))\n`
+  },
+  {
+    id: 'php',
+    name: 'PHP',
+    ext: '.php',
+    color: '#777bb4',
+    sampleCode: `<?php\n// PHP 8+ Modern Script in Crystall IDE\n$framework = "Crystall IDE";\n$versions = ["PHP 8.2", "JIT", "FastCGI"];\n\necho "[PHP] Running on $framework\\n";\nforeach ($versions as $v) {\n    echo " - Feature: $v\\n";\n}\n`
+  },
+  {
+    id: 'ruby',
+    name: 'Ruby',
+    ext: '.rb',
+    color: '#e11d48',
+    sampleCode: `# Ruby Script in Crystall IDE\nclass MetricTracker\n  def initialize(name)\n    @name = name\n  end\n\n  def report\n    puts "[Ruby] Metric #{@name}: Healthy (100%)"\n  end\nend\n\nMetricTracker.new("CoreEngine").report\n`
+  },
+  {
+    id: 'kotlin',
+    name: 'Kotlin',
+    ext: '.kt',
+    color: '#7c3aed',
+    sampleCode: `// Kotlin Script in Crystall IDE\ndata class Task(val id: Int, val title: String)\n\nfun main() {\n    val tasks = listOf(Task(1, "Build AST"), Task(2, "Stream LLM"))\n    tasks.forEach { println("[Kotlin] Task \${it.id}: \${it.title}") }\n}\n`
+  },
+  {
+    id: 'swift',
+    name: 'Swift',
+    ext: '.swift',
+    color: '#f05138',
+    sampleCode: `// Swift Script in Crystall IDE\nstruct AppConfig {\n    let name: String\n    let version: String\n}\n\nlet config = AppConfig(name: "Crystall IDE", version: "2.5.0")\nprint("[Swift] Initialized \\(config.name) v\\(config.version)")\n`
+  },
+  {
+    id: 'dart',
+    name: 'Dart',
+    ext: '.dart',
+    color: '#0175c2',
+    sampleCode: `// Dart Script in Crystall IDE\nvoid main() {\n  final languages = ['Dart', 'Flutter', 'Crystall'];\n  for (var lang in languages) {\n    print('[Dart] Ready: $lang');\n  }\n}\n`
+  },
+  {
+    id: 'r',
+    name: 'R',
+    ext: '.r',
+    color: '#276dc3',
+    sampleCode: `# R Data Analysis in Crystall IDE\nvalues <- c(12, 24, 36, 48, 60)\nmean_val <- mean(values)\nsd_val <- sd(values)\ncat(sprintf("[R] Mean: %.2f, StdDev: %.2f\\n", mean_val, sd_val))\n`
+  },
+  {
+    id: 'julia',
+    name: 'Julia',
+    ext: '.jl',
+    color: '#9558b2',
+    sampleCode: `# Julia High-Performance Numerical Computing\nfunction compute_matrix()\n    A = [1.0 2.0; 3.0 4.0]\n    println("[Julia] Determinant: ", A[1,1]*A[2,2] - A[1,2]*A[2,1])\nend\n\ncompute_matrix()\n`
+  },
+  {
+    id: 'perl',
+    name: 'Perl',
+    ext: '.pl',
+    color: '#39457e',
+    sampleCode: `#!/usr/bin/env perl\nuse strict;\nuse warnings;\n\nmy @items = ("Perl5", "Regex", "Crystall IDE");\nprint "[Perl] " . join(" -> ", @items) . "\\n";\n`
+  },
+  {
+    id: 'scala',
+    name: 'Scala',
+    ext: '.scala',
+    color: '#dc2626',
+    sampleCode: `// Scala Modern Script\nobject Main extends App {\n  val langs = List("Scala 3", "Akka", "Cats")\n  println(s"[Scala] Stack: \${langs.mkString(", ")}")\n}\n`
+  },
+  {
+    id: 'zig',
+    name: 'Zig',
+    ext: '.zig',
+    color: '#ec4899',
+    sampleCode: `const std = @import("std");\n\npub fn main() void {\n    std.debug.print("[Zig] Zero-overhead systems language in Crystall IDE!\\n", .{});\n}\n`
+  },
+  {
+    id: 'haskell',
+    name: 'Haskell',
+    ext: '.hs',
+    color: '#5e5086',
+    sampleCode: `-- Haskell Pure Functional Script in Crystall IDE\nfactorial :: Integer -> Integer\nfactorial 0 = 1\nfactorial n = n * factorial (n - 1)\n\nmain :: IO ()\nmain = putStrLn ("[Haskell] Factorial 7 = " ++ show (factorial 7))\n`
+  },
+  {
+    id: 'shell',
+    name: 'Shell / Batch',
+    ext: '.bat',
+    color: '#4ade80',
+    sampleCode: `@echo off\necho [Batch] Running script in Crystall IDE...\necho Current Time: %time%\n`
   },
   {
     id: 'html',
@@ -127,27 +253,6 @@ export const SUPPORTED_LANGUAGES: LanguageMeta[] = [
     ext: '.json',
     color: '#a3e635',
     sampleCode: `{\n  "name": "crystall-project",\n  "version": "1.0.0",\n  "author": "Crystall Team",\n  "settings": {\n    "autoSave": true,\n    "telemetry": false\n  }\n}\n`
-  },
-  {
-    id: 'cpp',
-    name: 'C++',
-    ext: '.cpp',
-    color: '#a855f7',
-    sampleCode: `#include <iostream>\n#include <vector>\n\nint main() {\n    std::cout << "[C++] Crystall Native Fast Engine\n";\n    return 0;\n}\n`
-  },
-  {
-    id: 'rust',
-    name: 'Rust',
-    ext: '.rs',
-    color: '#f97316',
-    sampleCode: `fn main() {\n    println!("[Rust] Memory-safe execution in Crystall IDE!");\n}\n`
-  },
-  {
-    id: 'go',
-    name: 'Go',
-    ext: '.go',
-    color: '#06b6d4',
-    sampleCode: `package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("[Go] High performance concurrency runtime")\n}\n`
   },
   {
     id: 'markdown',

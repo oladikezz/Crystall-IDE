@@ -13,6 +13,44 @@ function resolveCommand(language: string, execFile: string, args: string[] = [])
     return { cmd: 'node', cmdArgs: ['--experimental-strip-types', execFile, ...args] };
   } else if (lang === 'lua') {
     return { cmd: 'lua', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'java') {
+    return { cmd: 'java', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'rust' || lang === 'rs') {
+    const exeOut = execFile.replace(/\.rs$/i, process.platform === 'win32' ? '.exe' : '');
+    return { cmd: `rustc -O "${execFile}" -o "${exeOut}" && "${exeOut}"`, cmdArgs: args };
+  } else if (lang === 'cpp' || lang === 'c++') {
+    const exeOut = execFile.replace(/\.(cpp|cc|cxx)$/i, process.platform === 'win32' ? '.exe' : '');
+    return { cmd: `g++ -O2 -std=c++17 "${execFile}" -o "${exeOut}" && "${exeOut}"`, cmdArgs: args };
+  } else if (lang === 'c') {
+    const exeOut = execFile.replace(/\.c$/i, process.platform === 'win32' ? '.exe' : '');
+    return { cmd: `gcc -O2 "${execFile}" -o "${exeOut}" && "${exeOut}"`, cmdArgs: args };
+  } else if (lang === 'csharp' || lang === 'cs' || lang === 'c#') {
+    const exeOut = execFile.replace(/\.cs$/i, '.exe');
+    return { cmd: `csc -nologo -out:"${exeOut}" "${execFile}" && "${exeOut}"`, cmdArgs: args };
+  } else if (lang === 'go') {
+    return { cmd: 'go', cmdArgs: ['run', execFile, ...args] };
+  } else if (lang === 'php') {
+    return { cmd: 'php', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'ruby' || lang === 'rb') {
+    return { cmd: 'ruby', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'kotlin' || lang === 'kt') {
+    return { cmd: 'kotlinc', cmdArgs: ['-script', execFile, ...args] };
+  } else if (lang === 'swift') {
+    return { cmd: 'swift', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'dart') {
+    return { cmd: 'dart', cmdArgs: ['run', execFile, ...args] };
+  } else if (lang === 'r') {
+    return { cmd: 'Rscript', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'julia' || lang === 'jl') {
+    return { cmd: 'julia', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'perl' || lang === 'pl') {
+    return { cmd: 'perl', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'scala') {
+    return { cmd: 'scala', cmdArgs: [execFile, ...args] };
+  } else if (lang === 'zig') {
+    return { cmd: 'zig', cmdArgs: ['run', execFile, ...args] };
+  } else if (lang === 'haskell' || lang === 'hs') {
+    return { cmd: 'runghc', cmdArgs: [execFile, ...args] };
   } else if (lang === 'powershell' || lang === 'ps1') {
     return { cmd: 'powershell.exe', cmdArgs: ['-ExecutionPolicy', 'Bypass', '-File', execFile, ...args] };
   } else if (lang === 'shell' || lang === 'bat' || lang === 'cmd') {
@@ -37,6 +75,54 @@ test('BackendExecution - resolves PowerShell execution bypass flags', () => {
   const res = resolveCommand('powershell', 'C:\\scripts\\run.ps1');
   assert.strictEqual(res.cmd, 'powershell.exe');
   assert.deepStrictEqual(res.cmdArgs, ['-ExecutionPolicy', 'Bypass', '-File', 'C:\\scripts\\run.ps1']);
+});
+
+test('BackendExecution - resolves Java, Rust, C++, C, and C# compilation & execution commands', () => {
+  const javaRes = resolveCommand('java', 'C:\\scripts\\Main.java');
+  assert.strictEqual(javaRes.cmd, 'java');
+  assert.deepStrictEqual(javaRes.cmdArgs, ['C:\\scripts\\Main.java']);
+
+  const rustRes = resolveCommand('rust', 'C:\\scripts\\main.rs');
+  assert.ok(rustRes.cmd.includes('rustc -O "C:\\scripts\\main.rs"'));
+
+  const cppRes = resolveCommand('cpp', 'C:\\scripts\\main.cpp');
+  assert.ok(cppRes.cmd.includes('g++ -O2 -std=c++17 "C:\\scripts\\main.cpp"'));
+
+  const cRes = resolveCommand('c', 'C:\\scripts\\main.c');
+  assert.ok(cRes.cmd.includes('gcc -O2 "C:\\scripts\\main.c"'));
+
+  const csRes = resolveCommand('csharp', 'C:\\scripts\\Program.cs');
+  assert.ok(csRes.cmd.includes('csc -nologo'));
+});
+
+test('BackendExecution - resolves Go, PHP, Ruby, Kotlin, Swift, Dart, Zig, and Haskell runtimes', () => {
+  const goRes = resolveCommand('go', 'C:\\scripts\\main.go');
+  assert.strictEqual(goRes.cmd, 'go');
+  assert.deepStrictEqual(goRes.cmdArgs, ['run', 'C:\\scripts\\main.go']);
+
+  const phpRes = resolveCommand('php', 'C:\\scripts\\index.php');
+  assert.strictEqual(phpRes.cmd, 'php');
+
+  const rubyRes = resolveCommand('ruby', 'C:\\scripts\\app.rb');
+  assert.strictEqual(rubyRes.cmd, 'ruby');
+
+  const ktRes = resolveCommand('kotlin', 'C:\\scripts\\script.kt');
+  assert.strictEqual(ktRes.cmd, 'kotlinc');
+  assert.deepStrictEqual(ktRes.cmdArgs, ['-script', 'C:\\scripts\\script.kt']);
+
+  const swiftRes = resolveCommand('swift', 'C:\\scripts\\main.swift');
+  assert.strictEqual(swiftRes.cmd, 'swift');
+
+  const dartRes = resolveCommand('dart', 'C:\\scripts\\main.dart');
+  assert.strictEqual(dartRes.cmd, 'dart');
+  assert.deepStrictEqual(dartRes.cmdArgs, ['run', 'C:\\scripts\\main.dart']);
+
+  const zigRes = resolveCommand('zig', 'C:\\scripts\\main.zig');
+  assert.strictEqual(zigRes.cmd, 'zig');
+  assert.deepStrictEqual(zigRes.cmdArgs, ['run', 'C:\\scripts\\main.zig']);
+
+  const hsRes = resolveCommand('haskell', 'C:\\scripts\\main.hs');
+  assert.strictEqual(hsRes.cmd, 'runghc');
 });
 
 test('BackendExecution - parses and buffers stdout/stderr process output events', () => {

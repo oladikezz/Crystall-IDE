@@ -132,10 +132,29 @@ ipcMain.handle('process-run', async (event, { code, language, filePath, cwd, arg
       javascript: '.js',
       typescript: '.ts',
       lua: '.lua',
+      c: '.c',
+      cpp: '.cpp',
+      rust: '.rs',
+      csharp: '.cs',
+      java: '.java',
+      go: '.go',
+      php: '.php',
+      ruby: '.rb',
+      kotlin: '.kt',
+      swift: '.swift',
+      dart: '.dart',
+      r: '.r',
+      julia: '.jl',
+      perl: '.pl',
+      scala: '.scala',
+      zig: '.zig',
+      haskell: '.hs',
       shell: '.bat',
       powershell: '.ps1',
       json: '.json',
       markdown: '.md',
+      html: '.html',
+      css: '.css',
       plaintext: '.txt'
     };
     const ext = extMap[language] || '.txt';
@@ -164,6 +183,61 @@ ipcMain.handle('process-run', async (event, { code, language, filePath, cwd, arg
     cmdArgs = ['--experimental-strip-types', execFile, ...(args || [])];
   } else if (lang === 'lua') {
     cmd = 'lua';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'java') {
+    cmd = 'java';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'rust' || lang === 'rs') {
+    const exeOut = execFile.replace(/\.rs$/i, process.platform === 'win32' ? '.exe' : '');
+    cmd = `rustc -O "${execFile}" -o "${exeOut}" && "${exeOut}"`;
+    cmdArgs = args || [];
+  } else if (lang === 'cpp' || lang === 'c++') {
+    const exeOut = execFile.replace(/\.(cpp|cc|cxx)$/i, process.platform === 'win32' ? '.exe' : '');
+    cmd = `g++ -O2 -std=c++17 "${execFile}" -o "${exeOut}" && "${exeOut}"`;
+    cmdArgs = args || [];
+  } else if (lang === 'c') {
+    const exeOut = execFile.replace(/\.c$/i, process.platform === 'win32' ? '.exe' : '');
+    cmd = `gcc -O2 "${execFile}" -o "${exeOut}" && "${exeOut}"`;
+    cmdArgs = args || [];
+  } else if (lang === 'csharp' || lang === 'cs' || lang === 'c#') {
+    const exeOut = execFile.replace(/\.cs$/i, '.exe');
+    cmd = `csc -nologo -out:"${exeOut}" "${execFile}" && "${exeOut}"`;
+    cmdArgs = args || [];
+  } else if (lang === 'go') {
+    cmd = 'go';
+    cmdArgs = ['run', execFile, ...(args || [])];
+  } else if (lang === 'php') {
+    cmd = 'php';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'ruby' || lang === 'rb') {
+    cmd = 'ruby';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'kotlin' || lang === 'kt') {
+    cmd = 'kotlinc';
+    cmdArgs = ['-script', execFile, ...(args || [])];
+  } else if (lang === 'swift') {
+    cmd = 'swift';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'dart') {
+    cmd = 'dart';
+    cmdArgs = ['run', execFile, ...(args || [])];
+  } else if (lang === 'r') {
+    cmd = 'Rscript';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'julia' || lang === 'jl') {
+    cmd = 'julia';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'perl' || lang === 'pl') {
+    cmd = 'perl';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'scala') {
+    cmd = 'scala';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'zig') {
+    cmd = 'zig';
+    cmdArgs = ['run', execFile, ...(args || [])];
+  } else if (lang === 'haskell' || lang === 'hs') {
+    cmd = 'runghc';
     cmdArgs = [execFile, ...(args || [])];
   } else if (lang === 'powershell' || lang === 'ps1') {
     cmd = 'powershell.exe';
@@ -215,6 +289,10 @@ ipcMain.handle('process-run', async (event, { code, language, filePath, cwd, arg
       activeProcess = null;
       if (isTemp) {
         try { fs.unlinkSync(execFile); } catch {}
+        try {
+          const exeOut = execFile.replace(/\.(c|cpp|cc|cxx|rs|cs)$/i, process.platform === 'win32' ? '.exe' : '');
+          if (fs.existsSync(exeOut)) fs.unlinkSync(exeOut);
+        } catch {}
       }
     });
 
@@ -272,13 +350,29 @@ ipcMain.handle('system-detect-runtimes', async () => {
     });
   };
 
-  const [python, node, git, rustc, go, gcc] = await Promise.all([
+  const [
+    python, node, git, rustc, go, gcc, gxx, java, dotnet, php, ruby, kotlinc, swift, dart, zig, julia, rscript, perl, scala, ghc
+  ] = await Promise.all([
     checkCmd('python --version'),
     checkCmd('node -v'),
     checkCmd('git --version'),
     checkCmd('rustc --version'),
     checkCmd('go version'),
-    checkCmd('gcc --version')
+    checkCmd('gcc --version'),
+    checkCmd('g++ --version'),
+    checkCmd('java -version'),
+    checkCmd('dotnet --version'),
+    checkCmd('php -v'),
+    checkCmd('ruby -v'),
+    checkCmd('kotlinc -version'),
+    checkCmd('swift --version'),
+    checkCmd('dart --version'),
+    checkCmd('zig version'),
+    checkCmd('julia --version'),
+    checkCmd('Rscript --version'),
+    checkCmd('perl -v'),
+    checkCmd('scala -version'),
+    checkCmd('ghc --version')
   ]);
 
   return {
@@ -288,6 +382,20 @@ ipcMain.handle('system-detect-runtimes', async () => {
     rustc: rustc || null,
     go: go || null,
     gcc: gcc || null,
+    gxx: gxx || null,
+    java: java || null,
+    dotnet: dotnet || null,
+    php: php || null,
+    ruby: ruby || null,
+    kotlinc: kotlinc || null,
+    swift: swift || null,
+    dart: dart || null,
+    zig: zig || null,
+    julia: julia || null,
+    rscript: rscript || null,
+    perl: perl || null,
+    scala: scala || null,
+    ghc: ghc || null,
     os: `${os.type()} ${os.release()} (${os.arch()})`,
     cpus: os.cpus().length,
     totalMemoryGb: Math.round(os.totalmem() / (1024 * 1024 * 1024)),
@@ -357,7 +465,7 @@ ipcMain.handle('dialog-open-file', async () => {
   const result = await dialog.showOpenDialog(mainWindow, {
     properties: ['openFile'],
     filters: [
-      { name: 'Scripts', extensions: ['lua', 'py', 'js', 'ts', 'html', 'json', 'txt'] },
+      { name: 'Supported Languages', extensions: ['py', 'js', 'ts', 'tsx', 'jsx', 'lua', 'c', 'cpp', 'h', 'hpp', 'rs', 'cs', 'java', 'go', 'php', 'rb', 'kt', 'kts', 'swift', 'dart', 'r', 'jl', 'pl', 'scala', 'zig', 'hs', 'html', 'css', 'json', 'md', 'bat', 'cmd', 'ps1', 'sh', 'txt'] },
       { name: 'All Files', extensions: ['*'] }
     ]
   });
@@ -376,7 +484,7 @@ ipcMain.handle('dialog-save-file', async (event, { name, content }) => {
   const result = await dialog.showSaveDialog(mainWindow, {
     defaultPath: name || 'script.py',
     filters: [
-      { name: 'Scripts', extensions: ['py', 'js', 'ts', 'lua', 'html', 'json', 'txt'] },
+      { name: 'Supported Languages', extensions: ['py', 'js', 'ts', 'tsx', 'jsx', 'lua', 'c', 'cpp', 'h', 'hpp', 'rs', 'cs', 'java', 'go', 'php', 'rb', 'kt', 'kts', 'swift', 'dart', 'r', 'jl', 'pl', 'scala', 'zig', 'hs', 'html', 'css', 'json', 'md', 'bat', 'cmd', 'ps1', 'sh', 'txt'] },
       { name: 'All Files', extensions: ['*'] }
     ]
   });
@@ -435,10 +543,26 @@ ipcMain.handle('dialog-open-folder', async () => {
           else if (ext === '.html' || ext === '.htm') lang = 'html';
           else if (ext === '.css') lang = 'css';
           else if (ext === '.json') lang = 'json';
-          else if (ext === '.cpp' || ext === '.c' || ext === '.h' || ext === '.hpp') lang = 'cpp';
+          else if (ext === '.c' || ext === '.h') lang = 'c';
+          else if (ext === '.cpp' || ext === '.cc' || ext === '.cxx' || ext === '.hpp') lang = 'cpp';
           else if (ext === '.rs') lang = 'rust';
+          else if (ext === '.cs') lang = 'csharp';
+          else if (ext === '.java') lang = 'java';
           else if (ext === '.go') lang = 'go';
+          else if (ext === '.php') lang = 'php';
+          else if (ext === '.rb') lang = 'ruby';
+          else if (ext === '.kt' || ext === '.kts') lang = 'kotlin';
+          else if (ext === '.swift') lang = 'swift';
+          else if (ext === '.dart') lang = 'dart';
+          else if (ext === '.r') lang = 'r';
+          else if (ext === '.jl') lang = 'julia';
+          else if (ext === '.pl' || ext === '.pm') lang = 'perl';
+          else if (ext === '.scala') lang = 'scala';
+          else if (ext === '.zig') lang = 'zig';
+          else if (ext === '.hs') lang = 'haskell';
           else if (ext === '.md') lang = 'markdown';
+          else if (ext === '.bat' || ext === '.cmd' || ext === '.sh') lang = 'shell';
+          else if (ext === '.ps1') lang = 'powershell';
 
           nodes.push({
             id: 'file-' + fullPath,

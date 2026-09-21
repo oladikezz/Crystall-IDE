@@ -30,8 +30,22 @@ export type SupportedLanguage =
   | 'css'
   | 'json'
   | 'cpp'
+  | 'c'
   | 'rust'
+  | 'csharp'
+  | 'java'
   | 'go'
+  | 'php'
+  | 'ruby'
+  | 'kotlin'
+  | 'swift'
+  | 'dart'
+  | 'r'
+  | 'julia'
+  | 'perl'
+  | 'scala'
+  | 'zig'
+  | 'haskell'
   | 'markdown'
   | 'shell';
 
@@ -92,7 +106,30 @@ export interface QuickScript {
 }
 
 export type InjectorStatus = 'unattached' | 'injecting' | 'injected';
-export type RunnerTarget = 'auto' | 'python' | 'node' | 'lua' | 'browser' | 'system';
+export type RunnerTarget = 
+  | 'auto' 
+  | 'python' 
+  | 'node' 
+  | 'lua' 
+  | 'browser' 
+  | 'system'
+  | 'java'
+  | 'rust'
+  | 'cpp'
+  | 'c'
+  | 'csharp'
+  | 'go'
+  | 'php'
+  | 'ruby'
+  | 'kotlin'
+  | 'swift'
+  | 'dart'
+  | 'r'
+  | 'julia'
+  | 'perl'
+  | 'scala'
+  | 'zig'
+  | 'haskell';
 
 export interface EditorSettings {
   fontSize: number;
@@ -133,6 +170,20 @@ export interface SystemRuntimesInfo {
   rustc: string | null;
   go: string | null;
   gcc: string | null;
+  gxx?: string | null;
+  java?: string | null;
+  dotnet?: string | null;
+  php?: string | null;
+  ruby?: string | null;
+  kotlinc?: string | null;
+  swift?: string | null;
+  dart?: string | null;
+  zig?: string | null;
+  julia?: string | null;
+  rscript?: string | null;
+  perl?: string | null;
+  scala?: string | null;
+  ghc?: string | null;
   os: string;
   cpus: number;
   totalMemoryGb: number;

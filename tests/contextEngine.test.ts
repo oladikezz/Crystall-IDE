@@ -144,3 +144,97 @@ test('ContextEngine - builds comprehensive context payload', () => {
   assert.strictEqual(context.diagnostics.length, 0);
   assert.ok(context.budgetMetrics.estimatedInputTokens > 0);
 });
+
+test('ASTSlicer - extracts Java classes, records, methods, and cursor scope', () => {
+  const javaCode = `package com.crystall.engine;
+
+import java.util.List;
+
+public class DataService {
+    public static void main(String[] args) {
+        System.out.println("Starting service");
+    }
+
+    public List<String> fetchRecords(int limit) {
+        return List.of("A", "B");
+    }
+}
+`;
+
+  const result = ASTSlicer.slice(javaCode, 'java', 10);
+  assert.ok(result.symbols.some(s => s.name === 'DataService' && s.type === 'class'));
+  assert.ok(result.symbols.some(s => s.name === 'fetchRecords' && s.type === 'method'));
+  assert.strictEqual(result.cursorScope?.name, 'fetchRecords');
+});
+
+test('ASTSlicer - extracts C# classes, methods, and usings', () => {
+  const csCode = `using System;
+using System.Threading.Tasks;
+
+namespace Crystall.Core {
+    public class WorkerPool {
+        public async Task<int> ProcessQueueAsync() {
+            await Task.Delay(10);
+            return 100;
+        }
+    }
+}
+`;
+
+  const result = ASTSlicer.slice(csCode, 'csharp', 7);
+  assert.ok(result.symbols.some(s => s.name === 'WorkerPool' && s.type === 'class'));
+  assert.ok(result.symbols.some(s => s.name === 'ProcessQueueAsync' && s.type === 'method'));
+  assert.strictEqual(result.cursorScope?.name, 'ProcessQueueAsync');
+});
+
+test('ASTSlicer - extracts C/C++ classes, structs, and functions', () => {
+  const cppCode = `#include <iostream>
+#include <vector>
+
+struct EngineStats {
+    int fps;
+    double frameTime;
+};
+
+int main(int argc, char** argv) {
+    std::cout << "Engine ready\\n";
+    return 0;
+}
+`;
+
+  const result = ASTSlicer.slice(cppCode, 'cpp', 11);
+  assert.ok(result.symbols.some(s => s.name === 'EngineStats' && s.type === 'class'));
+  assert.ok(result.symbols.some(s => s.name === 'main' && s.type === 'function'));
+  assert.strictEqual(result.cursorScope?.name, 'main');
+});
+
+test('ASTSlicer - extracts PHP, Ruby, Kotlin, Swift, and Zig symbols', () => {
+  // PHP
+  const phpCode = `<?php\nclass ApiRouter {\n    public function dispatch($req) {\n        return 200;\n    }\n}`;
+  const phpRes = ASTSlicer.slice(phpCode, 'php', 3);
+  assert.ok(phpRes.symbols.some(s => s.name === 'ApiRouter'));
+  assert.ok(phpRes.symbols.some(s => s.name === 'dispatch'));
+
+  // Ruby
+  const rubyCode = `class OrderService\n  def calculate_total(items)\n    items.sum\n  end\nend`;
+  const rubyRes = ASTSlicer.slice(rubyCode, 'ruby', 2);
+  assert.ok(rubyRes.symbols.some(s => s.name === 'OrderService'));
+  assert.ok(rubyRes.symbols.some(s => s.name === 'calculate_total'));
+
+  // Kotlin
+  const ktCode = `data class User(val id: Int)\nfun authenticateUser(token: String): Boolean {\n    return true\n}`;
+  const ktRes = ASTSlicer.slice(ktCode, 'kotlin', 2);
+  assert.ok(ktRes.symbols.some(s => s.name === 'User'));
+  assert.ok(ktRes.symbols.some(s => s.name === 'authenticateUser'));
+
+  // Swift
+  const swiftCode = `struct DeviceInfo {\n    let uuid: String\n}\nfunc registerDevice() {\n    print("Registered")\n}`;
+  const swiftRes = ASTSlicer.slice(swiftCode, 'swift', 4);
+  assert.ok(swiftRes.symbols.some(s => s.name === 'DeviceInfo'));
+  assert.ok(swiftRes.symbols.some(s => s.name === 'registerDevice'));
+
+  // Zig
+  const zigCode = `const std = @import("std");\npub fn calculate() u32 {\n    return 42;\n}`;
+  const zigRes = ASTSlicer.slice(zigCode, 'zig', 2);
+  assert.ok(zigRes.symbols.some(s => s.name === 'calculate'));
+});
