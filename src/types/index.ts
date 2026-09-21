@@ -131,6 +131,8 @@ export type RunnerTarget =
   | 'zig'
   | 'haskell';
 
+export type EngineMode = 'light' | 'stable';
+
 export interface EditorSettings {
   fontSize: number;
   wordWrap: boolean;
@@ -141,6 +143,7 @@ export interface EditorSettings {
   soundEffects: boolean;
   alwaysOnTop: boolean;
   defaultRunner?: RunnerTarget;
+  mode?: EngineMode;
 }
 
 export type ModalType = 

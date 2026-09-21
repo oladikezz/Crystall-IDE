@@ -817,10 +817,13 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             selectionHighlight: false,
             tabSize: 2,
             minimap: { 
-              enabled: !!settings.minimap,
+              enabled: settings.mode === 'light' ? false : !!settings.minimap,
               renderCharacters: false,
               maxColumn: 80
             },
+            smoothScrolling: settings.mode !== 'light',
+            cursorBlinking: settings.mode === 'light' ? 'solid' : 'blink',
+            cursorSmoothCaretAnimation: settings.mode === 'light' ? 'off' : 'on',
             overviewRulerBorder: false,
             overviewRulerLanes: 0,
             hideCursorInOverviewRuler: true,
@@ -833,8 +836,6 @@ export const EditorArea = forwardRef<EditorAreaHandle, EditorAreaProps>(({
             },
             scrollBeyondLastLine: false,
             automaticLayout: true,
-            cursorBlinking: 'smooth',
-            smoothScrolling: true,
             padding: { top: 12, bottom: 12 }
           }}
         />

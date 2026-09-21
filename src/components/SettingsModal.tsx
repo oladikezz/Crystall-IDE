@@ -13,7 +13,9 @@ import {
   VolumeX,
   Code2,
   Sparkles,
-  Layers
+  Layers,
+  Zap,
+  ShieldCheck
 } from 'lucide-react';
 import { AIProvider, AllConfigs, ProviderConfig, CrystallThemeId, EditorSettings } from '../types';
 import { PROVIDER_LABELS } from '../data/constants';
@@ -480,8 +482,99 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     Внешний вид
                   </h3>
                   <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
-                    Выберите цветовую тему интерфейса Crystall IDE
+                    Выберите цветовую тему интерфейса Crystall IDE и режим производительности
                   </p>
+                </div>
+
+                {/* Engine Mode Selection: Light mode vs Stable mode */}
+                <div 
+                  className="p-3.5 rounded-xl border"
+                  style={{
+                    borderColor: isGlass ? 'rgba(255,255,255,0.12)' : 'var(--border-color)',
+                    backgroundColor: isGlass ? (isLight ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.04)') : 'var(--hover-bg)'
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2.5">
+                    <div>
+                      <div className="text-xs font-semibold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+                        <Zap className="w-3.5 h-3.5 text-orange-500" />
+                        <span>Режим профиля (Engine Mode)</span>
+                      </div>
+                      <div className="text-[11px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>
+                        Баланс между потреблением оперативной памяти (RAM), GPU и визуальными эффектами
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {/* Light Mode */}
+                    <button
+                      type="button"
+                      onClick={() => onUpdateEditorSettings({ mode: 'light' })}
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                        editorSettings.mode === 'light'
+                          ? 'ring-2 ring-orange-500 shadow-sm'
+                          : 'hover:opacity-90'
+                      }`}
+                      style={{
+                        backgroundColor: editorSettings.mode === 'light'
+                          ? (isLight ? 'rgba(234, 88, 12, 0.08)' : 'rgba(249, 115, 22, 0.12)')
+                          : (isLight ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.03)'),
+                        borderColor: editorSettings.mode === 'light'
+                          ? '#f97316'
+                          : (isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.10)')
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-semibold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+                          <Zap className="w-3.5 h-3.5 text-amber-500" />
+                          <span>Light mode</span>
+                        </span>
+                        {editorSettings.mode === 'light' && (
+                          <span className="w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5" />
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10.5px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                        Облегчённый режим: низкое потребление RAM (~200MB), отключение эффектов размытия (blur), максимальная скорость на слабых ПК.
+                      </p>
+                    </button>
+
+                    {/* Stable Mode */}
+                    <button
+                      type="button"
+                      onClick={() => onUpdateEditorSettings({ mode: 'stable' })}
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                        editorSettings.mode !== 'light'
+                          ? 'ring-2 ring-orange-500 shadow-sm'
+                          : 'hover:opacity-90'
+                      }`}
+                      style={{
+                        backgroundColor: editorSettings.mode !== 'light'
+                          ? (isLight ? 'rgba(234, 88, 12, 0.08)' : 'rgba(249, 115, 22, 0.12)')
+                          : (isLight ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.03)'),
+                        borderColor: editorSettings.mode !== 'light'
+                          ? '#f97316'
+                          : (isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.10)')
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-semibold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+                          <ShieldCheck className="w-3.5 h-3.5 text-sky-500" />
+                          <span>Stable mode</span>
+                        </span>
+                        {editorSettings.mode !== 'light' && (
+                          <span className="w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5" />
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10.5px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                        Стабильный режим: полная эстетика Liquid/Frosted Glass, аппаратное ускорение GPU, анимации и максимальная стабильность.
+                      </p>
+                    </button>
+                  </div>
                 </div>
 
                 {/* 4 Figma Theme Cards with Miniature Window Previews */}
@@ -643,8 +736,99 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     Параметры редактора
                   </h3>
                   <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
-                    Настройка параметров отображения редактора кода Monaco и звуковых сигналов
+                    Настройка параметров отображения редактора кода Monaco, звуковых сигналов и режима производительности
                   </p>
+                </div>
+
+                {/* Engine Mode Selection: Light mode vs Stable mode */}
+                <div 
+                  className="p-3.5 rounded-xl border"
+                  style={{
+                    borderColor: isGlass ? 'rgba(255,255,255,0.12)' : 'var(--border-color)',
+                    backgroundColor: isGlass ? (isLight ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.04)') : 'var(--hover-bg)'
+                  }}
+                >
+                  <div className="flex items-center justify-between mb-2.5">
+                    <div>
+                      <div className="text-xs font-semibold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+                        <Zap className="w-3.5 h-3.5 text-orange-500" />
+                        <span>Режим профиля (Engine Mode)</span>
+                      </div>
+                      <div className="text-[11px] mt-0.5" style={{ color: 'var(--text-secondary)' }}>
+                        Баланс между потреблением оперативной памяти (RAM), GPU и визуальными эффектами
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {/* Light Mode */}
+                    <button
+                      type="button"
+                      onClick={() => onUpdateEditorSettings({ mode: 'light' })}
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                        editorSettings.mode === 'light'
+                          ? 'ring-2 ring-orange-500 shadow-sm'
+                          : 'hover:opacity-90'
+                      }`}
+                      style={{
+                        backgroundColor: editorSettings.mode === 'light'
+                          ? (isLight ? 'rgba(234, 88, 12, 0.08)' : 'rgba(249, 115, 22, 0.12)')
+                          : (isLight ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.03)'),
+                        borderColor: editorSettings.mode === 'light'
+                          ? '#f97316'
+                          : (isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.10)')
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-semibold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+                          <Zap className="w-3.5 h-3.5 text-amber-500" />
+                          <span>Light mode</span>
+                        </span>
+                        {editorSettings.mode === 'light' && (
+                          <span className="w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5" />
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10.5px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                        Облегчённый режим: низкое потребление RAM (~200MB), отключение эффектов размытия (blur), максимальная скорость на слабых ПК.
+                      </p>
+                    </button>
+
+                    {/* Stable Mode */}
+                    <button
+                      type="button"
+                      onClick={() => onUpdateEditorSettings({ mode: 'stable' })}
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                        editorSettings.mode !== 'light'
+                          ? 'ring-2 ring-orange-500 shadow-sm'
+                          : 'hover:opacity-90'
+                      }`}
+                      style={{
+                        backgroundColor: editorSettings.mode !== 'light'
+                          ? (isLight ? 'rgba(234, 88, 12, 0.08)' : 'rgba(249, 115, 22, 0.12)')
+                          : (isLight ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.03)'),
+                        borderColor: editorSettings.mode !== 'light'
+                          ? '#f97316'
+                          : (isLight ? '#e2e8f0' : 'rgba(255, 255, 255, 0.10)')
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-semibold flex items-center gap-1.5" style={{ color: 'var(--text-primary)' }}>
+                          <ShieldCheck className="w-3.5 h-3.5 text-sky-500" />
+                          <span>Stable mode</span>
+                        </span>
+                        {editorSettings.mode !== 'light' && (
+                          <span className="w-4 h-4 rounded-full bg-orange-500 text-white flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5" />
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10.5px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                        Стабильный режим: полная эстетика Liquid/Frosted Glass, аппаратное ускорение GPU, анимации и максимальная стабильность.
+                      </p>
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-2.5 pt-1">

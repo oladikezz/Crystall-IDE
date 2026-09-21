@@ -55,7 +55,8 @@ const DEFAULT_EDITOR_SETTINGS: EditorSettings = {
   tabSize: 4,
   autoAttach: false,
   soundEffects: true,
-  alwaysOnTop: false
+  alwaysOnTop: false,
+  mode: 'stable'
 };
 
 export default function App() {
@@ -104,6 +105,12 @@ export default function App() {
     } catch {}
     return DEFAULT_EDITOR_SETTINGS;
   });
+
+  // Apply engine mode (light / stable)
+  useEffect(() => {
+    const mode = editorSettings.mode || 'stable';
+    document.documentElement.setAttribute('data-engine-mode', mode);
+  }, [editorSettings.mode]);
 
   const handleUpdateEditorSettings = (partial: Partial<EditorSettings>) => {
     setEditorSettings(prev => {

@@ -208,3 +208,22 @@ body {
 input, textarea, select {
   color: var(--text-primary);
 }
+
+/* ============================================================================
+   Engine Modes: Light Mode (Resource-Saving) vs Stable Mode (Full Fidelity)
+   ============================================================================ */
+[data-engine-mode="light"] *,
+[data-engine-mode="light"] *::before,
+[data-engine-mode="light"] *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+[data-engine-mode="light"] .crystall-app-shell {
+  background-color: var(--bg-editor) !important;
+}
+
+[data-engine-mode="light"] .theme-transition {
+  transition: none !important;
+}
+
