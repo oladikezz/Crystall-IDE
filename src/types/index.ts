@@ -118,6 +118,27 @@ export type ModalType =
   | 'properties' 
   | null;
 
+export interface ProcessOutputEvent {
+  type: 'stdout' | 'stderr' | 'exit';
+  text?: string;
+  code?: number;
+  elapsedMs?: number;
+  pid?: number;
+}
+
+export interface SystemRuntimesInfo {
+  python: string | null;
+  node: string | null;
+  git: string | null;
+  rustc: string | null;
+  go: string | null;
+  gcc: string | null;
+  os: string;
+  cpus: number;
+  totalMemoryGb: number;
+  freeMemoryGb: number;
+}
+
 declare global {
   interface Window {
     electronAPI?: {
@@ -130,6 +151,16 @@ declare global {
       saveFileDialog: (data: { name: string; content: string }) => Promise<{ success: boolean; filePath?: string }>;
       openFolderDialog?: () => Promise<{ folderName: string; folderPath: string; tree: ExplorerNode[] } | null>;
       readFile?: (filePath: string) => Promise<{ success: boolean; content?: string; name?: string; path?: string; error?: string }>;
+      writeFile?: (filePath: string, content: string) => Promise<{ success: boolean; filePath?: string; error?: string }>;
+      createFile?: (targetPath: string, content?: string) => Promise<{ success: boolean; targetPath?: string; error?: string }>;
+      deleteFile?: (targetPath: string) => Promise<{ success: boolean; error?: string }>;
+      renameFile?: (oldPath: string, newPath: string) => Promise<{ success: boolean; error?: string }>;
+      createFolder?: (dirPath: string) => Promise<{ success: boolean; error?: string }>;
+      runProcess?: (opts: { code?: string; language?: string; filePath?: string; cwd?: string; args?: string[] }) => Promise<{ success: boolean; pid?: number; command?: string; workingDir?: string; error?: string }>;
+      killProcess?: () => Promise<{ success: boolean; error?: string }>;
+      writeStdin?: (text: string) => Promise<{ success: boolean; error?: string }>;
+      onProcessOutput?: (callback: (event: ProcessOutputEvent) => void) => () => void;
+      detectRuntimes?: () => Promise<SystemRuntimesInfo>;
       setAlwaysOnTop?: (flag: boolean) => Promise<boolean>;
       setThemeMode?: (opts: { isTransparent: boolean; isLight: boolean }) => void;
     };

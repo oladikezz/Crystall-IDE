@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "test": "npx tsx --test tests/sseParser.test.ts tests/contextEngine.test.ts tests/slidingWindow.test.ts tests/tokenizer.test.ts",
+    "test": "npx tsx --test tests/sseParser.test.ts tests/contextEngine.test.ts tests/slidingWindow.test.ts tests/tokenizer.test.ts tests/backendExecution.test.ts",
     "lint": "oxlint",
     "preview": "vite preview",
     "electron:dev": "electron .",

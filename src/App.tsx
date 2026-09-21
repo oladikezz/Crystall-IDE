@@ -437,15 +437,55 @@ export default function App() {
     addLog('info', 'Closed workspace folder.');
   };
 
+  // Listen for native process execution output over IPC
+  useEffect(() => {
+    if (window.electronAPI?.onProcessOutput) {
+      const unsubscribe = window.electronAPI.onProcessOutput((event) => {
+        if (event.type === 'stdout' && event.text) {
+          const lines = event.text.split(/\r?\n/).filter(Boolean);
+          for (const line of lines) {
+            addLog('info', line);
+          }
+        } else if (event.type === 'stderr' && event.text) {
+          const lines = event.text.split(/\r?\n/).filter(Boolean);
+          for (const line of lines) {
+            addLog('error', line);
+          }
+        } else if (event.type === 'exit') {
+          if (event.code === 0) {
+            addLog('success', `Process finished with exit code 0 (${event.elapsedMs}ms).`);
+          } else {
+            addLog('error', `Process exited with code ${event.code} (${event.elapsedMs}ms).`);
+          }
+          if (event.elapsedMs) setExecTime(event.elapsedMs);
+        }
+      });
+      return () => unsubscribe();
+    }
+  }, []);
+
   const handleSaveFile = async () => {
+    // If active tab already has a path on disk, save directly!
+    if (activeTab.path && window.electronAPI?.writeFile) {
+      const res = await window.electronAPI.writeFile(activeTab.path, activeTab.content);
+      if (res && res.success) {
+        addLog('success', `Saved directly to "${activeTab.path}"`);
+        if (editorSettings.soundEffects) playSuccessSound();
+        setTabs(prev => prev.map(t => t.id === activeTab.id ? { ...t, isDirty: false } : t));
+        setLastAction('Save');
+        return;
+      }
+    }
+
     if (window.electronAPI?.saveFileDialog) {
       const res = await window.electronAPI.saveFileDialog({
         name: activeTab.name,
         content: activeTab.content
       });
-      if (res && res.success) {
-        addLog('success', `Saved file to ${res.filePath || activeTab.name}`);
+      if (res && res.success && res.filePath) {
+        addLog('success', `Saved file to "${res.filePath}"`);
         if (editorSettings.soundEffects) playSuccessSound();
+        setTabs(prev => prev.map(t => t.id === activeTab.id ? { ...t, path: res.filePath, isDirty: false } : t));
       }
     } else {
       const blob = new Blob([activeTab.content], { type: 'text/plain;charset=utf-8' });
@@ -469,33 +509,46 @@ export default function App() {
     handleSaveFile();
   };
 
-  // Runtime Connection / Environment linker
-  const handleAttach = () => {
+  // Runtime Connection / Environment linker (Native Auto-Detection)
+  const handleAttach = async () => {
     if (injectorStatus === 'injecting') return;
 
     if (editorSettings.soundEffects) playInjectSound();
     setInjectorStatus('injecting');
     setLastAction('Linking Environment...');
-    addLog('info', 'Detecting execution runtime engines...');
+    addLog('info', 'Scanning host system for execution runtimes...');
 
-    setTimeout(() => {
-      addLog('info', 'Node.js v20.12.0 found | Python 3.12.2 virtualenv detected.');
-    }, 400);
+    if (window.electronAPI?.detectRuntimes) {
+      try {
+        const runtimes = await window.electronAPI.detectRuntimes();
+        if (runtimes.python) addLog('info', `Python: ${runtimes.python}`);
+        if (runtimes.node) addLog('info', `Node.js: ${runtimes.node}`);
+        if (runtimes.git) addLog('info', `Git: ${runtimes.git}`);
+        if (runtimes.rustc) addLog('info', `Rust: ${runtimes.rustc}`);
+        if (runtimes.go) addLog('info', `Go: ${runtimes.go}`);
+        if (runtimes.gcc) addLog('info', `GCC: ${runtimes.gcc}`);
+        addLog('info', `OS: ${runtimes.os} | CPUs: ${runtimes.cpus} | RAM: ${runtimes.freeMemoryGb}GB free / ${runtimes.totalMemoryGb}GB`);
 
-    setTimeout(() => {
-      addLog('warn', 'Binding language server protocols & debug ports...');
-    }, 900);
+        setInjectorStatus('injected');
+        setLastAction('Runtime Connected');
+        addLog('ready', 'Native host execution engine linked. Ready for live execution.');
+        if (editorSettings.soundEffects) playSuccessSound();
+        return;
+      } catch (err: any) {
+        addLog('warn', `Runtime scan error: ${err.message}`);
+      }
+    }
 
     setTimeout(() => {
       setInjectorStatus('injected');
       setLastAction('Runtime Connected');
       addLog('ready', 'Universal Multi-Language Runtime linked. Ready for live execution.');
       if (editorSettings.soundEffects) playSuccessSound();
-    }, 1500);
+    }, 800);
   };
 
-  // Universal Code Execution Runner
-  const handleExecute = () => {
+  // Universal Code Execution Runner (Native Process Runner)
+  const handleExecute = async () => {
     const start = performance.now();
     setLastAction('Run');
     if (editorSettings.soundEffects) playExecuteSound();
@@ -503,6 +556,24 @@ export default function App() {
     const lang = activeTab.language || 'plaintext';
     addLog('info', `Running "${activeTab.name}" [Environment: ${lang.toUpperCase()}]...`);
 
+    // If native Electron backend is available, spawn the real process!
+    if (window.electronAPI?.runProcess) {
+      const res = await window.electronAPI.runProcess({
+        code: activeTab.content,
+        language: activeTab.language,
+        filePath: activeTab.path,
+        cwd: openedFolder?.folderPath
+      });
+
+      if (!res.success) {
+        addLog('error', `Execution failed to start: ${res.error}`);
+      } else {
+        addLog('info', `Spawned [PID: ${res.pid}] => ${res.command}`);
+      }
+      return;
+    }
+
+    // Web preview or fallback outside Electron
     setTimeout(() => {
       const elapsed = Math.round(performance.now() - start) || 8;
       setExecTime(elapsed);
@@ -510,21 +581,17 @@ export default function App() {
       const lines = activeTab.content.split('\n');
       let customOutputs = 0;
 
-      // Parse prints / logs across Python, JS, TS, Lua
       for (const line of lines) {
-        // Python: print(...)
         const pyMatch = line.match(/^\s*print\((.*)\)/);
         if (pyMatch) {
           addLog('info', pyMatch[1].replace(/["']/g, ''));
           customOutputs++;
         }
-        // JS/TS: console.log(...)
         const jsMatch = line.match(/^\s*console\.log\((.*)\)/);
         if (jsMatch) {
           addLog('info', jsMatch[1].replace(/["']/g, ''));
           customOutputs++;
         }
-        // Lua: warn(...)
         const warnMatch = line.match(/^\s*warn\((.*)\)/);
         if (warnMatch) {
           addLog('warn', warnMatch[1].replace(/["']/g, ''));
@@ -541,7 +608,7 @@ export default function App() {
     }, 140);
   };
 
-  const handleExecuteSelection = () => {
+  const handleExecuteSelection = async () => {
     const selected = editorAreaRef.current?.getSelectedText();
     if (!selected || !selected.trim()) {
       handleExecute();
@@ -549,6 +616,21 @@ export default function App() {
     }
     if (editorSettings.soundEffects) playExecuteSound();
     addLog('info', `Running code selection (${selected.length} chars)...`);
+
+    if (window.electronAPI?.runProcess) {
+      const res = await window.electronAPI.runProcess({
+        code: selected,
+        language: activeTab.language,
+        cwd: openedFolder?.folderPath
+      });
+      if (!res.success) {
+        addLog('error', `Selection execution failed: ${res.error}`);
+      } else {
+        addLog('info', `Spawned snippet [PID: ${res.pid}]`);
+      }
+      return;
+    }
+
     setTimeout(() => {
       addLog('success', 'Selection executed successfully in 4ms!');
     }, 100);
@@ -567,7 +649,7 @@ export default function App() {
   };
 
   // Interactive Terminal REPL command runner
-  const handleConsoleCommand = (cmd: string) => {
+  const handleConsoleCommand = async (cmd: string) => {
     const trimmed = cmd.trim();
     if (!trimmed) return;
 
@@ -577,7 +659,7 @@ export default function App() {
     }
 
     if (trimmed === 'help') {
-      addLog('info', 'Available commands: print(...), console.log(...), clear, attach, status, eval, help');
+      addLog('info', 'Available commands: print(...), console.log(...), clear, attach, status, or any shell command (dir, node, python)');
       return;
     }
 
@@ -591,6 +673,17 @@ export default function App() {
       return;
     }
 
+    // If Electron is available, execute command in shell
+    if (window.electronAPI?.runProcess) {
+      addLog('info', `> ${trimmed}`);
+      await window.electronAPI.runProcess({
+        code: trimmed,
+        language: 'powershell',
+        cwd: openedFolder?.folderPath
+      });
+      return;
+    }
+
     // Check for print / log
     const printMatch = trimmed.match(/^(?:print|console\.log)\((.*)\)$/);
     if (printMatch) {
@@ -598,11 +691,10 @@ export default function App() {
       return;
     }
 
-    // Evaluate expression
+    // Fallback: evaluate expression
     addLog('info', `> ${trimmed}`);
     setTimeout(() => {
       try {
-        // Safe math evaluation or JS eval
         const result = Function(`"use strict"; return (${trimmed})`)();
         addLog('success', `[Evaluated] => ${String(result)}`);
       } catch {

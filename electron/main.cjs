@@ -1,12 +1,16 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
+const { spawn, execSync, exec } = require('child_process');
 
 // Allow local files and disable unnecessary security blocks for local assets
 app.commandLine.appendSwitch('allow-file-access-from-files');
 app.commandLine.appendSwitch('disable-web-security');
 
 let mainWindow = null;
+let activeProcess = null;
+let activeProcessStartTime = 0;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -43,6 +47,16 @@ function createWindow() {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+    if (activeProcess) {
+      try {
+        if (process.platform === 'win32') {
+          execSync(`taskkill /F /T /PID ${activeProcess.pid}`);
+        } else {
+          activeProcess.kill();
+        }
+      } catch {}
+      activeProcess = null;
+    }
   });
 }
 
@@ -92,7 +106,252 @@ ipcMain.on('window-set-theme-mode', (event, { isTransparent }) => {
   }
 });
 
-// Native File Dialogs
+// ============================================================================
+// Real Multi-Language Process Execution Backend
+// ============================================================================
+
+ipcMain.handle('process-run', async (event, { code, language, filePath, cwd, args }) => {
+  if (activeProcess) {
+    try {
+      if (process.platform === 'win32') {
+        execSync(`taskkill /F /T /PID ${activeProcess.pid}`);
+      } else {
+        activeProcess.kill();
+      }
+    } catch {}
+    activeProcess = null;
+  }
+
+  let execFile = filePath;
+  let isTemp = false;
+
+  // If unsaved code or no file on disk, create temporary execution script
+  if (!execFile || !fs.existsSync(execFile) || code !== undefined) {
+    const extMap = {
+      python: '.py',
+      javascript: '.js',
+      typescript: '.ts',
+      lua: '.lua',
+      shell: '.bat',
+      powershell: '.ps1',
+      json: '.json',
+      markdown: '.md',
+      plaintext: '.txt'
+    };
+    const ext = extMap[language] || '.txt';
+    const tempDir = path.join(os.tmpdir(), 'crystall_ide_runs');
+    if (!fs.existsSync(tempDir)) fs.mkdirSync(tempDir, { recursive: true });
+    execFile = path.join(tempDir, `run_${Date.now()}${ext}`);
+    fs.writeFileSync(execFile, code !== undefined ? code : '', 'utf-8');
+    isTemp = true;
+  }
+
+  const workingDir = cwd || (filePath && fs.existsSync(filePath) ? path.dirname(filePath) : path.dirname(execFile));
+
+  // Determine command and arguments based on language
+  let cmd = '';
+  let cmdArgs = [];
+  const lang = (language || '').toLowerCase();
+
+  if (lang === 'python' || lang === 'py') {
+    cmd = process.platform === 'win32' ? 'python' : 'python3';
+    cmdArgs = ['-u', execFile, ...(args || [])];
+  } else if (lang === 'javascript' || lang === 'js') {
+    cmd = 'node';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'typescript' || lang === 'ts' || lang === 'tsx') {
+    cmd = 'node';
+    cmdArgs = ['--experimental-strip-types', execFile, ...(args || [])];
+  } else if (lang === 'lua') {
+    cmd = 'lua';
+    cmdArgs = [execFile, ...(args || [])];
+  } else if (lang === 'powershell' || lang === 'ps1') {
+    cmd = 'powershell.exe';
+    cmdArgs = ['-ExecutionPolicy', 'Bypass', '-File', execFile, ...(args || [])];
+  } else if (lang === 'shell' || lang === 'bat' || lang === 'cmd') {
+    cmd = 'cmd.exe';
+    cmdArgs = ['/c', execFile, ...(args || [])];
+  } else {
+    cmd = execFile;
+    cmdArgs = args || [];
+  }
+
+  activeProcessStartTime = Date.now();
+
+  try {
+    const child = spawn(cmd, cmdArgs, {
+      cwd: workingDir,
+      env: { ...process.env, PYTHONUNBUFFERED: '1', NODE_ENV: 'development' },
+      shell: true
+    });
+
+    activeProcess = child;
+
+    child.stdout.on('data', (data) => {
+      const text = data.toString();
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('process-stdout', { text, pid: child.pid });
+      }
+    });
+
+    child.stderr.on('data', (data) => {
+      const text = data.toString();
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('process-stderr', { text, pid: child.pid });
+      }
+    });
+
+    child.on('error', (err) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('process-stderr', { text: `[Process Spawn Error] ${err.message}\n`, pid: child.pid });
+      }
+    });
+
+    child.on('close', (code) => {
+      const elapsed = Date.now() - activeProcessStartTime;
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('process-exit', { code, elapsedMs: elapsed, pid: child.pid });
+      }
+      activeProcess = null;
+      if (isTemp) {
+        try { fs.unlinkSync(execFile); } catch {}
+      }
+    });
+
+    return { success: true, pid: child.pid, command: `${cmd} ${cmdArgs.join(' ')}`, workingDir };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+// Kill Active Process
+ipcMain.handle('process-kill', () => {
+  if (activeProcess) {
+    try {
+      if (process.platform === 'win32') {
+        execSync(`taskkill /F /T /PID ${activeProcess.pid}`);
+      } else {
+        activeProcess.kill();
+      }
+      activeProcess = null;
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+  return { success: false, error: 'No active process' };
+});
+
+// Write to Process Stdin
+ipcMain.handle('process-stdin', (event, text) => {
+  if (activeProcess && activeProcess.stdin && !activeProcess.stdin.destroyed) {
+    try {
+      activeProcess.stdin.write(text + '\n');
+      return { success: true };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  }
+  return { success: false, error: 'Process stdin unavailable' };
+});
+
+// ============================================================================
+// System Runtime Auto-Detection
+// ============================================================================
+
+ipcMain.handle('system-detect-runtimes', async () => {
+  const checkCmd = (cmd) => {
+    return new Promise((resolve) => {
+      exec(cmd, { timeout: 1800 }, (error, stdout, stderr) => {
+        if (error) {
+          resolve(null);
+        } else {
+          resolve((stdout || stderr || '').trim().split('\n')[0]);
+        }
+      });
+    });
+  };
+
+  const [python, node, git, rustc, go, gcc] = await Promise.all([
+    checkCmd('python --version'),
+    checkCmd('node -v'),
+    checkCmd('git --version'),
+    checkCmd('rustc --version'),
+    checkCmd('go version'),
+    checkCmd('gcc --version')
+  ]);
+
+  return {
+    python: python || null,
+    node: node || null,
+    git: git || null,
+    rustc: rustc || null,
+    go: go || null,
+    gcc: gcc || null,
+    os: `${os.type()} ${os.release()} (${os.arch()})`,
+    cpus: os.cpus().length,
+    totalMemoryGb: Math.round(os.totalmem() / (1024 * 1024 * 1024)),
+    freeMemoryGb: Math.round(os.freemem() / (1024 * 1024 * 1024))
+  };
+});
+
+// ============================================================================
+// Direct Native Filesystem Operations
+// ============================================================================
+
+ipcMain.handle('file-write-direct', async (event, { filePath, content }) => {
+  try {
+    fs.writeFileSync(filePath, content, 'utf-8');
+    return { success: true, filePath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('file-create', async (event, { targetPath, content }) => {
+  try {
+    const dir = path.dirname(targetPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(targetPath, content || '', 'utf-8');
+    return { success: true, targetPath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('file-delete', async (event, targetPath) => {
+  try {
+    if (fs.existsSync(targetPath)) {
+      fs.rmSync(targetPath, { recursive: true, force: true });
+    }
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('file-rename', async (event, { oldPath, newPath }) => {
+  try {
+    fs.renameSync(oldPath, newPath);
+    return { success: true, oldPath, newPath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('folder-create', async (event, dirPath) => {
+  try {
+    fs.mkdirSync(dirPath, { recursive: true });
+    return { success: true, dirPath };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+});
+
+// ============================================================================
+// Native File & Folder Dialogs
+// ============================================================================
+
 ipcMain.handle('dialog-open-file', async () => {
   if (!mainWindow) return null;
   const result = await dialog.showOpenDialog(mainWindow, {
@@ -115,9 +374,9 @@ ipcMain.handle('dialog-open-file', async () => {
 ipcMain.handle('dialog-save-file', async (event, { name, content }) => {
   if (!mainWindow) return false;
   const result = await dialog.showSaveDialog(mainWindow, {
-    defaultPath: name || 'script.lua',
+    defaultPath: name || 'script.py',
     filters: [
-      { name: 'Scripts', extensions: ['lua', 'py', 'js', 'ts', 'html', 'json', 'txt'] },
+      { name: 'Scripts', extensions: ['py', 'js', 'ts', 'lua', 'html', 'json', 'txt'] },
       { name: 'All Files', extensions: ['*'] }
     ]
   });
@@ -126,7 +385,6 @@ ipcMain.handle('dialog-save-file', async (event, { name, content }) => {
   return { success: true, filePath: result.filePath };
 });
 
-// Native Folder Dialog & Directory Reading
 ipcMain.handle('dialog-open-folder', async () => {
   if (!mainWindow) return null;
   const result = await dialog.showOpenDialog(mainWindow, {
